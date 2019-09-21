@@ -1,0 +1,49 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<center><a class="btn btn-primary" href="{% url 'empleado_crear'%}">crear empleado</a></center>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <td>Usuario</td>
+            <td>Nombre</td>
+            <td>Apellido</td>
+            <td>Fecha de nacimiento</td>
+            <td>Direccion</td>
+            <td>Email</td>
+            <td>Telefono</td>
+            <td>Legajo</td>
+            <td>Hospital</td>
+            <td>id usuario</td>
+            <td>Acciones</td>
+
+        </tr>
+    </thead>
+    <tbody>
+        {% if object_list %}
+        {% for empleado in object_list %}
+       <tr>
+            <td>{{ empleado.user.username }}</td>
+            <td>{{ empleado.user.first_name }}</td>
+            <td>{{ empleado.user.last_name }}</td>
+            <td>{{ empleado.fecha_nacimiento }}</td>
+            <td>{{ empleado.direccion }}</td>
+            <td>{{ empleado.user.email }}</td>
+            <td>{{ empleado.telefono }}</td>
+            <td>{{ empleado.numero_legajo }}</td>
+            <td>{{ empleado.hospital.nombre }}</td>
+            <td>{{ empleado.user_id }}</td>
+            <td>
+                <a class="btn btn-primary" href="{% url 'empleado_modificar' pk=empleado.pk %}">modificar</a>
+                <a class="btn btn-danger" href="{% url 'empleado_borrar' pk=empleado.pk %}">Eliminar</a>
+            </td>
+       </tr>
+        {% endfor %}
+
+        {% else %}
+        <h1>No hay registros de empleados para mostra</h1>
+
+        {% endif %}
+    </tbody>
+</table>
+{% endblock %}

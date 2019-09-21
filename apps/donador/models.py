@@ -14,3 +14,7 @@ class Donador(models.Model):
     email = models.EmailField()
     telefono = models.CharField(max_length=12)
     activo = models.BooleanField()
+
+
+
+

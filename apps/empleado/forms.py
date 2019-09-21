@@ -1,40 +1,50 @@
 from django import forms
 from apps.empleado.models import Empleado
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 
 
 class EmpleadoForm(forms.ModelForm):
 
     class Meta:
 
-        model= Empleado
+        model = Empleado
 
         fields = [
             'hospital',
-            'nombre',
-            'apellido',
             'fecha_nacimiento',
             'direccion',
-            'email',
             'telefono',
             'numero_legajo',
         ]
         labels = {
             'hospital': 'Hospital',
-            'nombre': 'Nombre',
-            'apellido': 'Apellido',
             'fecha_nacimiento': 'Fecha de Nacimiento',
             'direccion': 'Direccion',
-            'email': 'E-mail',
             'telefono': 'Telefono',
             'numero_legajo': 'Numero de Legajo',
         }
         widgets = {
-            'hospital': forms.Select(attrs={'class':'form-control'}),
-            'nombre': forms.TextInput(attrs={'class':'form-control'}),
-            'apellido': forms.TextInput(attrs={'class':'form-control'}),
-            'fecha_nacimiento': forms.SelectDateWidget(attrs={'class':'form-control'}),
-            'direccion':forms.TextInput(attrs={'class':'form-control'}),
-            'email': forms.EmailInput(attrs={'class':'form-control'}),
-            'telefono':forms.TextInput(attrs={'class':'form-control'}),
-            'numero_legajo':forms.TextInput(attrs={'class':'form-control'}),
+            'hospital': forms.Select(attrs={'class': 'form-control'}),
+            'fecha_nacimiento': forms.SelectDateWidget(attrs={'class': 'form-control'}),
+            'direccion':forms.TextInput(attrs={'class': 'form-control'}),
+            'telefono':forms.TextInput(attrs={'class': 'form-control'}),
+            'numero_legajo':forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+class RegistroForm(UserCreationForm):
+
+    class Meta:
+        model = User
+        fields = [
+            'username',
+            'first_name',
+            'last_name',
+            'email',
+        ]
+        labels = {
+            'username': 'Nombre de usuario',
+            'first_name':'Nombre',
+            'last_name': 'Apellido',
+            'email': 'Correo',
         }
