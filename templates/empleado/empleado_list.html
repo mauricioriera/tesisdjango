@@ -14,7 +14,7 @@
             <td>Telefono</td>
             <td>Legajo</td>
             <td>Hospital</td>
-            <td>id usuario</td>
+            <td>Grupo</td>
             <td>Acciones</td>
 
         </tr>
@@ -32,16 +32,16 @@
             <td>{{ empleado.telefono }}</td>
             <td>{{ empleado.numero_legajo }}</td>
             <td>{{ empleado.hospital.nombre }}</td>
-            <td>{{ empleado.user_id }}</td>
+            <td>{{ empleado.groups}}</td>
             <td>
                 <a class="btn btn-primary" href="{% url 'empleado_modificar' pk=empleado.pk %}">modificar</a>
-                <a class="btn btn-danger" href="{% url 'empleado_borrar' pk=empleado.pk %}">Eliminar</a>
+                <a class="btn btn-danger" href="{% url 'empleado_borrar' pk=empleado.user_id %}">Eliminar</a>
             </td>
        </tr>
         {% endfor %}
 
         {% else %}
-        <h1>No hay registros de empleados para mostra</h1>
+        <h1>No hay registros de empleados para mostrar</h1>
 
         {% endif %}
     </tbody>

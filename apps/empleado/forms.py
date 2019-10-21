@@ -16,6 +16,7 @@ class EmpleadoForm(forms.ModelForm):
             'direccion',
             'telefono',
             'numero_legajo',
+            'groups',
         ]
         labels = {
             'hospital': 'Hospital',
@@ -23,13 +24,16 @@ class EmpleadoForm(forms.ModelForm):
             'direccion': 'Direccion',
             'telefono': 'Telefono',
             'numero_legajo': 'Numero de Legajo',
+            'groups': 'grupo',
         }
         widgets = {
+
             'hospital': forms.Select(attrs={'class': 'form-control'}),
             'fecha_nacimiento': forms.SelectDateWidget(attrs={'class': 'form-control'}),
-            'direccion':forms.TextInput(attrs={'class': 'form-control'}),
-            'telefono':forms.TextInput(attrs={'class': 'form-control'}),
-            'numero_legajo':forms.TextInput(attrs={'class': 'form-control'}),
+            'direccion': forms.TextInput(attrs={'class': 'form-control'}),
+            'telefono': forms.TextInput(attrs={'class': 'form-control'}),
+            'numero_legajo': forms.TextInput(attrs={'class': 'form-control'}),
+            'groups': forms.Select(attrs={'class': 'form-control'}),
         }
 
 class RegistroForm(UserCreationForm):
