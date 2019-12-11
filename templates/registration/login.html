@@ -1,31 +1,85 @@
-{% extends 'base/base.html'%}
-
-{% block title %}
-Login
-{% endblock %}
-
-{% block navbar%}
-{% endblock %}
-
-{% block content %}
-    <form method="post">
-        {% csrf_token %}
-     <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-            <div class="form-group">
-            <label for="username">Nombre de usuario:</label>
-                <input class="form-control" type="text" id="username" name="username">
-            </div>
+<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <!--Bootstrap-->
+   <link rel="stylesheet" href= "{% static 'css/bootstrap.css' %}" />
+   <!--style CSS-->
+   <link rel="stylesheet" href="{% static 'css/estilo.css' %}" />
+  </head>
+  <body>
+  <header>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="logo">
+              <a href="{% url 'inicio' %}" ><img src="{% static 'imagenes/logo2.png' %}"></a>
+          </div>
         </div>
-     </div>
-        <div class="row">
-            <div class="col-md-6 col-md-offset-3">
-                <div class="form-group">
-                <label for="username">Contraseña:</label>
-                    <input class="form-control" type="password" id="password" name="password">
+      </div>
+    </header>
+
+
+    <section class="login">
+        <form method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-lg-4">
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label for="username">Usuario:</label>
+                        <input class="form-control" type="text" id="username" name="username" >
+                    </div>
+                </div>
+                <div class="col-lg-4">
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col-lg-4">
+                </div>
+                <div class="col-lg-4">
+                     <div class="form-group">
+                    <label for="username">Contraseña:</label>
+                         <input class="form-control" type="password" id="password" name="password">
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                </div>
+                <div class="col-lg-4 text-center" >
+                <button class="btn btn-success btn-lg boton2" role="button" type="submit"> Ingresar</button>
+                </div>
+                <div class="col-lg-4">
+                </div>
+            </div>
+        </form>
+    </section>
+  </body>
+    <footer class="foot">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4 text-center ">
+            <h4 class=foot-tittle>Datos Legales</h4>
+            <p>Todo los Derechos Reservados 2019-2020 </p>
+          </div>
+          <div class="col-lg-4">
+          </div>
+          <div class="col-lg-4 text-center">
+            <h4 class=foot-tittle>Datos de Contacto</h4>
+            <p>mauricio.d.riera@gmail.com</p>
+          </div>
         </div>
-        <button type="submit">Entrar</button>
-    </form>
-{% endblock %}
+      </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+</html>

@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'latesi.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'tesis',
+        'NAME': 'tesisnueva',
         'USER': 'root',
         'PASSWORD': 'pirata19387',
         'HOST': 'localhost',
@@ -126,6 +126,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = "/Mauricio/Desktop/proyectando/latesi/static"
+
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"),]
 
 LOGIN_REDIRECT_URL = reverse_lazy('validar_usuario')
 

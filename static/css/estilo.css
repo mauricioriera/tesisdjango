@@ -1,0 +1,49 @@
+.index {
+  background-image: url(../imagenes/banner.png);
+  background-repeat:no-repeat;
+  background-position: 100% -20%;
+}
+.login{
+  padding-top:100px;
+}
+.pad {
+  font: oblique bold 120% cursive;
+  color: red;
+  font-size: 30px;
+  padding-top: 130px;
+}
+img {
+  width: 150px;
+  height: 100px;
+  padding-top: 30px;
+  padding-left: 30px;
+}
+.boton {
+  color:black;
+}
+footer {
+  background-color: lightblue;
+  position:absolute;
+  left:0px;
+  bottom:0px;
+  height:60px;
+  width:100%;
+}
+html {
+  min-height: 100%;
+  position: relative;
+}
+body {
+  margin: 0;
+  margin-bottom: 70px;
+}
+.foot
+{
+  line-height: 0%;
+}
+.foot-tittle{
+    font-family: fantasy;
+}
+.tabla{
+margin: auto;
+}

@@ -1,4 +1,4 @@
-from django.shortcuts import redirect
+
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from apps.empleado.forms import EmpleadoForm, RegistroForm
@@ -7,13 +7,7 @@ from apps.empleado.models import Empleado
 from django.contrib.auth.models import User, Group
 
 
-def validacion(request):
-    if request.user.is_authenticated:
-        if request.user.is_superuser == 0:
-            return redirect('empleado_listar')
-        elif request.user.is_superuser == 1:
-            return redirect('empleado_crear')
-    return redirect('login')
+
 
 class EmpleadoCrear(CreateView):
     model = Empleado

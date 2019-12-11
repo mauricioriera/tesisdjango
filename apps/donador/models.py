@@ -1,20 +1,32 @@
 from django.db import models
+from django.contrib.auth.models import User,Group
 
 from apps.hospital.models import Hospital
 # Create your models here.
 class Donador(models.Model):
-    hospital =models.ForeignKey(Hospital, null=True, blank=True, on_delete= models.SET_NULL)
-    nombre = models.CharField(max_length=50, null=False, blank=False)
-    apellido = models.CharField(max_length=50, null=False, blank=False)
+
+    GENERO = (
+        ('M', 'masculino'),
+        ('F', 'femenino'),
+    )
+    GRUPO_SANGRE = (
+        ('A','A'),
+        ('B','B'),
+        ('AB','AB'),
+        ('0','0'),
+    )
+    FACTOR_SANGRE=(
+        ('+', 'positivo'),
+        ('-', 'negativo'),
+    )
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    hospital = models.ForeignKey(Hospital, null=True, blank=True, on_delete=models.SET_NULL)
     fecha_nacimiento = models.DateField()
     direccion = models.CharField(max_length=50,null=False,blank=False)
-    sexo = models.CharField(max_length=10,null=False,blank=False)
-    grupo_sanguineo = models.CharField(max_length=10,null=False,blank=False)
-    factor_sanguineo = models.CharField(max_length=10,null=False,blank=False)
-    email = models.EmailField()
+    genero = models.CharField( max_length=1 , choices = GENERO, default='M')
+    grupo_sanguineo = models.CharField(max_length=10,choices=GRUPO_SANGRE, default='A')
+    factor_sanguineo = models.CharField(max_length=2, choices=FACTOR_SANGRE, default='+')
     telefono = models.CharField(max_length=12)
-    activo = models.BooleanField()
-
-
-
-
+    activo = models.BooleanField(default=0)
+    groups = models.ForeignKey(Group, null=True, blank=True, on_delete=models.CASCADE)

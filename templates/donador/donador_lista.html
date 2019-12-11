@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro</title>
+    <!--Bootstrap-->
+    <link rel="stylesheet" href= "{% static 'css/bootstrap.css' %}" />
+    <!--style CSS-->
+    <link rel="stylesheet" href="{% static 'css/estilo.css' %}" />
+  </head>
+    <body>
+        <header>
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="logo">
+                  <a href="{% url 'inicio' %}" ><img src="{% static 'imagenes/logo2.png' %}"></a>
+              </div>
+            </div>
+          </div>
+        </header>
+    <section class="lista">
+        <div class="row">
+            <div class="col-lg-1">
+            </div>
+            <div class="col-lg-10">
+                <table class="tabla">
+                    <thead>
+                        <tr>
+                            <td>Nombre</td>
+                            <td>Apellido</td>
+                            <td>Edad</td>
+                            <td>Genero</td>
+                            <td>Grupo Sanguineo</td>
+                            <td>Factor Sanguineo</td>
+                            <td>activo</td>
+                            <td>accion</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if object_list %}
+                        {% for donador in object_list %}
+                        <tr>
+                            <td>{{donador.user.first_name}}</td>
+                            <td>{{donador.user.last_name}}</td>
+                            <td>{{donador.fecha_nacimiento}}</td>
+                            <td>{{donador.genero}}</td>
+                            <td>{{donador.grupo_sanguineo}}</td>
+                            <td>{{donador.factor_sanguineo}}</td>
+                            <td><a class="btn btn-primary" href="{% url 'activar_donante' pk=donador.pk %}">modificar</a></td>
+                            <td><a class="btn btn-danger" href="{% url 'eliminar_donante' pk=donador.user_id %}">Eliminar</a></td>
+                        </tr>
+
+                        {% endfor %}
+                        {% else %}
+                            <h1>No hay Donantes registrados</h1>
+                        {% endif %}
+                        <a class="btn btn-danger" href="{% url 'cerrar_sesiom' %}">salir</a>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-lg-1">
+            </div>
+        </div>
+    </section>
+    </body>
+    <footer class="foot">
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-4 text-center ">
+                <h4 class=foot-tittle>Datos Legales</h4>
+                <p>Todo los Derechos Reservados 2019-2020 </p>
+              </div>
+              <div class="col-lg-4">
+              </div>
+              <div class="col-lg-4 col-lg-offset-4 text-center">
+                <h4 class=foot-tittle>Datos de Contacto</h4>
+                <p>mauricio.d.riera@gmail.com</p>
+              </div>
+            </div>
+          </div>
+    </footer>
+     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+     <script src="{% static 'js/bootstrap.js' %}"></script>
+
+</html>
