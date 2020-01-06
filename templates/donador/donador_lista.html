@@ -11,20 +11,66 @@
     <link rel="stylesheet" href="{% static 'css/estilo.css' %}" />
   </head>
     <body>
-        <header>
+        <div>
           <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-4">
               <div class="logo">
                   <a href="{% url 'inicio' %}" ><img src="{% static 'imagenes/logo2.png' %}"></a>
               </div>
             </div>
+              <div class="col-lg-6"></div>
+              <div class="col-lg-2">
+                  <div class="dropdown">
+                      <button class="dropbtn">Menú</button>
+                      <div class="dropdown-content">
+                        <a href="{% url 'preperfil_empleado' %}">Ver Perfil</a>
+                        <a href="{% url 'crear_donante' %}">Crear Donante</a>
+                        <a href="{% url 'cerrar_sesion' %}">Cerrar Sesión</a>
+                      </div>
+                    </div>
+              </div>
           </div>
+        </div>
         </header>
+        <form method="get">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-3 center-text">
+                        <div id="buscar">
+                            <select name="grupo">
+                                <option>selecione un grupo</option>
+                                <option>A</option>
+                                <option>B</option>
+                                <option>AB</option>
+                                <option>0</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3 center-text">
+                        <div id="buscar2">
+                            <select name="factor">
+                                <option>seleccione un factor</option>
+                                <option>+</option>
+                                <option>-</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="botonbuscar">
+                            <button type="submit" class="btn btn-info btn-sm">Buscar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
     <section class="lista">
         <div class="row">
             <div class="col-lg-1">
             </div>
             <div class="col-lg-10">
+                {% if object_list %}
                 <table class="tabla">
                     <thead>
                         <tr>
@@ -39,7 +85,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% if object_list %}
                         {% for donador in object_list %}
                         <tr>
                             <td>{{donador.user.first_name}}</td>
@@ -49,14 +94,15 @@
                             <td>{{donador.grupo_sanguineo}}</td>
                             <td>{{donador.factor_sanguineo}}</td>
                             <td><a class="btn btn-primary" href="{% url 'activar_donante' pk=donador.pk %}">modificar</a></td>
+                            <td><a class="btn btn-success" href="{% url 'perfil_donante' pk=donador.pk %}">modificar</a></td>
                             <td><a class="btn btn-danger" href="{% url 'eliminar_donante' pk=donador.user_id %}">Eliminar</a></td>
                         </tr>
 
                         {% endfor %}
                         {% else %}
-                            <h1>No hay Donantes registrados</h1>
+                        <h1><center>No hay Donantes registrados</center></h1>
                         {% endif %}
-                        <a class="btn btn-danger" href="{% url 'cerrar_sesiom' %}">salir</a>
+
                     </tbody>
                 </table>
             </div>

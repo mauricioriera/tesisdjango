@@ -1,11 +1,18 @@
-
+from django.contrib.auth.decorators import permission_required
 from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 from apps.donador.forms import DonadorForm, RegistroForm
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from apps.donador.models import Donador
 from django.contrib.auth.models import Group, User
+
+
+
+def perfil (request, pk):
+    d = Donador.objects.get(pk=pk)
+    return render(request, 'donador/perfil.html', {'donador': d})
 
 
 def activacion(request,pk):
@@ -17,6 +24,14 @@ def activacion(request,pk):
         donador.activo = False
         donador.save()
     return redirect('lista_donante')
+
+
+class preperfil (ListView):
+    model = Donador
+    template_name = "donador/preperfil.html"
+
+    def get_queryset(self, *args, **kwargs):
+        return Donador.objects.filter(user=self.request.user)
 
 
 class DonadorCrear(CreateView):
@@ -48,9 +63,26 @@ class DonadorCrear(CreateView):
         else:
             return self.render_to_response(self.get_context_data(form=form, form2=form2))
 
+
 class DonadorLista(ListView):
     model = Donador
     template_name = 'donador/donador_lista.html'
+
+    def get_queryset(self):
+        queryset = super(DonadorLista, self).get_queryset()
+        filter1 = self.request.GET.get("grupo")
+        filter2 = self.request.GET.get("factor")
+        if filter1 == 'A' or filter1 == 'B' or filter1 == 'AB' or filter1 == '0':
+            queryset = queryset.filter(grupo_sanguineo=str(filter1))
+        if filter2 == '+' or filter2 == '-':
+            queryset = queryset.filter(factor_sanguineo=str(filter2))
+        return queryset
+
+
+    @method_decorator(permission_required('donador.view_donador', reverse_lazy('preperfil_donante')))
+    def dispatch(self, *args, **kwargs):
+        return super(DonadorLista, self).dispatch(*args, **kwargs)
+
 
 class DonadorModificar(UpdateView):
     model = Donador
@@ -88,8 +120,12 @@ class DonadorModificar(UpdateView):
         else:
             return HttpResponseRedirect(self.get_success_url())
 
+
 class DonadorEliminar(DeleteView):
     model = User
     template_name = 'donador/donador_borrar.html'
     success_url = reverse_lazy('lista_donante')
 
+    @method_decorator(permission_required('donador.delete_donador', reverse_lazy('preperfil_donante')))
+    def dispatch(self, *args, **kwargs):
+        return super(DonadorEliminar, self).dispatch(*args, **kwargs)

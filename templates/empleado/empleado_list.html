@@ -2,6 +2,7 @@
 
 {% block content %}
 <center><a class="btn btn-primary" href="{% url 'empleado_crear'%}">crear empleado</a></center>
+{% if object_list %}
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -20,7 +21,6 @@
         </tr>
     </thead>
     <tbody>
-        {% if object_list %}
         {% for empleado in object_list %}
        <tr>
             <td>{{ empleado.user.username }}</td>
@@ -35,13 +35,15 @@
             <td>{{ empleado.groups}}</td>
             <td>
                 <a class="btn btn-primary" href="{% url 'empleado_modificar' pk=empleado.pk %}">modificar</a>
+                {% if perms.empleado.delete_empleado or perms.donador.delete_empleado %}
                 <a class="btn btn-danger" href="{% url 'empleado_borrar' pk=empleado.user_id %}">Eliminar</a>
+                {% endif %}
             </td>
        </tr>
         {% endfor %}
 
         {% else %}
-        <h1>No hay registros de empleados para mostrar</h1>
+        <h1><center>No hay registros de empleados para mostrar</center></h1>
 
         {% endif %}
     <a class="btn btn-danger" href="{% url 'cerrar_sesion' %}">salir</a>
