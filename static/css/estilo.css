@@ -44,9 +44,6 @@ body {
 .foot-tittle{
     font-family: fantasy;
 }
-.tabla{
-margin: auto;
-}
 .perfil{
 background-color:#FEF4A6;
 padding-left:50px;
@@ -92,3 +89,24 @@ padding-right:20px;
 .botonbuscar{
 padding-bottom: 40px;
 }
+.lista{
+margin: 10px auto;
+width: 1400px;
+}
+.tabla{
+width: 100%;
+text-align: center;
+border-collapse: collapse;
+background-color:white;
+}
+th,td{
+padding: 10px;
+}
+thead{
+background-color: lightgreen;
+border-bottom: solid 2px black;
+}
+tr:nth-child(even){
+background-color: #ddd;
+}
+

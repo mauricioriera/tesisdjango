@@ -14,11 +14,25 @@
     <body>
         <header>
           <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-4">
               <div class="logo">
-                  <a href="{% url 'inicio' %}" ><img src="{% static 'imagenes/logo2.png' %}"></a>
+                  <img src="{% static 'imagenes/logo2.png' %}">
               </div>
             </div>
+              {% if donante %}
+              <div class="col-lg-6"></div>
+                <div class="col-lg-2">
+                  <div class="dropdown">
+                      <button class="dropbtn">Menú</button>
+                      <div class="dropdown-content">
+                        <a href="{% url 'modificar_donante' pk=donador.pk %}">Modificar</a>
+                        <a href="{% url 'eliminar_donante' pk=donador.user_id %}">Eliminar</a>
+                        <a href="{% url 'cerrar_sesion' %}">Cerrar Sesión</a>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            {% endif %}
           </div>
         </header>
     <section class="perfil">
@@ -73,8 +87,10 @@
             <div class="col-lg-4">
             </div>
             <div class="col-lg-4 text-center" >
-                <a class="btn btn-primary" href="{% url 'modificar_donante' pk=donador.pk %}">Modificar</a>
-                <a class="btn btn-danger" href="{% url 'cerrar_sesion' %}">Salir</a>
+                {% if not donante %}
+                <a class="btn btn-info" href="{% url 'modificar_donante' pk=donador.pk %}">Modificar</a>
+                <a class="btn btn-secondary" href="{% url 'lista_donante' %}">Atras</a>
+                {% endif %}
             </div>
             <div class="col-lg-4">
             </div>

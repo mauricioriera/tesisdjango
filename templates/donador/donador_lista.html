@@ -40,7 +40,7 @@
                     <div class="col-md-3 center-text">
                         <div id="buscar">
                             <select name="grupo">
-                                <option>selecione un grupo</option>
+                                <option>seleccione un grupo</option>
                                 <option>A</option>
                                 <option>B</option>
                                 <option>AB</option>
@@ -74,14 +74,15 @@
                 <table class="tabla">
                     <thead>
                         <tr>
-                            <td>Nombre</td>
-                            <td>Apellido</td>
-                            <td>Edad</td>
-                            <td>Genero</td>
-                            <td>Grupo Sanguineo</td>
-                            <td>Factor Sanguineo</td>
-                            <td>activo</td>
-                            <td>accion</td>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Edad</th>
+                            <th>Genero</th>
+                            <th>Grupo Sanguineo</th>
+                            <th>Factor Sanguineo</th>
+                            <th>activo</th>
+                            <th>accion</th>
+                            <th>segunda accion</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -93,8 +94,14 @@
                             <td>{{donador.genero}}</td>
                             <td>{{donador.grupo_sanguineo}}</td>
                             <td>{{donador.factor_sanguineo}}</td>
-                            <td><a class="btn btn-primary" href="{% url 'activar_donante' pk=donador.pk %}">modificar</a></td>
-                            <td><a class="btn btn-success" href="{% url 'perfil_donante' pk=donador.pk %}">modificar</a></td>
+                            <td>
+                                {% if donador.activo == 0 %}
+                                <a class="btn btn-success" onclick="toggleOnByInput()" href="{% url 'activar_donante' pk=donador.pk %}">Activar</a>
+                                {% else %}
+                                <a class="btn btn-danger" onclick="toggleOffByInput()" href="{% url 'activar_donante' pk=donador.pk %}"> Desactivar</a>
+                                {% endif %}
+                            </td>
+                            <td><a class="btn btn-success" href="{% url 'perfil_donante' pk=donador.pk %}">ver perfil</a></td>
                             <td><a class="btn btn-danger" href="{% url 'eliminar_donante' pk=donador.user_id %}">Eliminar</a></td>
                         </tr>
 

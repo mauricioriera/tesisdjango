@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
-from apps.donador.forms import DonadorForm, RegistroForm
+from apps.donador.forms import DonadorForm, RegistroForm, ModificarForm
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from apps.donador.models import Donador
 from django.contrib.auth.models import Group, User
@@ -12,7 +12,8 @@ from django.contrib.auth.models import Group, User
 
 def perfil (request, pk):
     d = Donador.objects.get(pk=pk)
-    return render(request, 'donador/perfil.html', {'donador': d})
+    donante= request.user.groups.filter(name='Donantes').exists()
+    return render(request, 'donador/perfil.html', {'donador': d ,'donante': donante})
 
 
 def activacion(request,pk):
@@ -88,9 +89,9 @@ class DonadorModificar(UpdateView):
     model = Donador
     second_model = User
     form_class = DonadorForm
-    second_form_class = RegistroForm
-    template_name = 'donador/registro.html'
-    success_url = reverse_lazy('datos_donante')
+    second_form_class = ModificarForm
+    template_name = 'donador/donador_update.html'
+    success_url = reverse_lazy('preperfil_donante')
 
     def get_context_data(self, **kwargs):
         context = super(DonadorModificar, self).get_context_data(**kwargs)
@@ -125,7 +126,3 @@ class DonadorEliminar(DeleteView):
     model = User
     template_name = 'donador/donador_borrar.html'
     success_url = reverse_lazy('lista_donante')
-
-    @method_decorator(permission_required('donador.delete_donador', reverse_lazy('preperfil_donante')))
-    def dispatch(self, *args, **kwargs):
-        return super(DonadorEliminar, self).dispatch(*args, **kwargs)
