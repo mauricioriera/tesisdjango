@@ -28,4 +28,5 @@ urlpatterns = [
     path('empleado/', include('apps.empleado.urls'), name='empleado'),
     path('donador/', include('apps.donador.urls'), name='donador'),
     path('hospital/', include('apps.hospital.urls')),
+    path('jefedearea/',include('apps.jefedearea.urls'),name='jefedearea'),
 ]

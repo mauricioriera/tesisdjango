@@ -18,12 +18,15 @@ def perfil (request, pk):
 
 def activacion(request,pk):
     donador = get_object_or_404(Donador, pk=pk)
-    if donador.activo == False:
-        donador.activo = True
-        donador.save()
+    if request.user.groups.filter(name='Donantes').exists():
+        return redirect('lista_donante')
     else:
-        donador.activo = False
-        donador.save()
+        if donador.activo == False:
+            donador.activo = True
+            donador.save()
+        else:
+            donador.activo = False
+            donador.save()
     return redirect('lista_donante')
 
 
@@ -69,6 +72,7 @@ class DonadorLista(ListView):
     model = Donador
     template_name = 'donador/donador_lista.html'
 
+
     def get_queryset(self):
         queryset = super(DonadorLista, self).get_queryset()
         filter1 = self.request.GET.get("grupo")
@@ -78,7 +82,6 @@ class DonadorLista(ListView):
         if filter2 == '+' or filter2 == '-':
             queryset = queryset.filter(factor_sanguineo=str(filter2))
         return queryset
-
 
     @method_decorator(permission_required('donador.view_donador', reverse_lazy('preperfil_donante')))
     def dispatch(self, *args, **kwargs):

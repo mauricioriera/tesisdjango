@@ -48,24 +48,24 @@
                             <th>Nombre</th>
                             <th>Apellido</th>
                             <th>Edad</th>
-                            <th>NUmero de Leagjo</th>
+                            <th>Numero de Legajo</th>
                             <th>accion</th>
                             <th>segunda accion</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for empleado in object_list %}
+                        {% for jefedearea in object_list %}
                         <tr>
-                            <td>{{empleado.user.first_name}}</td>
-                            <td>{{empleado.user.last_name}}</td>
-                            <td>{{empleado.fecha_nacimiento}}</td>
-                            <td>{{empleado.numero_legajo}}</td>
-                            <td><a class="btn btn-success" href="{% url 'perfil_empleado' pk=empleado.pk %}">ver perfil</a></td>
-                            <td><a class="btn btn-danger" href="{% url 'empleado_borrar' pk=empleado.user_id %}">Eliminar</a></td>
+                            <td>{{jefedearea.user.first_name}}</td>
+                            <td>{{jefedearea.user.last_name}}</td>
+                            <td>{{jefedearea.fecha_nacimiento}}</td>
+                            <td>{{jefedearea.numero_legajo}}</td>
+                            <td><a class="btn btn-success" href="{% url 'perfil_jefedearea' pk=jefedearea.pk %}">ver perfil</a></td>
+                            <td><a class="btn btn-danger" href="{% url 'jefedearea_borrar' pk=jefedearea.user_id %}">Eliminar</a></td>
                         </tr>
                         {% endfor %}
                         {% else %}
-                        <h1><center>No hay Empleados Registrados</center></h1>
+                        <h1><center>No hay Jefe de Áreas Registrados</center></h1>
                         {% endif %}
 
                     </tbody>

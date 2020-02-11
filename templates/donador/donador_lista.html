@@ -18,19 +18,38 @@
                   <a href="{% url 'inicio' %}" ><img src="{% static 'imagenes/logo2.png' %}"></a>
               </div>
             </div>
-              <div class="col-lg-6"></div>
-              <div class="col-lg-2">
-                  <div class="dropdown">
-                      <button class="dropbtn">Menú</button>
-                      <div class="dropdown-content">
-                        <a href="{% url 'preperfil_empleado' %}">Ver Perfil</a>
-                        <a href="{% url 'crear_donante' %}">Crear Donante</a>
-                        <a href="{% url 'cerrar_sesion' %}">Cerrar Sesión</a>
+                {% if jefedearea %}
+                  <div class="col-lg-6"></div>
+                    <div class="col-lg-2">
+                      <div class="dropdown">
+                          <button class="dropbtn">Menú</button>
+                          <div class="dropdown-content">
+                            <a href="{% url 'preperfil_empleado' %}">Ver Perfil</a>
+                            <a href="{% url 'crear_donante' %}">Crear Donante</a>
+                            <a href="{% url 'cerrar_sesion' %}">Cerrar Sesión</a>
+                          </div>
                       </div>
                     </div>
-              </div>
+              {% else %}
+                      <div class="col-lg-6"></div>
+                      <div class="col-lg-2">
+                          <div class="dropdown">
+                              <button class="dropbtn">Menú</button>
+                              <div class="dropdown-content">
+                                <a href="{% url 'preperfil_empleado' %}">Ver Perfil</a>
+                                <a href="{% url 'empleado_listar' %}">Tabla Empleados</a>
+                                <a href="{% url 'lista_donante' %}">Tabla Donantes</a>
+                                <a href="{% url 'empleado_crear' %}">Crear Empleado</a>
+                                <a href="{% url 'crear_donante' %}">Crear Donante</a>
+                                <a href="{% url 'preperfil_empleado' %}">Ver Estadisticas</a>
+                                <a href="{% url 'cerrar_sesion' %}">Cerrar Sesión</a>
+                              </div>
+                            </div>
+                      </div>
+              {% endif %}
           </div>
         </div>
+
         </header>
         <form method="get">
             <div class="container">

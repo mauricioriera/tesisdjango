@@ -1,14 +1,14 @@
 from django import forms
-from apps.empleado.models import Empleado
+from apps.jefedearea.models import JefedeArea
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
 
-class EmpleadoForm(forms.ModelForm):
+class JefedeAreaForm(forms.ModelForm):
 
     class Meta:
 
-        model = Empleado
+        model = JefedeArea
 
         fields = [
             'hospital',

@@ -19,6 +19,7 @@ class preperfil(ListView):
 
 def perfil (request,pk):
     e = Empleado.objects.get(pk=pk)
+
     return render(request, 'empleado/perfil.html', {'empleado': e})
 
 
@@ -45,16 +46,28 @@ class EmpleadoCrear(CreateView):
             empleado = form.save(commit=False)
             empleado.user = form2.save()
             empleado.save()
-            g = Group.objects.get(name= empleado.groups)
+            g = Group.objects.get(name='Empleado')
             g.user_set.add(empleado.user)
             return HttpResponseRedirect(self.get_success_url())
         else:
             return self.render_to_response(self.get_context_data(form=form, form2=form2))
 
+    @method_decorator(permission_required('donador.add_empleado', reverse_lazy('preperfil_donante')))
+    def dispatch(self, *args, **kwargs):
+        return super(EmpleadoCrear, self).dispatch(*args, **kwargs)
+
+    @method_decorator(permission_required('empleado.add_empleado', reverse_lazy('lista_donante')))
+    def dispatch(self, *args, **kwargs):
+        return super(EmpleadoCrear, self).dispatch(*args, **kwargs)
 
 class EmpleadoLista(ListView):
     model = Empleado
     template_name = 'empleado/empleado_list.html'
+
+    @method_decorator(permission_required('empleado.view_empleado', reverse_lazy('lista_donante')))
+    def dispatch(self, *args, **kwargs):
+        return super(EmpleadoLista, self).dispatch(*args, **kwargs)
+
 
 
 class EmpleadoBorrar(DeleteView):
@@ -63,6 +76,10 @@ class EmpleadoBorrar(DeleteView):
     success_url = reverse_lazy('empleado_listar')
 
     @method_decorator(permission_required('empleado.delete_empleado', reverse_lazy('empleado_listar')))
+    def dispatch(self, *args, **kwargs):
+        return super(EmpleadoBorrar, self).dispatch(*args, **kwargs)
+
+    @method_decorator(permission_required('donador.delete_empleado', reverse_lazy('preperfil_donante')))
     def dispatch(self, *args, **kwargs):
         return super(EmpleadoBorrar, self).dispatch(*args, **kwargs)
 
@@ -97,8 +114,12 @@ class EmpleadoModificar(UpdateView):
         if form.is_valid() and form2.is_valid():
             form2.save()
             form.save()
-            g = Group.objects.get(name=empleado.groups)
+            g = Group.objects.get(name="Empleado")
             g.user_set.add(empleado.user)
             return HttpResponseRedirect(self.get_success_url())
         else:
             return HttpResponseRedirect(self.get_success_url())
+
+    @method_decorator(permission_required('donador.update_empleado', reverse_lazy('preperfil_donante')))
+    def dispatch(self, *args, **kwargs):
+        return super(EmpleadoModificar, self).dispatch(*args, **kwargs)

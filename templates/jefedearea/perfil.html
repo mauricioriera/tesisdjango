@@ -23,50 +23,50 @@
     <section class="perfil">
         <div class="row">
             <div class="col-lg-3"></div>
-            <div class="col-lg-6 text-center"><h1>DATOS DEL EMPLEADO:</h1></div>
+            <div class="col-lg-6 text-center"><h1>DATOS DEL JEFE DE AREA:</h1></div>
             <div class="col-lg-3"></div>
         </div>
         <div class="row">
              <div class="col-lg-4"></div>
                 <div class="col-lg-4">
-                    <h3>Usuario:{{empleado.user.username}}</h3>
+                    <h3>Usuario:{{jefedearea.user.username}}</h3>
                 </div>
             <div class="col-lg-4"></div>
             <div class="col-lg-4">
-                <h4>Nombre: {{empleado.user.first_name}}</h4>
+                <h4>Nombre: {{jefedearea.user.first_name}}</h4>
             </div>
                 <div class="col-lg-4"></div>
             <div class="col-lg-4">
-                <h4>Apellido: {{empleado.user.last_name}}</h4>
+                <h4>Apellido: {{jefedearea.user.last_name}}</h4>
             </div>
              <div class="col-lg-4">
-                 <h4>Domicilio: {{empleado.direccion}}</h4>
+                 <h4>Domicilio: {{jefedearea.direccion}}</h4>
             </div>
                 <div class="col-lg-4"></div>
             <div class="col-lg-4">
-                <h4>Telefono: {{empleado.telefono}}</h4>
+                <h4>Telefono: {{jefedearea.telefono}}</h4>
             </div>
              <div class="col-lg-4">
-                 <h4>Email: {{empleado.user.email}}</h4>
+                 <h4>Email: {{jefedearea.user.email}}</h4>
             </div>
                 <div class="col-lg-4"></div>
             <div class="col-lg-4">
-                <h4>Hospital donde trabaja: {{empleado.hospital}}</h4>
+                <h4>Hospital donde trabaja: {{jefedearea.hospital}}</h4>
             </div>
              <div class="col-lg-4">
-                 <h4>Fecha de Nacimiento: {{empleado.fecha_nacimiento}}</h4>
+                 <h4>Fecha de Nacimiento: {{jefedearea.fecha_nacimiento}}</h4>
             </div>
                 <div class="col-lg-4"></div>
             <div class="col-lg-4">
-                <h4>Numero de Legajo: {{empleado.numero_legajo}}</h4>
+                <h4>Numero de Legajo: {{jefedearea.numero_legajo}}</h4>
             </div>
         </div>
         <div class="row">
             <div class="col-lg-4">
             </div>
             <div class="col-lg-4 text-center" >
-                <a class="btn btn-primary" href="{% url 'empleado_modificar' pk=empleado.pk %}">Modificar</a>
-                <a class="btn btn-danger" href="{% url 'empleado_listar' %}">Volver</a>
+                <a class="btn btn-primary" href="{% url 'jefedearea_modificar' pk=jefedearea.pk %}">Modificar</a>
+                <a class="btn btn-danger" href="{% url 'jefedearea_listar' %}">Volver</a>
             </div>
             <div class="col-lg-4">
             </div>
