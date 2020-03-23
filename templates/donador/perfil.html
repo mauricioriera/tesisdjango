@@ -1,120 +1,69 @@
-
-<!DOCTYPE html>
-{% load static %}
-<html lang="es">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro</title>
-    <!--Bootstrap-->
-    <link rel="stylesheet" href= "{% static 'css/bootstrap.css' %}" />
-    <!--style CSS-->
-    <link rel="stylesheet" href="{% static 'css/estilo.css' %}" />
-  </head>
-    <body>
-        <header>
-          <div class="row">
-            <div class="col-lg-4">
-              <div class="logo">
-                  <img src="{% static 'imagenes/logo2.png' %}">
-              </div>
-            </div>
-              {% if donante %}
-              <div class="col-lg-6"></div>
-                <div class="col-lg-2">
-                  <div class="dropdown">
-                      <button class="dropbtn">Menú</button>
-                      <div class="dropdown-content">
-                        <a href="{% url 'modificar_donante' pk=donador.pk %}">Modificar</a>
-                        <a href="{% url 'eliminar_donante' pk=donador.user_id %}">Eliminar</a>
-                        <a href="{% url 'cerrar_sesion' %}">Cerrar Sesión</a>
-                      </div>
-                  </div>
-                </div>
-              </div>
-            {% endif %}
+{% extends "base/base.html" %}
+{% block title %}Datos del Donante{% endblock %}
+{% block content %}
+<section class="page-header">
+  <div class="container">
+      <div class="row">
+          <div class="col-sm-12 text-center">
+            <h3>DATOS DEL DONANTE</h3>
           </div>
-        </header>
-    <section class="perfil">
-        <div class="row">
-            <div class="col-lg-3"></div>
-            <div class="col-lg-6 text-center"><h1>DATOS DEL DONANTE:</h1></div>
-            <div class="col-lg-3"></div>
-        </div>
-        <div class="row">
-             <div class="col-lg-4"></div>
-                <div class="col-lg-4">
-                    <h3>Usuario:{{donador.user.username}}</h3>
-                </div>
-            <div class="col-lg-4"></div>
-            <div class="col-lg-4">
-                <h4>Nombre: {{donador.user.first_name}}</h4>
-            </div>
-                <div class="col-lg-4"></div>
-            <div class="col-lg-4">
-                <h4>Apellido: {{donador.user.last_name}}</h4>
-            </div>
-             <div class="col-lg-4">
-                 <h4>Domicilio: {{donador.direccion}}</h4>
-            </div>
-                <div class="col-lg-4"></div>
-            <div class="col-lg-4">
-                <h4>Telefono: {{donador.telefono}}</h4>
-            </div>
-             <div class="col-lg-4">
-                 <h4>Email: {{donador.user.email}}</h4>
-            </div>
-                <div class="col-lg-4"></div>
-            <div class="col-lg-4">
-                <h4>Hospital mas cercano: {{donador.hospital}}</h4>
-            </div>
-             <div class="col-lg-4">
-                 <h4>Fecha de Nacimiento: {{donador.fecha_nacimiento}}</h4>
-            </div>
-                <div class="col-lg-4"></div>
-            <div class="col-lg-4">
-                <h4>Genero: {{donador.genero}}</h4>
-            </div>
-             <div class="col-lg-4">
-                 <h4>Grupo Sanguineo: {{donador.grupo_sanguineo}}</h4>
-            </div>
-                <div class="col-lg-4"></div>
-            <div class="col-lg-4">
-                <h4>Factor Sanguineo: {{donador.factor_sanguineo}}</h4>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-4">
-            </div>
-            <div class="col-lg-4 text-center" >
-                {% if not donante %}
-                <a class="btn btn-info" href="{% url 'modificar_donante' pk=donador.pk %}">Modificar</a>
-                <a class="btn btn-secondary" href="{% url 'lista_donante' %}">Atras</a>
-                {% endif %}
-            </div>
-            <div class="col-lg-4">
-            </div>
-        </div>
-    </section>
-    </body>
-      <footer class="foot">
-          <div class="container">
-            <div class="row">
-              <div class="col-lg-4 text-center ">
-                <h4 class=foot-tittle>Datos Legales</h4>
-                <p>Todo los Derechos Reservados 2019-2020 </p>
-              </div>
-              <div class="col-lg-4">
-              </div>
-              <div class="col-lg-4 col-lg-offset-4 text-center">
-                <h4 class=foot-tittle>Datos de Contacto</h4>
-                <p>mauricio.d.riera@gmail.com</p>
-              </div>
-            </div>
-          </div>
-    </footer>
-     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-     <script src="{% static 'js/bootstrap.js' %}"></script>
+      </div>
+  </div>
+</section>
+<section style="margin-top: 20px; margin-bottom: 20px;">
+  <div class="container">
 
-</html>
+
+    <div class="card">
+      <div class="card-header">
+        Datos
+      </div>
+      <div class="card-body">
+        <h5 class="card-title"><i class="fas fa-user"></i> {{donador.user.username}}</h5>
+        <div class="row">
+          <div class="col-lg-6">
+            <p class="h5"><strong>Nombre:</strong> {{donador.user.first_name}}</p>
+          </div>
+          <div class="col-lg-6">
+            <p class="h5"><strong>Apellido:</strong> {{donador.user.last_name}}</p>
+          </div>
+          <div class="col-lg-6">
+            <p class="h5"><strong>Domicilio:</strong> {{donador.direccion}}</p>
+          </div>
+          <div class="col-lg-6">
+            <p class="h5"><strong>Tel&eacute;fono:</strong> {{donador.telefono}}</p>
+          </div>
+          <div class="col-lg-6">
+            <p class="h5"><strong>Email:</strong> {{donador.user.email}}</p>
+          </div>
+          <div class="col-lg-6">
+            <p class="h5"><strong>Hospital m&aacute;s cercano:</strong> {{donador.hospital}}</p>
+          </div>
+          <div class="col-lg-6">
+            <p class="h5"><strong>Fecha de Nacimiento:</strong> {{donador.fecha_nacimiento}}</p>
+       </div>
+       <div class="col-lg-6">
+        <p class="h5"><strong>Genero:</strong> {{donador.genero}}</p>
+    </div>
+    <div class="col-lg-6">
+      <p class="h5"><strong>Grupo Sanguineo:</strong> {{donador.grupo_sanguineo}}</p>
+ </div>
+ <div class="col-lg-6">
+  <p class="h5"><strong>Factor Sanguineo:</strong> {{donador.factor_sanguineo}}</p>
+</div>
+      </div>
+    {% if not donante %}
+      <div class="row">
+        <div class="col-lg-6 text-left" >
+          <a class="btn btn-default" href="{% url 'lista_donante' %}">Volver</a>
+        </div>
+        <div class="col-lg-6 text-right" >
+          <a class="btn btn-success" href="{% url 'modificar_donante' pk=donador.pk %}">Modificar</a>
+        </div>
+      </div>
+    {% endif %}
+    </div>
+  </div>
+    </div>
+</section>
+{% endblock %}

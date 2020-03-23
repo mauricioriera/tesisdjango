@@ -19,7 +19,6 @@ class preperfil(ListView):
 
 def perfil (request,pk):
     e = Empleado.objects.get(pk=pk)
-
     return render(request, 'empleado/perfil.html', {'empleado': e})
 
 
@@ -56,13 +55,17 @@ class EmpleadoCrear(CreateView):
     def dispatch(self, *args, **kwargs):
         return super(EmpleadoCrear, self).dispatch(*args, **kwargs)
 
-    @method_decorator(permission_required('empleado.add_empleado', reverse_lazy('lista_donante')))
+    @method_decorator(permission_required('empleado.view_empleado', reverse_lazy('lista_donante')))
     def dispatch(self, *args, **kwargs):
         return super(EmpleadoCrear, self).dispatch(*args, **kwargs)
 
 class EmpleadoLista(ListView):
     model = Empleado
     template_name = 'empleado/empleado_list.html'
+
+    @method_decorator(permission_required('donador.view_empleado', reverse_lazy('preperfil_donante')))
+    def dispatch(self, *args, **kwargs):
+        return super(EmpleadoLista, self).dispatch(*args, **kwargs)
 
     @method_decorator(permission_required('empleado.view_empleado', reverse_lazy('lista_donante')))
     def dispatch(self, *args, **kwargs):
@@ -75,7 +78,8 @@ class EmpleadoBorrar(DeleteView):
     template_name = 'empleado/empleado_delete.html'
     success_url = reverse_lazy('empleado_listar')
 
-    @method_decorator(permission_required('empleado.delete_empleado', reverse_lazy('empleado_listar')))
+    #ver este permiso por que no toma el modelo empleado#
+    @method_decorator(permission_required('empleado.delete_empleado', reverse_lazy('lista_donante')))
     def dispatch(self, *args, **kwargs):
         return super(EmpleadoBorrar, self).dispatch(*args, **kwargs)
 
@@ -89,8 +93,8 @@ class EmpleadoModificar(UpdateView):
     second_model = User
     form_class = EmpleadoForm
     second_form_class = RegistroForm
-    template_name = 'empleado/empleado_formulario.html'
-    success_url = reverse_lazy('empleado_listar')
+    template_name = 'empleado/empleado_update.html'
+    success_url = reverse_lazy('preperfil_empleado')
 
     def get_context_data(self, **kwargs):
         context = super(EmpleadoModificar, self).get_context_data(**kwargs)
@@ -120,6 +124,4 @@ class EmpleadoModificar(UpdateView):
         else:
             return HttpResponseRedirect(self.get_success_url())
 
-    @method_decorator(permission_required('donador.update_empleado', reverse_lazy('preperfil_donante')))
-    def dispatch(self, *args, **kwargs):
-        return super(EmpleadoModificar, self).dispatch(*args, **kwargs)
+        #pemitir modelo empleado y no donador no toma el decorator no me permite empleadolo haga#

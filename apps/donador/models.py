@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User,Group
 
 from apps.hospital.models import Hospital
+from datetime import date
+
 # Create your models here.
 class Donador(models.Model):
 
@@ -30,3 +32,10 @@ class Donador(models.Model):
     telefono = models.CharField(max_length=12)
     activo = models.BooleanField(default=0)
     groups = models.ForeignKey(Group, null=True, blank=True, on_delete=models.CASCADE)
+
+    @property
+    def calcularEdad(self):
+        days_in_year =365.2425
+        age = int((date.today() - self.fecha_nacimiento).days / days_in_year)
+        return age
+

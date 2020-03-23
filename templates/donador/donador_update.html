@@ -1,133 +1,102 @@
-<!DOCTYPE html>
-{% load static %}
-<html lang="es">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro</title>
-    <!--Bootstrap-->
-    <link rel="stylesheet" href= "{% static 'css/bootstrap.css' %}" />
-    <!--style CSS-->
-    <link rel="stylesheet" href="{% static 'css/estilo.css' %}" />
-  </head>
-    <body>
-        <header>
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="logo">
-                  <img src="{% static 'imagenes/logo2.png' %}">
-              </div>
-            </div>
-          </div>
-        </header>
-         <section class="update">
-            <form method='post' action="">
-                {% csrf_token %}
-                <div class="row">
-                    <div class="col-lg-8 col-lg offset-4">
-                        <div class="form-group">
-                        <label>{{form2.username.label}}</label>
-                        {{form2.username}}
-                        </div>
-                    </div>
-                    <div class="col-lg-8 col-lg offset-4">
-                        <div class="form-group">
-                        <label>{{form2.first_name.label}}</label>
-                        {{form2.first_name}}
-                        </div>
-                    </div>
-                    <div class="col-lg-8 col-lg offset-4">
-                        <div class="form-group">
-                        <label>{{form2.last_name.label}}</label>
-                        {{form2.last_name}}
-                        </div>
-                    </div>
-                    <div class="col-lg-8 col-lg offset-4">
-                        <div class="form-group">
-                        <label>{{form2.email.label}}</label>
-                        {{form2.email}}
-                        </div>
-                    </div>
-                    <div class="col-lg-8 col-lg offset-4">
-                        <div class="form-group">
-                        <label>{{form.hospital.label}}</label>{{form.hospital}}
-                        </div>
-                    </div>
-                    <div class="col-lg-8 col-lg offset-4">
-                        <div class="form-group">
-                        <label>{{form.fecha_nacimiento.label}}</label>
-                        {{form.fecha_nacimiento}}
-                        </div>
-                    </div>
-                      <div class="col-lg-8 col-lg offset-4">
-                        <div class="form-group">
-                        <label>{{form.direccion.label}}</label>
-                        {{form.direccion}}
-                        </div>
-                    </div>
-                      <div class="col-lg-8 col-lg offset-4">
-                        <div class="form-group">
-                        <label>{{form.telefono.label}}</label>
-                        {{form.telefono}}
-                        </div>
-                    </div>
-                      <div class="col-lg-8 col-lg offset-4">
-                        <div class="form-group">
-                        <label>{{form.genero.label}}</label>
-                        {{form.genero}}
-                        </div>
-                    </div>
-                      <div class="col-lg-8 col-lg offset-4">
-                        <div class="form-group">
-                        <label>{{form.grupo_sanguineo.label}}</label>
-                        {{form.grupo_sanguineo}}
-                        </div>
-                    </div>
-                      <div class="col-lg-8 col-lg offset-4">
-                        <div class="form-group">
-                        <label>{{form.factor_sanguineo.label}}</label>
-                        {{form.factor_sanguineo}}
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-3">
-                    </div>
-                    <div class="col-lg-3 text-center" >
-                        {% if not donante %}
-                            <button class="btn btn-success btn-lg boton" type="submit" role="button">Aceptar</button>
-                        {% else %}
-                            <button class="btn btn-success btn-lg boton" type="submit" role="button" >Aceptar</button>
-                        {% endif %}
-                    </div>
-                    <div class="col-lg-3 " >
-                        <a class="btn btn-danger btn-lg boton" href="{% url 'perfil_donante' pk=donador.pk %}" role="button">Cancelar</a>
-                    </div>
-                    <div class="col-lg-3">
-                    </div>
-                </div>
+{% extends "base/base.html" %}
+{% block title %}Modificar de Donadores{% endblock %}
+{% block content %}
+<section class="page-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12 text-center">
+        <h3>MODIFICAR DONANTE</h3>
+      </div>
+    </div>
+  </div>
+</section>
+<section style="margin-top: 20px; margin-bottom: 20px;">
+  <div class="container">
+    <form method='post' action="">
+      {% csrf_token %}
 
-            </form>
-        </section>
-    </body>
-    <footer class="foot">
-          <div class="container">
-            <div class="row">
-              <div class="col-lg-4 text-center ">
-                <h4 class=foot-tittle>Datos Legales</h4>
-                <p>Todo los Derechos Reservados 2019-2020 </p>
-              </div>
-              <div class="col-lg-4">
-              </div>
-              <div class="col-lg-4 col-lg-offset-4 text-center">
-                <h4 class=foot-tittle>Datos de Contacto</h4>
-                <p>mauricio.d.riera@gmail.com</p>
-              </div>
-            </div>
+        <div class="form-group row">
+          <label class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-form-label">{{form2.username.label}}</label>
+          <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+            <input type="text" name="{{ form2.username.html_name }}" value="{{ form2.username.value | default_if_none:'' }}" class="form-control">
           </div>
-    </footer>
-     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-     <script src="{% static 'js/bootstrap.js' %}"></script>
+        </div>
 
-</html>
+        <div class="form-group row">
+          <label class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-form-label">{{form2.first_name.label}}</label>
+          <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+            <input type="text" name="{{ form2.first_name.html_name }}" value="{{ form2.first_name.value | default_if_none:''}}" class="form-control">
+          </div>
+        </div>
+
+          <div class="form-group row">
+            <label class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-form-label">{{form2.last_name.label}}</label>
+              <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                <input type="text" name="{{ form2.last_name.html_name }}" value="{{ form2.last_name.value | default_if_none:''}}" class="form-control">
+          </div>
+        </div>
+
+          <div class="form-group row">
+            <label class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-form-label">{{form2.email.label}}</label>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+              <input type="email" name="{{ form2.email.html_name }}" value="{{ form2.email.value | default_if_none:''}}" class="form-control">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-form-label">{{form.hospital.label}}</label>
+              <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                {{form.hospital}}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-form-label">{{form.fecha_nacimiento.label}}</label>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+            {{form.fecha_nacimiento}}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-form-label">{{form.direccion.label}}</label>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+              <input type="text" name="{{ form.direccion.html_name }}" value="{{ form.direccion.value | default_if_none:''}}" class="form-control">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-form-label">{{form.telefono.label}}</label>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+              <input type="text" name="{{ form.telefono.html_name }}" value="{{ form.telefono.value | default_if_none:''}}" class="form-control">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-form-label">{{form.genero.label}}</label>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+            {{form.genero}}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-form-label">{{form.grupo_sanguineo.label}}</label>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+            {{form.grupo_sanguineo}}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-form-label">{{form.factor_sanguineo.label}}</label>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+            {{form.factor_sanguineo}}
+          </div>
+        </div>
+
+      <div class="row">
+        <div class="col-lg-6 text-left">
+          <a class="btn btn-default btn boton" href="{% url 'perfil_donante' pk=donador.pk %}" role="button">Cancelar</a>
+        </div>
+
+        <div class="col-lg-6 text-right">
+          <button class="btn btn-success btn boton" type="submit" role="button">Guardar</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</section>
+</body>
+{% endblock %}

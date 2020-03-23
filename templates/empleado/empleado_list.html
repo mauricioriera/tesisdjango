@@ -58,7 +58,7 @@
                         <tr>
                             <td>{{empleado.user.first_name}}</td>
                             <td>{{empleado.user.last_name}}</td>
-                            <td>{{empleado.fecha_nacimiento}}</td>
+                            <td>{{empleado.calcularEdad}}</td>
                             <td>{{empleado.numero_legajo}}</td>
                             <td><a class="btn btn-success" href="{% url 'perfil_empleado' pk=empleado.pk %}">ver perfil</a></td>
                             <td><a class="btn btn-danger" href="{% url 'empleado_borrar' pk=empleado.user_id %}">Eliminar</a></td>

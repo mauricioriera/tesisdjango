@@ -1,107 +1,71 @@
-<!DOCTYPE html>
-{% load static %}
-<html lang="es">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro</title>
-    <!--Bootstrap-->
-    <link rel="stylesheet" href= "{% static 'css/bootstrap.css' %}" />
-    <!--style CSS-->
-    <link rel="stylesheet" href="{% static 'css/estilo.css' %}" />
-  </head>
-    <body>
-        <div>
-          <div class="row">
-            <div class="col-lg-4">
-              <div class="logo">
-                  <a href="{% url 'inicio' %}" ><img src="{% static 'imagenes/logo2.png' %}"></a>
-              </div>
+{% extends "base/base.html" %}
+{% block title %}Listado de Donadores{% endblock %}
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 text-center">
+              <h3>LISTADO DE DADORES</h3>
             </div>
-                {% if jefedearea %}
-                  <div class="col-lg-6"></div>
-                    <div class="col-lg-2">
-                      <div class="dropdown">
-                          <button class="dropbtn">Menú</button>
-                          <div class="dropdown-content">
-                            <a href="{% url 'preperfil_empleado' %}">Ver Perfil</a>
-                            <a href="{% url 'crear_donante' %}">Crear Donante</a>
-                            <a href="{% url 'cerrar_sesion' %}">Cerrar Sesión</a>
-                          </div>
-                      </div>
-                    </div>
-              {% else %}
-                      <div class="col-lg-6"></div>
-                      <div class="col-lg-2">
-                          <div class="dropdown">
-                              <button class="dropbtn">Menú</button>
-                              <div class="dropdown-content">
-                                <a href="{% url 'preperfil_empleado' %}">Ver Perfil</a>
-                                <a href="{% url 'empleado_listar' %}">Tabla Empleados</a>
-                                <a href="{% url 'lista_donante' %}">Tabla Donantes</a>
-                                <a href="{% url 'empleado_crear' %}">Crear Empleado</a>
-                                <a href="{% url 'crear_donante' %}">Crear Donante</a>
-                                <a href="{% url 'preperfil_empleado' %}">Ver Estadisticas</a>
-                                <a href="{% url 'cerrar_sesion' %}">Cerrar Sesión</a>
-                              </div>
-                            </div>
-                      </div>
-              {% endif %}
-          </div>
         </div>
-
-        </header>
-        <form method="get">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-3">
+    </div>
+</section>
+<section style="margin-top: 20px; margin-bottom: 20px;">
+    <div class="container">
+      <div class="card">
+            <div class="card-header">
+              Filtro
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">B&uacute;squeda</h5>
+              
+              <form method="get">
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <select name="grupo" class="form-control">
+                                        <option>seleccione un grupo</option>
+                                        <option>A</option>
+                                        <option>B</option>
+                                        <option>AB</option>
+                                        <option>0</option>
+                        </select>
                     </div>
-                    <div class="col-md-3 center-text">
-                        <div id="buscar">
-                            <select name="grupo">
-                                <option>seleccione un grupo</option>
-                                <option>A</option>
-                                <option>B</option>
-                                <option>AB</option>
-                                <option>0</option>
-                            </select>
-                        </div>
+                    <div class="form-group col-md-4">
+                        <select name="factor" class="form-control">
+                            <option>seleccione un factor</option>
+                            <option>+</option>
+                            <option>-</option>
+                        </select>
                     </div>
-                    <div class="col-md-3 center-text">
-                        <div id="buscar2">
-                            <select name="factor">
-                                <option>seleccione un factor</option>
-                                <option>+</option>
-                                <option>-</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="botonbuscar">
-                            <button type="submit" class="btn btn-info btn-sm">Buscar</button>
-                        </div>
+                    <div class="form-group col-md-4 ">
+                        <button type="submit" class="btn btn-success">Buscar</button>
                     </div>
                 </div>
+                  <div class="form-row">
+                    <div class="form-group col-md-12">
+                      <a class="btn btn-info" href="{% url 'crear_donante' %}">Crear Donante</a>
+                    </div>
+                  </div>
+            </form>
+      </div>
             </div>
-        </form>
-    <section class="lista">
+          </div>
+</section>
+    <section>
+      <div class="container">
         <div class="row">
-            <div class="col-lg-1">
-            </div>
-            <div class="col-lg-10">
+            <div class="col-lg-12">
                 {% if object_list %}
-                <table class="tabla">
-                    <thead>
+                <table class="table table-hover">
+                    <thead class="thead-dark">
                         <tr>
                             <th>Nombre</th>
                             <th>Apellido</th>
-                            <th>Edad</th>
-                            <th>Genero</th>
-                            <th>Grupo Sanguineo</th>
-                            <th>Factor Sanguineo</th>
-                            <th>activo</th>
-                            <th>accion</th>
-                            <th>segunda accion</th>
+                            <th class="text-center">Edad</th>
+                            <th class="text-center">Genero</th>
+                            <th class="text-center">Grupo Sanguineo</th>
+                            <th class="text-center">Factor Sanguineo</th>
+                            <th class="text-center" colspan="3">Acci&oacute;n</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -109,19 +73,19 @@
                         <tr>
                             <td>{{donador.user.first_name}}</td>
                             <td>{{donador.user.last_name}}</td>
-                            <td>{{donador.fecha_nacimiento}}</td>
-                            <td>{{donador.genero}}</td>
-                            <td>{{donador.grupo_sanguineo}}</td>
-                            <td>{{donador.factor_sanguineo}}</td>
-                            <td>
+                            <td class="text-center">{{donador.calcularEdad}}</td>
+                            <td class="text-center">{{donador.genero}}</td>
+                            <td class="text-center">{{donador.grupo_sanguineo}}</td>
+                            <td class="text-center">{{donador.factor_sanguineo}}</td>
+                            <td class="text-center">
                                 {% if donador.activo == 0 %}
-                                <a class="btn btn-success" onclick="toggleOnByInput()" href="{% url 'activar_donante' pk=donador.pk %}">Activar</a>
+                                <a class="btn btn-success" onclick="toggleOnByInput()" href="{% url 'activar_donante' pk=donador.pk %}" title="Activar"><i class="far fa-check-square"></i></a>
                                 {% else %}
-                                <a class="btn btn-danger" onclick="toggleOffByInput()" href="{% url 'activar_donante' pk=donador.pk %}"> Desactivar</a>
+                                <a class="btn btn-warning" onclick="toggleOffByInput()" href="{% url 'activar_donante' pk=donador.pk %}" title="Desactivar"><i class="far fa-square"></i></a>
                                 {% endif %}
                             </td>
-                            <td><a class="btn btn-success" href="{% url 'perfil_donante' pk=donador.pk %}">ver perfil</a></td>
-                            <td><a class="btn btn-danger" href="{% url 'eliminar_donante' pk=donador.user_id %}">Eliminar</a></td>
+                            <td class="text-center"><a class="btn btn-info" href="{% url 'perfil_donante' pk=donador.pk %}" title="Ver perfil"><i class="fas fa-address-card"></i></a></td>
+                            <td class="text-center"><a class="btn btn-danger" href="{% url 'eliminar_donante' pk=donador.user_id %}">Eliminar</a></td>
                         </tr>
 
                         {% endfor %}
@@ -132,29 +96,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-lg-1">
-            </div>
         </div>
+      </div>
     </section>
-    </body>
-    <footer class="foot">
-          <div class="container">
-            <div class="row">
-              <div class="col-lg-4 text-center ">
-                <h4 class=foot-tittle>Datos Legales</h4>
-                <p>Todo los Derechos Reservados 2019-2020 </p>
-              </div>
-              <div class="col-lg-4">
-              </div>
-              <div class="col-lg-4 col-lg-offset-4 text-center">
-                <h4 class=foot-tittle>Datos de Contacto</h4>
-                <p>mauricio.d.riera@gmail.com</p>
-              </div>
-            </div>
-          </div>
-    </footer>
-     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-     <script src="{% static 'js/bootstrap.js' %}"></script>
-
-</html>
+{% endblock %}

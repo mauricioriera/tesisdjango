@@ -3,6 +3,9 @@ from apps.empleado.models import Empleado
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
+class DateImput(forms.DateInput):
+    imput_formats='%Y-%m-%d'
+    input_type = 'date'
 
 class EmpleadoForm(forms.ModelForm):
 
@@ -27,7 +30,7 @@ class EmpleadoForm(forms.ModelForm):
         widgets = {
 
             'hospital': forms.Select(attrs={'class': 'form-control'}),
-            'fecha_nacimiento': forms.SelectDateWidget(attrs={'class': 'form-control'}),
+            'fecha_nacimiento': DateImput(attrs={'class': 'form-control'}),
             'direccion': forms.TextInput(attrs={'class': 'form-control'}),
             'telefono': forms.TextInput(attrs={'class': 'form-control'}),
             'numero_legajo': forms.TextInput(attrs={'class': 'form-control'}),

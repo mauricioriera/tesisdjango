@@ -1,141 +1,111 @@
-<!DOCTYPE html>
-{% load static %}
-<html lang="es">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro</title>
-    <!--Bootstrap-->
-    <link rel="stylesheet" href= "{% static 'css/bootstrap.css' %}" />
-    <!--style CSS-->
-    <link rel="stylesheet" href="{% static 'css/estilo.css' %}" />
-  </head>
-    <body>
-        <header>
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="logo">
-                  <a href="{% url 'inicio' %}" ><img src="{% static 'imagenes/logo2.png' %}"></a>
-              </div>
-            </div>
-          </div>
-        </header>
-
-         <section class="registro">
-            <form method='post'>
-                {% csrf_token %}
+{% extends "base/base.html" %}
+{% block title %}Registro de Dador de Sangre{% endblock %}
+{% block content %}
+        <section class="page-header">
+            <div class="container">
                 <div class="row">
-                    <div class="col-lg-8 col-lg offset-4">
+                    <div class="col-sm-12 text-center">
+                      <h3>REGISTRO DE DADORES</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section-appointment">
+           <div class="container">
+                <div class="appointment-form-wrapper clearfix">
+                  <h3 class="join-heading">Registro para donar Sangre</h3>
+            <form method='post' class="appoinment-form">
+                {% csrf_token %}
+                <br class="row">
+                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 offset-1">
                         <div class="form-group">
                         <label>{{form2.username.label}}</label>
-                        {{form2.username}}
+                        <input type="text" name="{{ form2.username.html_name }}" value="{{ form2.username.value | default_if_none:'' }}" class="form-control">
+                        {% for error in form2.username.errors %}
+                        <div class="invalid-feedback">
+                        {{ error }}
+                        </div>
+                        {% endfor %}
                         </div>
                     </div>
-                    <div class="col-lg-8 col-lg offset-4">
+                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 offset-1">
                         <div class="form-group">
                         <label>{{form2.first_name.label}}</label>
-                        {{form2.first_name}}
+                        <input type="text" name="{{ form2.first_name.html_name }}" value="{{ form2.first_name.value | default_if_none:''}}" class="form-control">
                         </div>
                     </div>
-                    <div class="col-lg-8 col-lg offset-4">
+                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 offset-1">
                         <div class="form-group">
                         <label>{{form2.last_name.label}}</label>
-                        {{form2.last_name}}
+                        <input type="text" name="{{ form2.last_name.html_name }}" value="{{ form2.last_name.value | default_if_none:''}}" class="form-control">
                         </div>
                     </div>
-                    <div class="col-lg-8 col-lg offset-4">
+                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 offset-1">
                         <div class="form-group">
                         <label>{{form2.password1.label}}</label>
-                        {{form2.password1}}
+                        <input type="password" name="{{ form2.password1.html_name }}" value="{{ form2.password1.value | default_if_none:''}}" class="form-control">
                         </div>
                     </div>
-                    <div class="col-lg-8 col-lg offset-4">
+                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 offset-1">
                         <div class="form-group">
                         <label>{{form2.password2.label}}</label>
-                        {{form2.password2}}
+                        <input type="password" name="{{ form2.password2.html_name }}" value="{{ form2.password2.value | default_if_none:''}}" class="form-control">
                         </div>
                     </div>
-                    <div class="col-lg-8 col-lg offset-4">
+                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 offset-1">
                         <div class="form-group">
                         <label>{{form2.email.label}}</label>
-                        {{form2.email}}
+                        <input type="email" name="{{ form2.email.html_name }}" value="{{ form2.email.value | default_if_none:''}}" class="form-control">
                         </div>
                     </div>
-                    <div class="col-lg-8 col-lg offset-4">
+                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 offset-1">
                         <div class="form-group">
                         <label>{{form.hospital.label}}</label>{{form.hospital}}
                         </div>
                     </div>
-                    <div class="col-lg-8 col-lg offset-4">
+                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 offset-1">
                         <div class="form-group">
                         <label>{{form.fecha_nacimiento.label}}</label>
                         {{form.fecha_nacimiento}}
                         </div>
                     </div>
-                      <div class="col-lg-8 col-lg offset-4">
+                      <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 offset-1">
                         <div class="form-group">
                         <label>{{form.direccion.label}}</label>
-                        {{form.direccion}}
+                        <input type="text" name="{{ form.direccion.html_name }}" value="{{ form.direccion.value | default_if_none:''}}" class="form-control">
                         </div>
                     </div>
-                      <div class="col-lg-8 col-lg offset-4">
+                      <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 offset-1">
                         <div class="form-group">
                         <label>{{form.telefono.label}}</label>
-                        {{form.telefono}}
+                        <input type="text" name="{{ form.telefono.html_name }}" value="{{ form.telefono.value | default_if_none:''}}" class="form-control">
                         </div>
                     </div>
-                      <div class="col-lg-8 col-lg offset-4">
+                      <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 offset-1">
                         <div class="form-group">
                         <label>{{form.genero.label}}</label>
                         {{form.genero}}
                         </div>
                     </div>
-                      <div class="col-lg-8 col-lg offset-4">
+                      <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 offset-1">
                         <div class="form-group">
                         <label>{{form.grupo_sanguineo.label}}</label>
                         {{form.grupo_sanguineo}}
                         </div>
                     </div>
-                      <div class="col-lg-8 col-lg offset-4">
+                      <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 offset-1">
                         <div class="form-group">
                         <label>{{form.factor_sanguineo.label}}</label>
                         {{form.factor_sanguineo}}
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-3">
+                    <div class="group-send col-lg-10 col-md-10 col-sm-10 col-xs-10 offset-1">
+                       <div class="form-group">
+                            <button class="btn-submit" type="submit" role="button">Registrar</button>
+                      </div>
                     </div>
-                    <div class="col-lg-3 text-center" >
-                        <button class="btn btn-success btn-lg boton" type="submit" role="button"> Aceptar</button>
-                    </div>
-                    <div class="col-lg-3 " >
-                        <a class="btn btn-danger btn-lg boton" href="{%url 'inicio' %}" role="button">Cancelar</a>
-                    </div>
-                    <div class="col-lg-3">
-                    </div>
-                </div>
             </form>
-        </section>
-    </body>
-    <footer class="foot">
-          <div class="container">
-            <div class="row">
-              <div class="col-lg-4 text-center ">
-                <h4 class=foot-tittle>Datos Legales</h4>
-                <p>Todo los Derechos Reservados 2019-2020 </p>
-              </div>
-              <div class="col-lg-4">
-              </div>
-              <div class="col-lg-4 col-lg-offset-4 text-center">
-                <h4 class=foot-tittle>Datos de Contacto</h4>
-                <p>mauricio.d.riera@gmail.com</p>
-              </div>
             </div>
-          </div>
-    </footer>
-     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-     <script src="{% static 'js/bootstrap.js' %}"></script>
-
-</html>
+           </div>
+        </section>
+{% endblock %}

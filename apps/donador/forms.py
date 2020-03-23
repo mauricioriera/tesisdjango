@@ -3,6 +3,11 @@ from apps.donador.models import Donador
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
+
+class DateImput(forms.DateInput):
+    imput_formats='%Y-%m-%d'
+    input_type = 'date'
+
 class DonadorForm(forms.ModelForm):
     class Meta:
         model = Donador
@@ -26,13 +31,13 @@ class DonadorForm(forms.ModelForm):
             'factor_sanguineo': 'Factor Sanguineo:',
         }
         widgets = {
-            'hospital': forms.Select,
-            'fecha_nacimiento': forms.SelectDateWidget(years=range(1950, 2100)),
-            'direccion': forms.TextInput,
-            'telefono': forms.TextInput,
-            'genero': forms.Select,
-            'grupo_sanguineo': forms.Select,
-            'factor_sanguineo': forms.Select,
+            'hospital': forms.Select(attrs={'class': 'form-control'}),
+            'fecha_nacimiento': DateImput(attrs={'class': 'form-control'}),
+            'direccion': forms.TextInput(attrs={'class': 'form-control'}),
+            'telefono': forms.TextInput(attrs={'class': 'form-control'}),
+            'genero': forms.Select(attrs={'class': 'form-control'}),
+            'grupo_sanguineo': forms.Select(attrs={'class': 'form-control'}),
+            'factor_sanguineo': forms.Select(attrs={'class': 'form-control'}),
         }
 
 

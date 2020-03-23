@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User, Group
 
 from apps.hospital.models import Hospital
-
+from datetime import date
 
 class JefedeArea(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -13,5 +13,8 @@ class JefedeArea(models.Model):
     telefono = models.CharField(max_length=12)
     numero_legajo = models.IntegerField()
 
-
-
+    @property
+    def calcularEdad(self):
+        days_in_year = 365.2425
+        age = int((date.today() - self.fecha_nacimiento).days / days_in_year)
+        return age

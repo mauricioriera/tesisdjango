@@ -1,3 +1,4 @@
+
 from django.contrib.auth.decorators import permission_required
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
@@ -15,6 +16,15 @@ class preperfil(ListView):
 
     def get_queryset(self, *args, **kwargs):
         return JefedeArea.objects.filter(user=self.request.user)
+
+    #NO FUNCIONA CON LOS DECORATOR NO MANDA A PAGINA PERFIL DE JEFE DE AREA#
+    """@method_decorator(permission_required('donador.view_jefedearea', reverse_lazy('preperfil_donante')))
+    def dispatch(self, *args, **kwargs):
+        return super(preperfil, self).dispatch(*args, **kwargs)
+
+    @method_decorator(permission_required('empleado.view_jefedearea', reverse_lazy('lista_donante')))
+    def dispatch(self, *args, **kwargs):
+        return super(preperfil, self).dispatch(*args, **kwargs)"""
 
 
 def perfil(request, pk):
@@ -72,6 +82,7 @@ class JefedeAreaLista(ListView):
     def dispatch(self, *args, **kwargs):
         return super(JefedeAreaLista, self).dispatch(*args, **kwargs)
 
+
 class JefedeAreaBorrar(DeleteView):
     model = User
     template_name = 'jefedearea/jefedearea_delete.html'
@@ -84,6 +95,7 @@ class JefedeAreaBorrar(DeleteView):
     @method_decorator(permission_required('empleado.delete_jefedearea', reverse_lazy('lista_donante')))
     def dispatch(self, *args, **kwargs):
         return super(JefedeAreaBorrar, self).dispatch(*args, **kwargs)
+
 
 class JefedeAreaModificar(UpdateView):
     model = JefedeArea

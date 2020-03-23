@@ -1,63 +1,100 @@
-
-<!DOCTYPE html>
+{% extends "base/base.html" %}
+{% block title %}Pagina Inicio{% endblock %}
+{% block content %}
 {% load static %}
 <html lang="es">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Donar</title>
+    <title>Donar Sangre</title>
     <!--Bootstrap-->
     <link rel="stylesheet" href= "{% static 'css/bootstrap.css' %}" />
     <!--style CSS-->
     <link rel="stylesheet" href="{% static 'css/estilo.css' %}" />
   </head>
-  <body class="index">
-    <header>
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="logo">
-            <a href="{% url 'inicio' %}" ><img src="{% static 'imagenes/logo2.png' %}"></a>
-          </div>
-        </div>
-      </div>
-    </header>
+  <body>
 
-    <section>
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-6 col-xl-6">
-            <div class="pad">
-              <h1>Donar Sangre,
-              <br>
-              Salva Vidas
-              </h1>
-              <p>texto explicativo corto</p>
-              <a class="btn btn-info btn-lg boton" href="{% url 'login' %}" role="button">Iniciar Sesión</a>
-              <a class="btn btn-info btn-lg boton" href="{%url 'crear_donante' %}" role="button">Registrarse</a>
-            </div>
-          </div>
+    <section class="section-content-block">
+        <div class="container">
+            <div class="row">
+              <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                    <div class="about-us-container theme-custom-box-shadow">
+                        <div class="row section-heading-wrapper margin-bottom-11">
+                            <div class="col-lg-12 col-md-12 col-sm-12 text-left no-img-separator">
+                                <h2><strong>Acerca de este proyecto</strong></h2>
+                                <span class="heading-separator heading-separator-horizontal"></span>
+                            </div> <!-- end .col-sm-10  -->
+                        </div>
+                        <div class="about-details">
+                            <p>Frase de unas 16 palabras.</p>
+                            <ul class="custom-bullet-list">
+                                <li>Que hace...?.</li>
+                                <li>En que ayuda?.</li>
+                                <li>En que se diferencia de otros sistemas.</li>
+                                <li>Bla bla.</li>
+                                <li>Bla bla 2.</li>
+                            </ul>
+                        </div> <!--  end .about-details -->
+                    </div>
+                </div> <!--  end .col-lg-6 col-md-6 col-sm-12 col-xs-12 -->
+                <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                    <figure class="about-img theme-custom-box-shadow">
+                        <img src="{% static 'imagenes/heart_hands.jpg' %}" alt="Acerca de este proyecto">
+                    </figure> <!-- end .cause-img  -->
+                </div> <!--  end .col-lg-6 col-md-6 col-sm-12 col-xs-12  -->
+            </div> <!--  end .row  -->
         </div>
-      </div>
     </section>
+
+    <section class="section-content-block">
+            <div style="background-image: url({% static 'imagenes/donation.jpg' %}); height: 450px;"></div>
+    </section>
+
+    <section class="section-content-block section-pure-white-bg">
+        <div class="container">
+            <div class="row section-heading-wrapper">
+                <div class="col-md-12 col-sm-12 text-center no-img-separator">
+                    <h2>Donar Sangre, Salva Vidas</h2>
+                    <span class="heading-separator"></span>
+                    <h4>Texto corto de unas 16 palabras</h4>
+                </div> <!-- end .col-sm-10  -->
+            </div> <!-- end .row  -->
+        </div> <!--  end .container -->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 text-center">
+                        <figure>
+                            <img src="{% static 'imagenes/banner.png' %}">
+                        </figure> <!-- end .gallery-img  -->
+                </div><!-- end .col-sm-3  -->
+            </div> <!-- end .row  -->
+        </div><!-- end .container-fluid  -->
+    </section> <!-- end .section-content-block  -->
+
+    <section class="section-appointment">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 hidden-sm hidden-xs">
+                        <img src="{% static 'imagenes/register.jpg' %}" alt="Registrarse">
+                </div> <!--  end col-lg-6  -->
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="appointment-form-wrapper text-center clearfix">
+                        <h3 class="join-heading"><a id="registrarse"></a>Ayudanos a salvar vida</h3>
+                            <div class="col-md-12">
+                                <p>Ayudanos bla bla bla bla<br>Ayudanos bla bla bla bla<br>Ayudanos bla bla bla bla<br>Ayudanos bla bla bla bla<br></p>
+                            </div>
+
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <a class="btn btn-default btn-lg" href="{% url 'login' %}" role="button">Iniciar Sesión</a>
+                                <a class="btn-submit" href="{%url 'crear_donante' %}" role="button">Registrarse</a>
+                            </div>
+                    </div> <!-- end .appointment-form-wrapper  -->
+                </div> <!--  end .col-lg-6 -->
+            </div> <!--  end .row  -->
+        </div> <!--  end .container -->
+    </section>  <!--  end .appointment-section  -->
+{% endblock %}
   </body>
-
-  <footer class="foot">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-4 text-center ">
-            <h4 class=foot-tittle>Datos Legales</h4>
-            <p>Todo los Derechos Reservados 2019-2020 </p>
-          </div>
-          <div class="col-lg-4">
-          </div>
-          <div class="col-lg-4 text-center">
-            <h4 class=foot-tittle>Datos de Contacto</h4>
-            <p>mauricio.d.riera@gmail.com</p>
-          </div>
-        </div>
-      </div>
-    </footer>
-
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="{% static 'js/bootstrap.js' %}"></script>

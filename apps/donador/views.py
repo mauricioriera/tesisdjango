@@ -45,13 +45,18 @@ class DonadorCrear(CreateView):
     template_name = 'donador/registro.html'
     success_url = reverse_lazy('inicio')
 
+    def dispatch(self, request, *args, **kwargs):
+        if not self.request.session.is_empty() and self.request.user.groups.filter(name='Donantes').exists():
+            return redirect(reverse_lazy('preperfil_donante'))
+        return super(DonadorCrear, self).dispatch(request,*args,**kwargs)
+
     def get_context_data(self, **kwargs):
         context = super(DonadorCrear, self).get_context_data(**kwargs)
         if 'form' not in context:
             context['form'] = self.form_class(self.request.GET)
         if 'form2' not in context:
             context['form2'] =self.second_form_class(self.request.GET)
-        return context
+            return context
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object
@@ -71,7 +76,7 @@ class DonadorCrear(CreateView):
 class DonadorLista(ListView):
     model = Donador
     template_name = 'donador/donador_lista.html'
-
+    queryset = Donador.objects.order_by('-activo')
 
     def get_queryset(self):
         queryset = super(DonadorLista, self).get_queryset()
@@ -120,10 +125,11 @@ class DonadorModificar(UpdateView):
             form.save()
             g = Group.objects.get(name='Donantes')
             g.user_set.add(donador.user)
+            if self.request.user.groups.filter(name='Empleado').exists() or self.request.user.groups.filter(name='Jefe de Área').exists():
+                return HttpResponseRedirect(reverse_lazy('lista_donante'))
             return HttpResponseRedirect(self.get_success_url())
         else:
             return HttpResponseRedirect(self.get_success_url())
-
 
 class DonadorEliminar(DeleteView):
     model = User
