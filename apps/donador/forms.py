@@ -22,11 +22,11 @@ class DonadorForm(forms.ModelForm):
             'factor_sanguineo',
         ]
         labels = {
-            'hospital': 'Hospital:',
+            'hospital': 'Hospital más Cercano:',
             'fecha_nacimiento': 'Fecha de Nacimiento:',
-            'direccion': 'Direccion:',
-            'telefono': 'Telefono:',
-            'genero': 'Genero:',
+            'direccion': 'Dirección:',
+            'telefono': 'Teléfono:',
+            'genero': 'Género:',
             'grupo_sanguineo': 'Grupo Sanguineo:',
             'factor_sanguineo': 'Factor Sanguineo:',
         }

@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
-from apps.jefedearea.forms import RegistroForm, JefedeAreaForm
+from apps.jefedearea.forms import RegistroForm, JefedeAreaForm,ModificarForm
 from django.views.generic import CreateView, ListView, DeleteView, UpdateView
 from django.contrib.auth.models import User, Group
 from apps.jefedearea.models import JefedeArea
@@ -12,31 +12,22 @@ from apps.jefedearea.models import JefedeArea
 
 class preperfil(ListView):
     model: JefedeArea
-    template_name = 'jefedearea/preperfil.html'
+    template_name = 'jefedearea/jefedearea_preprofile.html'
 
     def get_queryset(self, *args, **kwargs):
         return JefedeArea.objects.filter(user=self.request.user)
 
-    #NO FUNCIONA CON LOS DECORATOR NO MANDA A PAGINA PERFIL DE JEFE DE AREA#
-    """@method_decorator(permission_required('donador.view_jefedearea', reverse_lazy('preperfil_donante')))
-    def dispatch(self, *args, **kwargs):
-        return super(preperfil, self).dispatch(*args, **kwargs)
-
-    @method_decorator(permission_required('empleado.view_jefedearea', reverse_lazy('lista_donante')))
-    def dispatch(self, *args, **kwargs):
-        return super(preperfil, self).dispatch(*args, **kwargs)"""
-
 
 def perfil(request, pk):
     j = JefedeArea.objects.get(pk=pk)
-    return render(request, 'jefedearea/perfil.html', {'jefedearea': j})
+    return render(request, 'jefedearea/jefedearea_profile.html', {'jefedearea': j})
 
 
 class JefedeAreaCrear(CreateView):
     model = JefedeArea
     form_class = JefedeAreaForm
     second_form_class = RegistroForm
-    template_name = 'jefedearea/jefedearea_formulario.html'
+    template_name = 'jefedearea/jefedearea_add.html'
     success_url = reverse_lazy('jefedearea_listar')
 
     def get_context_data(self, **kwargs):
@@ -101,8 +92,8 @@ class JefedeAreaModificar(UpdateView):
     model = JefedeArea
     second_model = User
     form_class = JefedeAreaForm
-    second_form_class = RegistroForm
-    template_name = 'jefedearea/jefedearea_formulario.html'
+    second_form_class = ModificarForm
+    template_name = 'jefedearea/jefedearea_update.html'
     success_url = reverse_lazy('jefedearea_listar')
 
     def get_context_data(self, **kwargs):
@@ -133,7 +124,7 @@ class JefedeAreaModificar(UpdateView):
         else:
             return HttpResponseRedirect(self.get_success_url())
 
-    @method_decorator(permission_required('donador.updtae_jefedearea', reverse_lazy('preperfil_donante')))
+    @method_decorator(permission_required('donador.update_jefedearea', reverse_lazy('preperfil_donante')))
     def dispatch(self, *args, **kwargs):
         return super(JefedeAreaModificar, self).dispatch(*args, **kwargs)
 

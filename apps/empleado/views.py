@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
-from apps.empleado.forms import EmpleadoForm, RegistroForm
+from apps.empleado.forms import EmpleadoForm, RegistroForm,ModificarForm
 from django.views.generic import CreateView,ListView,DeleteView,UpdateView
 from apps.empleado.models import Empleado
 from django.contrib.auth.models import User, Group
@@ -12,21 +12,21 @@ from django.contrib.auth.models import User, Group
 
 class preperfil(ListView):
     model: Empleado
-    template_name = 'empleado/preperfil.html'
+    template_name = 'empleado/empleado_preprofile.html'
 
     def get_queryset(self, *args, **kwargs):
         return Empleado.objects.filter(user=self.request.user)
 
 def perfil (request,pk):
     e = Empleado.objects.get(pk=pk)
-    return render(request, 'empleado/perfil.html', {'empleado': e})
+    return render(request, 'empleado/empleado_profile.html', {'empleado': e})
 
 
 class EmpleadoCrear(CreateView):
     model = Empleado
     form_class = EmpleadoForm
     second_form_class = RegistroForm
-    template_name = 'empleado/empleado_formulario.html'
+    template_name = 'empleado/empleado_add.html'
     success_url = reverse_lazy('empleado_listar')
 
     def get_context_data(self, **kwargs):
@@ -63,6 +63,14 @@ class EmpleadoLista(ListView):
     model = Empleado
     template_name = 'empleado/empleado_list.html'
 
+
+    def get_queryset(self):
+        queryset = super(EmpleadoLista, self).get_queryset()
+        apellido = self.request.GET.get("apellido")
+        if apellido:
+            queryset = queryset.filter(user__last_name__icontains=apellido)
+        return queryset
+
     @method_decorator(permission_required('donador.view_empleado', reverse_lazy('preperfil_donante')))
     def dispatch(self, *args, **kwargs):
         return super(EmpleadoLista, self).dispatch(*args, **kwargs)
@@ -92,7 +100,7 @@ class EmpleadoModificar(UpdateView):
     model = Empleado
     second_model = User
     form_class = EmpleadoForm
-    second_form_class = RegistroForm
+    second_form_class = ModificarForm
     template_name = 'empleado/empleado_update.html'
     success_url = reverse_lazy('preperfil_empleado')
 

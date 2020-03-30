@@ -43,7 +43,7 @@
             <p class="h5"><strong>Fecha de Nacimiento:</strong> {{donador.fecha_nacimiento}}</p>
        </div>
        <div class="col-lg-6">
-        <p class="h5"><strong>Genero:</strong> {{donador.genero}}</p>
+        <p class="h5"><strong>G&eacute;nero:</strong> {{donador.genero}}</p>
     </div>
     <div class="col-lg-6">
       <p class="h5"><strong>Grupo Sanguineo:</strong> {{donador.grupo_sanguineo}}</p>
@@ -52,15 +52,25 @@
   <p class="h5"><strong>Factor Sanguineo:</strong> {{donador.factor_sanguineo}}</p>
 </div>
       </div>
-    {% if not donante %}
+    {% if donante %}
       <div class="row">
         <div class="col-lg-6 text-left" >
-          <a class="btn btn-default" href="{% url 'lista_donante' %}">Volver</a>
+          <a class="btn btn-default" href="{% url 'inicio' %}">Volver</a>
         </div>
         <div class="col-lg-6 text-right" >
           <a class="btn btn-success" href="{% url 'modificar_donante' pk=donador.pk %}">Modificar</a>
         </div>
       </div>
+    {% else %}
+          <div class="row">
+            <div class="col-lg-6 text-left" >
+                <a class="btn btn-default" href="{% url 'lista_donante' %}">Volver</a>
+            </div>
+            <div class="col-lg-6 text-right" >
+                <a class="btn btn-success" href="{% url 'modificar_donante' pk=donador.pk %}">Modificar</a>
+            </div>
+          </div>
+
     {% endif %}
     </div>
   </div>

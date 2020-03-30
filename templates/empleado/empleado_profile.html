@@ -1,0 +1,61 @@
+{% extends "base/base.html" %}
+{% block title %}Datos del Donante{% endblock %}
+{% block content %}
+<section class="page-header">
+  <div class="container">
+      <div class="row">
+          <div class="col-sm-12 text-center">
+            <h3>DATOS DEL EMPLEADO</h3>
+          </div>
+      </div>
+  </div>
+</section>
+<section style="margin-top: 20px; margin-bottom: 20px;">
+  <div class="container">
+    <div class="card">
+      <div class="card-header">
+        Datos
+      </div>
+      <div class="card-body">
+        <h5 class="card-title"><i class="fas fa-user"></i> {{empleado.user.username}}</h5>
+        <div class="row">
+          <div class="col-lg-6">
+            <p class="h5"><strong>Nombre:</strong> {{empleado.user.first_name}}</p>
+          </div>
+          <div class="col-lg-6">
+            <p class="h5"><strong>Apellido:</strong> {{empleado.user.last_name}}</p>
+          </div>
+          <div class="col-lg-6">
+            <p class="h5"><strong>Domicilio:</strong> {{empleado.direccion}}</p>
+          </div>
+          <div class="col-lg-6">
+            <p class="h5"><strong>Tel&eacute;fono:</strong> {{empleado.telefono}}</p>
+          </div>
+          <div class="col-lg-6">
+            <p class="h5"><strong>Email:</strong> {{empleado.user.email}}</p>
+          </div>
+          <div class="col-lg-6">
+            <p class="h5"><strong>Hospital donde trabaja:</strong> {{empleado.hospital}}</p>
+          </div>
+          <div class="col-lg-6">
+            <p class="h5"><strong>Fecha de Nacimiento:</strong> {{empleado.fecha_nacimiento}}</p>
+       </div>
+       <div class="col-lg-6">
+        <p class="h5"><strong>N&uacute;mero de Legajo:</strong> {{empleado.numero_legajo}}</p>
+    </div>
+      </div>
+    {% if empleado %}
+      <div class="row">
+        <div class="col-lg-6 text-left" >
+          <a class="btn btn-default" href="{% url 'empleado_listar' %}">Volver</a>
+        </div>
+        <div class="col-lg-6 text-right" >
+          <a class="btn btn-success" href="{% url 'empleado_modificar' pk=empleado.pk %}">Modificar</a>
+        </div>
+      </div>
+    {% endif %}
+    </div>
+  </div>
+    </div>
+</section>
+{% endblock %}

@@ -13,7 +13,7 @@ from django.contrib.auth.models import Group, User
 def perfil (request, pk):
     d = Donador.objects.get(pk=pk)
     donante= request.user.groups.filter(name='Donantes').exists()
-    return render(request, 'donador/perfil.html', {'donador': d ,'donante': donante})
+    return render(request, 'donante/donante_profile.html', {'donador': d ,'donante': donante})
 
 
 def activacion(request,pk):
@@ -30,9 +30,9 @@ def activacion(request,pk):
     return redirect('lista_donante')
 
 
-class preperfil (ListView):
+class preperfil(ListView):
     model = Donador
-    template_name = "donador/preperfil.html"
+    template_name = "donante/donante_preprofile.html"
 
     def get_queryset(self, *args, **kwargs):
         return Donador.objects.filter(user=self.request.user)
@@ -42,7 +42,7 @@ class DonadorCrear(CreateView):
     model = Donador
     form_class = DonadorForm
     second_form_class = RegistroForm
-    template_name = 'donador/registro.html'
+    template_name = 'donante/donante_add.html'
     success_url = reverse_lazy('inicio')
 
     def dispatch(self, request, *args, **kwargs):
@@ -75,7 +75,7 @@ class DonadorCrear(CreateView):
 
 class DonadorLista(ListView):
     model = Donador
-    template_name = 'donador/donador_lista.html'
+    template_name = 'donante/donante_list.html'
     queryset = Donador.objects.order_by('-activo')
 
     def get_queryset(self):
@@ -98,7 +98,7 @@ class DonadorModificar(UpdateView):
     second_model = User
     form_class = DonadorForm
     second_form_class = ModificarForm
-    template_name = 'donador/donador_update.html'
+    template_name = 'donante/donante_update.html'
     success_url = reverse_lazy('preperfil_donante')
 
     def get_context_data(self, **kwargs):
@@ -133,5 +133,5 @@ class DonadorModificar(UpdateView):
 
 class DonadorEliminar(DeleteView):
     model = User
-    template_name = 'donador/donador_borrar.html'
+    template_name = 'donante/donante_delete.html'
     success_url = reverse_lazy('lista_donante')

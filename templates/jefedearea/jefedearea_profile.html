@@ -1,11 +1,11 @@
 {% extends "base/base.html" %}
-{% block title %}Datos del Donante{% endblock %}
+{% block title %}Datos del Jefe de Área{% endblock %}
 {% block content %}
 <section class="page-header">
   <div class="container">
       <div class="row">
           <div class="col-sm-12 text-center">
-            <h3>DATOS DEL EMPLEADO</h3>
+            <h3>DATOS DEL JEFE DE ÁREA</h3>
           </div>
       </div>
   </div>
@@ -19,40 +19,40 @@
         Datos
       </div>
       <div class="card-body">
-        <h5 class="card-title"><i class="fas fa-user"></i> {{empleado.user.username}}</h5>
+        <h5 class="card-title"><i class="fas fa-user"></i> {{jefedearea.user.username}}</h5>
         <div class="row">
           <div class="col-lg-6">
-            <p class="h5"><strong>Nombre:</strong> {{empleado.user.first_name}}</p>
+            <p class="h5"><strong>Nombre:</strong> {{jefedearea.user.first_name}}</p>
           </div>
           <div class="col-lg-6">
-            <p class="h5"><strong>Apellido:</strong> {{empleado.user.last_name}}</p>
+            <p class="h5"><strong>Apellido:</strong> {{jefedearea.user.last_name}}</p>
           </div>
           <div class="col-lg-6">
-            <p class="h5"><strong>Domicilio:</strong> {{empleado.direccion}}</p>
+            <p class="h5"><strong>Domicilio:</strong> {{jefedearea.direccion}}</p>
           </div>
           <div class="col-lg-6">
-            <p class="h5"><strong>Tel&eacute;fono:</strong> {{empleado.telefono}}</p>
+            <p class="h5"><strong>Tel&eacute;fono:</strong> {{jefedearea.telefono}}</p>
           </div>
           <div class="col-lg-6">
-            <p class="h5"><strong>Email:</strong> {{empleado.user.email}}</p>
+            <p class="h5"><strong>Email:</strong> {{jefedearea.user.email}}</p>
           </div>
           <div class="col-lg-6">
-            <p class="h5"><strong>Hospital donde trabaja:</strong> {{empleado.hospital}}</p>
+            <p class="h5"><strong>Hospital donde trabaja:</strong> {{jefedearea.hospital}}</p>
           </div>
           <div class="col-lg-6">
-            <p class="h5"><strong>Fecha de Nacimiento:</strong> {{empleado.fecha_nacimiento}}</p>
+            <p class="h5"><strong>Fecha de Nacimiento:</strong> {{jefedearea.fecha_nacimiento}}</p>
        </div>
        <div class="col-lg-6">
-        <p class="h5"><strong>N&uacute;mero de Legajo:</strong> {{donador.genero}}</p>
+        <p class="h5"><strong>N&uacute;mero de Legajo:</strong> {{jefedearea.numero_legajo}}</p>
     </div>
       </div>
-    {% if empleado %}
+    {% if jefedearea %}
       <div class="row">
         <div class="col-lg-6 text-left" >
           <a class="btn btn-default" href="{% url 'lista_donante' %}">Volver</a>
         </div>
         <div class="col-lg-6 text-right" >
-          <a class="btn btn-success" href="{% url 'empleado_modificar' pk=empleado.pk %}">Modificar</a>
+          <a class="btn btn-success" href="{% url 'jefedearea_modificar' pk=jefedearea.pk %}">Modificar</a>
         </div>
       </div>
     {% endif %}
