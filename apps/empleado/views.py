@@ -86,14 +86,14 @@ class EmpleadoBorrar(DeleteView):
     template_name = 'empleado/empleado_delete.html'
     success_url = reverse_lazy('empleado_listar')
 
-    #ver este permiso por que no toma el modelo empleado#
+    '''ver este permiso por que no toma el modelo empleado
     @method_decorator(permission_required('empleado.delete_empleado', reverse_lazy('lista_donante')))
     def dispatch(self, *args, **kwargs):
         return super(EmpleadoBorrar, self).dispatch(*args, **kwargs)
 
     @method_decorator(permission_required('donador.delete_empleado', reverse_lazy('preperfil_donante')))
     def dispatch(self, *args, **kwargs):
-        return super(EmpleadoBorrar, self).dispatch(*args, **kwargs)
+        return super(EmpleadoBorrar, self).dispatch(*args, **kwargs)'''
 
 
 class EmpleadoModificar(UpdateView):
@@ -128,6 +128,8 @@ class EmpleadoModificar(UpdateView):
             form.save()
             g = Group.objects.get(name="Empleado")
             g.user_set.add(empleado.user)
+            if self.request.user.groups.filter(name='Jefe de Área').exists():
+                return HttpResponseRedirect(reverse_lazy('empleado_listar'))
             return HttpResponseRedirect(self.get_success_url())
         else:
             return HttpResponseRedirect(self.get_success_url())

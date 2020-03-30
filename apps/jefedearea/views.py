@@ -65,13 +65,13 @@ class JefedeAreaLista(ListView):
     model = JefedeArea
     template_name = 'jefedearea/jefedearea_list.html'
 
-    @method_decorator(permission_required('donador.view_jefedearea', reverse_lazy('preperfil_donante')))
+    '''@method_decorator(permission_required('donador.view_jefedearea', reverse_lazy('preperfil_donante')))
     def dispatch(self, *args, **kwargs):
         return super(JefedeAreaLista, self).dispatch(*args, **kwargs)
 
     @method_decorator(permission_required('empleado.view_jefedearea', reverse_lazy('lista_donante')))
     def dispatch(self, *args, **kwargs):
-        return super(JefedeAreaLista, self).dispatch(*args, **kwargs)
+        return super(JefedeAreaLista, self).dispatch(*args, **kwargs)'''
 
 
 class JefedeAreaBorrar(DeleteView):

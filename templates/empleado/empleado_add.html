@@ -1,10 +1,102 @@
-{% extends 'base/base.html' %}
-
+{% extends "base/base.html" %}
+{% block title %}Registro de Empleado{% endblock %}
 {% block content %}
-    <h1>New post</h1>
-    <form method='post' action="">{% csrf_token %}
-        {{ form2.as_p }}
-        {{ form.as_p }}
-        <button type="submit">Save</button>
-    </form>
+        <section class="page-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12 text-center">
+                      <h3>REGISTRO DE EMPLEADO</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section-appointment">
+           <div class="container">
+                <div class="appointment-form-wrapper clearfix">
+                  <h3 class="join-heading">Registro para Empleados</h3>
+            <form method='post' class="appoinment-form">
+                {% csrf_token %}
+                <br class="row">
+                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 offset-1">
+                        <div class="form-group">
+                        <label>{{form2.username.label}}</label>
+                        <input type="text" name="{{ form2.username.html_name }}" value="{{ form2.username.value | default_if_none:'' }}" class="form-control">
+                        {% for error in form2.username.errors %}
+                        <div class="invalid-feedback">
+                        {{ error }}
+                        </div>
+                        {% endfor %}
+                        </div>
+                    </div>
+                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 offset-1">
+                        <div class="form-group">
+                        <label>{{form2.first_name.label}}</label>
+                        <input type="text" name="{{ form2.first_name.html_name }}" value="{{ form2.first_name.value | default_if_none:''}}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 offset-1">
+                        <div class="form-group">
+                        <label>{{form2.last_name.label}}</label>
+                        <input type="text" name="{{ form2.last_name.html_name }}" value="{{ form2.last_name.value | default_if_none:''}}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 offset-1">
+                        <div class="form-group">
+                        <label>{{form2.password1.label}}</label>
+                        <input type="password" name="{{ form2.password1.html_name }}" value="{{ form2.password1.value | default_if_none:''}}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 offset-1">
+                        <div class="form-group">
+                        <label>{{form2.password2.label}}</label>
+                        <input type="password" name="{{ form2.password2.html_name }}" value="{{ form2.password2.value | default_if_none:''}}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 offset-1">
+                        <div class="form-group">
+                        <label>{{form2.email.label}}</label>
+                        <input type="email" name="{{ form2.email.html_name }}" value="{{ form2.email.value | default_if_none:''}}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 offset-1">
+                        <div class="form-group">
+                        <label>{{form.hospital.label}}</label>
+                            {{form.hospital}}
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 offset-1">
+                        <div class="form-group">
+                        <label>{{form.fecha_nacimiento.label}}</label>
+                        {{form.fecha_nacimiento}}
+                        </div>
+                    </div>
+                    <br>
+                      <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 offset-1">
+                        <div class="form-group">
+                        <label>{{form.direccion.label}}</label>
+                        <input type="text" name="{{ form.direccion.html_name }}" value="{{ form.direccion.value | default_if_none:''}}" class="form-control">
+                        </div>
+                    </div>
+                      <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 offset-1">
+                        <div class="form-group">
+                        <label>{{form.telefono.label}}</label>
+                        <input type="text" name="{{ form.telefono.html_name }}" value="{{ form.telefono.value | default_if_none:''}}" class="form-control">
+                        </div>
+                    </div>
+                      <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 offset-1">
+                        <div class="form-group">
+                        <label>{{form.numero_legajo.label}}</label>
+                        {{form.numero_legajo}}
+                        </div>
+                    </div>
+                    <div class="group-send col-lg-10 col-md-10 col-sm-10 col-xs-10 offset-1">
+                       <div class="form-group">
+                            <button class="btn-submit" type="submit" role="button">Registrar</button>
+                      </div>
+                    </div>
+            </form>
+            </div>
+           </div>
+        </section>
 {% endblock %}

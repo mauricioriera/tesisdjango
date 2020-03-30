@@ -1,10 +1,89 @@
-{% extends 'base/base.html' %}
-
+{% extends "base/base.html" %}
+{% block title %}Modificar Empleado{% endblock %}
 {% block content %}
-    <h1>New post</h1>
-    <form method='post' action="">{% csrf_token %}
-        {{ form2.as_p }}
-        {{ form.as_p }}
-        <button type="submit">Save</button>
+<section class="page-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12 text-center">
+        <h3>MODIFICAR EMPLEADO</h3>
+      </div>
+    </div>
+  </div>
+</section>
+<section style="margin-top: 20px; margin-bottom: 20px;">
+  <div class="container">
+    <form method='post' action="">
+      {% csrf_token %}
+
+        <div class="form-group row">
+          <label class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-form-label">{{form2.username.label}}</label>
+          <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+            <input type="text" name="{{ form2.username.html_name }}" value="{{ form2.username.value | default_if_none:'' }}" class="form-control">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-form-label">{{form2.first_name.label}}</label>
+          <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+            <input type="text" name="{{ form2.first_name.html_name }}" value="{{ form2.first_name.value | default_if_none:''}}" class="form-control">
+          </div>
+        </div>
+
+          <div class="form-group row">
+            <label class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-form-label">{{form2.last_name.label}}</label>
+              <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                <input type="text" name="{{ form2.last_name.html_name }}" value="{{ form2.last_name.value | default_if_none:''}}" class="form-control">
+          </div>
+        </div>
+
+          <div class="form-group row">
+            <label class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-form-label">{{form2.email.label}}</label>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+              <input type="email" name="{{ form2.email.html_name }}" value="{{ form2.email.value | default_if_none:''}}" class="form-control">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-form-label">{{form.hospital.label}}</label>
+              <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                {{form.hospital}}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-form-label">{{form.fecha_nacimiento.label}}</label>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+            {{form.fecha_nacimiento}}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-form-label">{{form.direccion.label}}</label>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+              <input type="text" name="{{ form.direccion.html_name }}" value="{{ form.direccion.value | default_if_none:''}}" class="form-control">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-form-label">{{form.telefono.label}}</label>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+              <input type="text" name="{{ form.telefono.html_name }}" value="{{ form.telefono.value | default_if_none:''}}" class="form-control">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-form-label">{{form.numero_legajo.label}}</label>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+            {{form.numero_legajo}}
+          </div>
+        </div>
+      <div class="row">
+        <div class="col-lg-6 text-left">
+          <a class="btn btn-default btn boton" href="{% url 'perfil_empleado' pk=empleado.pk %}" role="button">Cancelar</a>
+        </div>
+
+        <div class="col-lg-6 text-right">
+          <button class="btn btn-success btn boton" type="submit" role="button">Guardar</button>
+        </div>
+      </div>
+
     </form>
+  </div>
+</section>
+</body>
 {% endblock %}
