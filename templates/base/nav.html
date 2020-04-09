@@ -10,7 +10,6 @@
         </li>
         {% if user.is_authenticated %}
           {% if 'Jefe de Área' ==  request.user.groups.all.0.name %}
-         <!-- no funciona el if empleado -->
           <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="dropdown0" data-toggle="dropdown" aria-haspopup="true"
               aria-expanded="false">Administraci&oacute;n</a>
@@ -46,7 +45,6 @@
         <li class="nav-link"><a class="nav-link" href="#" title="Contacto">Contacto</a></li>
         {% if user.is_authenticated %}
           {% if 'Jefe de Área' ==  request.user.groups.all.0.name %}
-          <!-- SI ES JEFE DE AREA TEMGO EL MISMO PROBLEMA QUE ARRIBA CON EL IF-->
           <li class="nav-link"><a class="nav-link" href="{% url 'preperfil_jefedearea' %}" title="Usuario en el sistema"><i
               class="fas fa-user"></i> {{ user.username }}</a></li>
         <li class="nav-link"><a class="nav-link" href="{% url 'cerrar_sesion' %}" title="Salir del sistema">Salir</a></li>

@@ -1,4 +1,6 @@
 from django.contrib.auth.decorators import permission_required
+from django.core.mail import send_mail
+from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
@@ -7,6 +9,30 @@ from apps.donador.forms import DonadorForm, RegistroForm, ModificarForm
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from apps.donador.models import Donador
 from django.contrib.auth.models import Group, User
+from threading import Thread
+
+
+
+
+def enviarmail(request,pk):
+    d = Donador.objects.get(pk=pk)
+    subject = 'DONAR SANGRE'
+    message = 'mensaje'
+    email_from=settings.EMAIL_HOST_USER
+    recipient_list=[d.user.email]
+    send_mail(subject,message,email_from,[recipient_list,])
+    return redirect('lista_donante')
+
+
+
+
+
+def hilo(request, pk,self=ListView):
+    t = Thread(target=enviarmail,args=(request,pk))
+    t.start()
+
+    DonadorLista.get_queryset(self)
+    return redirect('lista_donante')
 
 
 
@@ -77,8 +103,10 @@ class DonadorLista(ListView):
     model = Donador
     template_name = 'donante/donante_list.html'
     queryset = Donador.objects.order_by('-activo')
+    success_url = reverse_lazy('lista_donante')
 
     def get_queryset(self):
+        print (self)
         queryset = super(DonadorLista, self).get_queryset()
         filter1 = self.request.GET.get("grupo")
         filter2 = self.request.GET.get("factor")
@@ -87,11 +115,6 @@ class DonadorLista(ListView):
         if filter2 == '+' or filter2 == '-':
             queryset = queryset.filter(factor_sanguineo=str(filter2))
         return queryset
-
-    @method_decorator(permission_required('donador.view_donador', reverse_lazy('preperfil_donante')))
-    def dispatch(self, *args, **kwargs):
-        return super(DonadorLista, self).dispatch(*args, **kwargs)
-
 
 class DonadorModificar(UpdateView):
     model = Donador

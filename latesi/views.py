@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import logout as do_logout
 
 
+
+
+
 def inicio(request):
     context = {'foo': 'bar'}
     return render(request, 'index.html', context)

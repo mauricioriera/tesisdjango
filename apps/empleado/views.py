@@ -64,6 +64,7 @@ class EmpleadoLista(ListView):
     template_name = 'empleado/empleado_list.html'
 
 
+
     def get_queryset(self):
         queryset = super(EmpleadoLista, self).get_queryset()
         apellido = self.request.GET.get("apellido")

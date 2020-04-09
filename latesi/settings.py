@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 from django.urls import reverse_lazy
 
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -42,6 +43,7 @@ INSTALLED_APPS = [
     'apps.donador',
     'apps.hospital',
     'apps.jefedearea',
+
 ]
 
 MIDDLEWARE = [
@@ -55,6 +57,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'latesi.urls'
+
+
 
 TEMPLATES = [
     {
@@ -135,3 +139,9 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"),]
 LOGIN_REDIRECT_URL = reverse_lazy('validar_usuario')
 
 
+CELERY_EMAIL_BACKEND="django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST="smtp.gmail.com"
+EMAIL_USE_TLS=True
+EMAIL_PORT=587
+EMAIL_HOST_USER="sistemadonar@gmail.com"
+EMAIL_HOST_PASSWORD="alsina2161"

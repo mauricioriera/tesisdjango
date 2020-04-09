@@ -61,7 +61,28 @@
                             <td class="text-center">{{empleado.calcularEdad}}</td>
                             <td class="text-center">{{empleado.numero_legajo}}</td>
                             <td class="text-center"><a class="btn btn-info" href="{% url 'perfil_empleado' pk=empleado.pk %}" title="Ver perfil"><i class="fas fa-address-card"></i></a></td>
-                            <td class="text-center"><a class="btn btn-danger" href="{% url 'empleado_borrar' pk=empleado.user_id %}">Eliminar</a></td>
+                            <td class="text-center"><a class="btn btn-danger" href="#" data-target="#modal{{empleado.user_id}}" data-toggle="modal" title="Eliminar"><i class="far fa-trash-alt"></i></a></td>
+
+                            <div class="modal fade" id="modal{{empleado.user_id}}">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <!-- header de modal -->
+                                            <h4 class="modal-title">Eliminar Donante</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        </div>
+                                        <!-- cuerpo del modal -->
+                                        <div class="modal-body">
+                                            <p> Confirma que quiere eliminar el donante </p>
+                                        </div>
+                                        <!--footer del modal -->
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                                            <a class="btn btn-danger" href="{% url 'empleado_borrar' pk=empleado.user_id %}" >Eliminar</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </tr>
 
                         {% endfor %}

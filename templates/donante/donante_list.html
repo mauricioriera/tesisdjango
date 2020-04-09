@@ -65,7 +65,7 @@
                             <th class="text-center">Genero</th>
                             <th class="text-center">Grupo Sanguineo</th>
                             <th class="text-center">Factor Sanguineo</th>
-                            <th class="text-center" colspan="3">Acci&oacute;n</th>
+                            <th class="text-center" colspan="4">Acci&oacute;n</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -85,10 +85,34 @@
                                 {% endif %}
                             </td>
                             <td class="text-center"><a class="btn btn-info" href="{% url 'perfil_donante' pk=donador.pk %}" title="Ver perfil"><i class="fas fa-address-card"></i></a></td>
-                            <td class="text-center"><a class="btn btn-danger" href="{% url 'eliminar_donante' pk=donador.user_id %}">Eliminar</a></td>
-                        </tr>
 
+                            <td class="text-center"><a class="btn btn-danger" href="#" data-target="#modal{{donador.pk}}" data-toggle="modal" title="Eliminar"><i class="far fa-trash-alt"></i></a></td>
+
+                            <td class="text-center"><a class="btn btn-primary" href="{% url 'enviarmail_donante' pk=donador.pk %}"  title="Enviar mail"><i class="far fa-envelope"></i></a></td>
+
+                            <div class="modal fade" id="modal{{donador.pk}}">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <!-- header de modal -->
+                                            <h4 class="modal-title">Eliminar Donante</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        </div>
+                                        <!-- cuerpo del modal -->
+                                        <div class="modal-body">
+                                            <p> Confirma que quiere eliminar el donante </p>
+                                        </div>
+                                        <!--footer del modal -->
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                                            <a class="btn btn-danger" href="{% url 'eliminar_donante' pk=donador.user_id %}" >Eliminar</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </tr>
                         {% endfor %}
+
                         {% else %}
                         <h1><center>No hay Donantes registrados</center></h1>
                         {% endif %}
