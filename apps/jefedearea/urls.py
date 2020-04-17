@@ -1,6 +1,6 @@
 from django.urls import path
 from django.contrib.auth.decorators import login_required
-from apps.jefedearea.views import JefedeAreaCrear,JefedeAreaLista,JefedeAreaModificar,JefedeAreaBorrar,perfil,preperfil
+from apps.jefedearea.views import JefedeAreaCrear,JefedeAreaLista,JefedeAreaModificar,JefedeAreaBorrar,perfil,preperfil,reporte
 
 urlpatterns =[
     path('nuevo/',login_required(JefedeAreaCrear.as_view()), name= 'jefedearea_crear'),
@@ -9,4 +9,5 @@ urlpatterns =[
     path('perfil/<int:pk>/',login_required(perfil),name='perfil_jefedearea'),
     path('modificar/<int:pk>/',login_required(JefedeAreaModificar.as_view()),name='jefedearea_modificar'),
     path('borrar/<int:pk>/',login_required(JefedeAreaBorrar.as_view()),name='jefedearea_borrar'),
+    path('reporte',login_required(reporte),name='generar_reporte')
 ]

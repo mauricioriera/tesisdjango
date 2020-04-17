@@ -13,8 +13,7 @@ from threading import Thread
 
 
 
-
-def enviarmail(request,pk):
+def enviarmail(request, pk):
     d = Donador.objects.get(pk=pk)
     subject = 'DONAR SANGRE'
     message = 'mensaje'
@@ -24,25 +23,19 @@ def enviarmail(request,pk):
     return redirect('lista_donante')
 
 
-
-
-
-def hilo(request, pk,self=ListView):
+def hilo(request, pk):
     t = Thread(target=enviarmail,args=(request,pk))
     t.start()
-
-    DonadorLista.get_queryset(self)
-    return redirect('lista_donante')
+    return redirect("lista_donante")
 
 
-
-def perfil (request, pk):
+def perfil(request, pk):
     d = Donador.objects.get(pk=pk)
     donante= request.user.groups.filter(name='Donantes').exists()
     return render(request, 'donante/donante_profile.html', {'donador': d ,'donante': donante})
 
 
-def activacion(request,pk):
+def activacion(request, pk):
     donador = get_object_or_404(Donador, pk=pk)
     if request.user.groups.filter(name='Donantes').exists():
         return redirect('lista_donante')
@@ -74,14 +67,14 @@ class DonadorCrear(CreateView):
     def dispatch(self, request, *args, **kwargs):
         if not self.request.session.is_empty() and self.request.user.groups.filter(name='Donantes').exists():
             return redirect(reverse_lazy('preperfil_donante'))
-        return super(DonadorCrear, self).dispatch(request,*args,**kwargs)
+        return super(DonadorCrear, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(DonadorCrear, self).get_context_data(**kwargs)
         if 'form' not in context:
             context['form'] = self.form_class(self.request.GET)
         if 'form2' not in context:
-            context['form2'] =self.second_form_class(self.request.GET)
+            context['form2'] = self.second_form_class(self.request.GET)
             return context
 
     def post(self, request, *args, **kwargs):
@@ -106,7 +99,6 @@ class DonadorLista(ListView):
     success_url = reverse_lazy('lista_donante')
 
     def get_queryset(self):
-        print (self)
         queryset = super(DonadorLista, self).get_queryset()
         filter1 = self.request.GET.get("grupo")
         filter2 = self.request.GET.get("factor")
@@ -115,6 +107,7 @@ class DonadorLista(ListView):
         if filter2 == '+' or filter2 == '-':
             queryset = queryset.filter(factor_sanguineo=str(filter2))
         return queryset
+
 
 class DonadorModificar(UpdateView):
     model = Donador
@@ -153,6 +146,7 @@ class DonadorModificar(UpdateView):
             return HttpResponseRedirect(self.get_success_url())
         else:
             return HttpResponseRedirect(self.get_success_url())
+
 
 class DonadorEliminar(DeleteView):
     model = User

@@ -8,6 +8,56 @@ from apps.jefedearea.forms import RegistroForm, JefedeAreaForm,ModificarForm
 from django.views.generic import CreateView, ListView, DeleteView, UpdateView
 from django.contrib.auth.models import User, Group
 from apps.jefedearea.models import JefedeArea
+from apps.donador.models import Donador
+
+from apps.jefedearea.barChart import BarChart
+from django.http import HttpResponse
+from io import BytesIO
+from reportlab.platypus import SimpleDocTemplate, Paragraph, TableStyle
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import A4
+from reportlab.platypus import Table
+
+
+def reporte(request):
+    response = HttpResponse(content_type='application/pdf')
+    archivo = "estadistica.pdf"
+    response['Content-Disposition'] = 'attachment; filename=%s' % archivo
+    buff = BytesIO()
+    doc = SimpleDocTemplate(buff,
+                            pagesize=A4,
+                            rightMargin=40,
+                            leftMargin=40,
+                            topMargin=60,
+                            bottomMargin=18,
+                            )
+    contenido = []
+    styles = getSampleStyleSheet()
+    header = Paragraph("Dadores de Sangre", styles['Heading1'])
+    contenido.append(header)
+    headings = ('Nombre', 'Email', 'Edad', 'Dirección')
+    allclientes = [(d.user.username, d.user.email , d.calcularEdad, d.direccion) for d in Donador.objects.all()]
+
+    d = BarChart()
+
+    # get a GIF (or PNG, JPG, or whatever)
+    binaryStuff = d.asString('png')
+    contenido.append(d)
+
+    ''' t = Table([headings])
+    t.setStyle(TableStyle(
+        [
+            ('GRID', (0, 0), (3, -1), 1, colors.dodgerblue),
+            ('LINEBELOW', (0, 0), (-1, 0), 2, colors.darkblue),
+            ('BACKGROUND', (0, 0), (-1, 0), colors.dodgerblue)
+        ]
+    ))
+    contenido.append(t)'''
+    doc.build(contenido)
+    response.write(buff.getvalue())
+    buff.close()
+    return response
 
 
 class preperfil(ListView):
