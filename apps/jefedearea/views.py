@@ -2,63 +2,118 @@
 from django.contrib.auth.decorators import permission_required
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
 from apps.jefedearea.forms import RegistroForm, JefedeAreaForm,ModificarForm
 from django.views.generic import CreateView, ListView, DeleteView, UpdateView
 from django.contrib.auth.models import User, Group
 from apps.jefedearea.models import JefedeArea
 from apps.donador.models import Donador
+import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use('Agg')
+import numpy as np
+from datetime import datetime as date
+from matplotlib.backends.backend_pdf import PdfPages
+from reportlab.lib.pagesizes import A4
 
-from apps.jefedearea.barChart import BarChart
+
 from django.http import HttpResponse
 from io import BytesIO
 from reportlab.platypus import SimpleDocTemplate, Paragraph, TableStyle
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib import colors
-from reportlab.lib.pagesizes import A4
+
 from reportlab.platypus import Table
 
 
-def reporte(request):
-    response = HttpResponse(content_type='application/pdf')
-    archivo = "estadistica.pdf"
-    response['Content-Disposition'] = 'attachment; filename=%s' % archivo
-    buff = BytesIO()
-    doc = SimpleDocTemplate(buff,
-                            pagesize=A4,
-                            rightMargin=40,
-                            leftMargin=40,
-                            topMargin=60,
-                            bottomMargin=18,
-                            )
-    contenido = []
-    styles = getSampleStyleSheet()
-    header = Paragraph("Dadores de Sangre", styles['Heading1'])
-    contenido.append(header)
-    headings = ('Nombre', 'Email', 'Edad', 'Dirección')
-    allclientes = [(d.user.username, d.user.email , d.calcularEdad, d.direccion) for d in Donador.objects.all()]
+def reporte(request,):
 
-    d = BarChart()
-
-    # get a GIF (or PNG, JPG, or whatever)
-    binaryStuff = d.asString('png')
-    contenido.append(d)
-
-    ''' t = Table([headings])
-    t.setStyle(TableStyle(
-        [
-            ('GRID', (0, 0), (3, -1), 1, colors.dodgerblue),
-            ('LINEBELOW', (0, 0), (-1, 0), 2, colors.darkblue),
-            ('BACKGROUND', (0, 0), (-1, 0), colors.dodgerblue)
-        ]
-    ))
-    contenido.append(t)'''
-    doc.build(contenido)
-    response.write(buff.getvalue())
-    buff.close()
-    return response
-
+    cant_donantes=Donador.objects.all().count()
+    nombre=(date.now().strftime('reporte %d-%m-%y %H.%M.%S.pdf'))
+    with PdfPages(nombre) as pdf:
+        genero=[Donador.objects.filter(genero='M').count(), Donador.objects.filter(genero='F').count()]
+        cuenta=[(genero[0]*100)/cant_donantes,(genero[1]*100)/cant_donantes]
+        labels=["Hombres","Mujeres"]
+        two=[f"{cuenta[0]}% = {genero[0]}",f"{cuenta[1]}% = {genero[1]}"]
+        colors=['yellow', 'red']
+        plt.title('REPORTE DONANTES')
+        plt.suptitle("cantidad de donantes ", x=0.52, y=0.89,)
+        plt.pie(genero, colors=colors, autopct='%1.2f %%')
+        first_legend=plt.legend(labels, loc="upper right")
+        plt.gca().add_artist(first_legend)
+        plt.legend(two, loc="lower right")
+        plt.axis('equal')
+        pdf.savefig()
+        plt.close()
+        plt.title('Cantidad de donantes \n segun rango de edad')
+        edadh=[(d.calcularEdad) for d in Donador.objects.filter(genero='M')]
+        edadm=[(d.calcularEdad) for d in Donador.objects.filter(genero='F')]
+        lista1=[]
+        lista2=[]
+        lista3=[]
+        lista4=[]
+        lista5=[]
+        lista6=[]
+        lista7=[]
+        lista8=[]
+        for i in edadh:
+            if i>=18 and i<=30:
+                lista1.append(i)
+            elif i>30 and i<+40:
+                lista2.append(i)
+            elif i>40 and i<=50:
+                lista3.append(i)
+            else:
+                lista4.append(i)
+        for i in edadm:
+            if i>=18 and i<=30:
+                lista5.append(i)
+            elif i>30 and i<+40:
+                lista6.append(i)
+            elif i>40 and i<=50:
+                lista7.append(i)
+            else:
+                lista8.append(i)
+        edadesh=[len(lista1),len(lista2),len(lista3),len(lista4)]
+        edadesm=[len(lista5),len(lista6),len(lista7),len(lista8)]
+        labels=[('18-30'),('31-40'),('41-50'),('51-65')]
+        ind=np.arange(4)
+        width=0.35
+        p1 = plt.bar(ind, edadesh, width, color="blue")
+        p2 = plt.bar(ind, edadesm, width,color="red",bottom=edadesh)
+        plt.ylabel('cantidad de personas')
+        plt.xticks(ind,labels)
+        plt.yticks(np.arange(0, 10, 1))
+        plt.legend((p1[0], p2[0]), ('Hombres', 'Mujeres'))
+        pdf.savefig()
+        plt.close()
+        plt.title('Cantidad de donantes \n segun grupo y factor')
+        grupo=[Donador.objects.filter(grupo_sanguineo='A',factor_sanguineo='+').count(),Donador.objects.filter(grupo_sanguineo='A',factor_sanguineo='-').count(),
+               Donador.objects.filter(grupo_sanguineo='B', factor_sanguineo='+').count(),Donador.objects.filter(grupo_sanguineo='B',factor_sanguineo='-').count(),
+               Donador.objects.filter(grupo_sanguineo='0', factor_sanguineo='+').count(),Donador.objects.filter(grupo_sanguineo='0',factor_sanguineo='-').count(),
+               Donador.objects.filter(grupo_sanguineo='AB', factor_sanguineo='+').count(),Donador.objects.filter(grupo_sanguineo='AB',factor_sanguineo='-').count()]
+        labels=[" A+ "," A- "," B+ "," B- "," 0+ "," 0- "," AB+ "," AB- "]
+        plt.bar(range(8),grupo, edgecolor='black')
+        plt.xticks(range(8),labels)
+        plt.xlabel('Grupo/Factor')
+        plt.ylabel('Cantidad de Persona')
+        pdf.savefig()
+        plt.close()
+        plt.suptitle('Cantidad de donantes \n activos')
+        activos=[Donador.objects.filter(activo=True).count(),Donador.objects.filter(activo=False).count()]
+        cuenta=[(activos[0]*100)/cant_donantes,(activos[1]*100)/cant_donantes]
+        labels=["Activos", "No activos"]
+        two = [f"{cuenta[0]}% = {activos[0]}", f"{cuenta[1]}% = {activos[1]}"]
+        colors=["green",'red']
+        plt.pie(activos, colors=colors, autopct=lambda p: '{:.1f}%'.format(round(p)) if p > 0 else '')
+        first_legend = plt.legend(labels, loc="upper right")
+        plt.gca().add_artist(first_legend)
+        plt.legend(two, loc="lower right")
+        plt.axis('equal')
+        pdf.savefig()
+        plt.close()
+        return redirect('inicio')
 
 class preperfil(ListView):
     model: JefedeArea
@@ -174,10 +229,10 @@ class JefedeAreaModificar(UpdateView):
         else:
             return HttpResponseRedirect(self.get_success_url())
 
-    @method_decorator(permission_required('donador.update_jefedearea', reverse_lazy('preperfil_donante')))
+    '''@method_decorator(permission_required('donador.update_jefedearea', reverse_lazy('preperfil_donante')))
     def dispatch(self, *args, **kwargs):
         return super(JefedeAreaModificar, self).dispatch(*args, **kwargs)
 
     @method_decorator(permission_required('empleado.update_jefedearea', reverse_lazy('lista_donante')))
     def dispatch(self, *args, **kwargs):
-        return super(JefedeAreaModificar, self).dispatch(*args, **kwargs)
+        return super(JefedeAreaModificar, self).dispatch(*args, **kwargs)'''

@@ -16,7 +16,7 @@ def validacion(request):
         elif request.user.groups.filter(name="Empleado").exists():
             return redirect('lista_donante')
         elif request.user.groups.filter(name="Jefe de Área").exists():
-            return redirect('jefedearea_listar')
+            return redirect('empleado_listar')
 
 
 def logout(request):
