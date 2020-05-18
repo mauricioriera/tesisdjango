@@ -1,38 +1,73 @@
 {% extends "base/base.html" %}
 {% block title %}Pagina Acceso al Sistema{% endblock %}
 {% block content %}
-        <section class="page-header">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-12 text-center">
-                      <h3>ACCESO</h3>
-                    </div>
-                </div>
+
+<section class="page-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 text-center">
+                <h3>ACCESO</h3>
             </div>
-        </section>
-  <body>
-    <section class="login">
-        <form method="post">
-            {% csrf_token %}
-            <br class="row">
-                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 offset-4">
-                    <div class="form-group">
-                        <label for="username"><i class="fa fa-user"></i>    Usuario:</label>
-                        <input class="form-control" type="text" id="username" name="username"/>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 offset-4">
-                     <div class="form-group">
-                    <label for="username"><i class="fas fa-lock"></i>    Contraseña:</label>
-                         <input class="form-control" type="password" id="password" name="password">
-                    </div>
-                </div>
-                <div class="col-sm-12 text-center">
-                <button class="btn btn-success btn-lg boton2" role="button" type="submit"> Ingresar</button>
-                </div>
-            <br>
-            <br>
-        </form>
-    </section>
-  </body>
+        </div>
+    </div>
+</section>
+<body>
+{% if donante %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 offset-4">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>HOLA {{user.username.upper}}</strong> No puedes ingresar a dicha url,
+                <br>
+                no tiene los permisos requeridos.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% elif empleado %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 offset-4">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>HOLA {{user.username.upper}}</strong> No puedes ingresar a dicha url,
+                <br>
+                no tiene los permisos requeridos.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+ <a class="btn btn-primary" href="#" onclick="window.history.go(-1); return false;"> Volver</a>
+{% endif %}
+
+
+<section class="login">
+    <form method="post">
+        {% csrf_token %}
+        <br class="row">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 offset-4">
+            <div class="form-group">
+                <label for="username"><i class="fa fa-user"></i> Usuario:</label>
+                <input class="form-control" type="text" id="username" name="username"/>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 offset-4">
+            <div class="form-group">
+                <label for="username"><i class="fas fa-lock"></i> Contraseña:</label>
+                <input class="form-control" type="password" id="password" name="password">
+            </div>
+        </div>
+        <div class="col-sm-12 text-center">
+            <button class="btn btn-success btn-lg boton2" role="button" type="submit"> Ingresar</button>
+        </div>
+        <br>
+        <br>
+    </form>
+</section>
+</body>
 {% endblock %}

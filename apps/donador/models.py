@@ -1,3 +1,4 @@
+
 from django.db import models
 from django.contrib.auth.models import User,Group
 
@@ -38,3 +39,4 @@ class Donador(models.Model):
         days_in_year =365.2425
         age = int((date.today() - self.fecha_nacimiento).days / days_in_year)
         return age
+

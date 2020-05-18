@@ -1,10 +1,9 @@
-from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.mixins import AccessMixin
 from django.core.mail import send_mail
 from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.utils.decorators import method_decorator
 from apps.donador.forms import DonadorForm, RegistroForm, ModificarForm
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from apps.donador.models import Donador
@@ -64,10 +63,9 @@ class DonadorCrear(CreateView):
     template_name = 'donante/donante_add.html'
     success_url = reverse_lazy('inicio')
 
-    def dispatch(self, request, *args, **kwargs):
-        if not self.request.session.is_empty() and self.request.user.groups.filter(name='Donantes').exists():
-            return redirect(reverse_lazy('preperfil_donante'))
-        return super(DonadorCrear, self).dispatch(request, *args, **kwargs)
+
+
+
 
     def get_context_data(self, **kwargs):
         context = super(DonadorCrear, self).get_context_data(**kwargs)
@@ -93,8 +91,8 @@ class DonadorCrear(CreateView):
 
 
 
-class DonadorLista(ListView):
-    model = Donador
+
+class DonadorLista(AccessMixin,ListView):
     template_name = 'donante/donante_list.html'
     queryset = Donador.objects.order_by('-activo')
     success_url = reverse_lazy('lista_donante')
@@ -108,6 +106,15 @@ class DonadorLista(ListView):
         if filter2 == '+' or filter2 == '-':
             queryset = queryset.filter(factor_sanguineo=str(filter2))
         return queryset
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return self.handle_no_permission()
+        if self.request.user.groups.filter(name='Donantes').exists():
+            user=self.request.user
+            return render(request, 'registration/login.html', {'donante': user})
+        return super().dispatch(request, *args, **kwargs)
+
 
 
 class DonadorModificar(UpdateView):

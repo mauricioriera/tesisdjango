@@ -10,5 +10,5 @@ urlpatterns = [
     path('modificar_donante/<int:pk>/',login_required(DonadorModificar.as_view()), name='modificar_donante'),
     path('eliminar_donante/<int:pk>/',login_required(DonadorEliminar.as_view()), name='eliminar_donante'),
     path('cambiar_activacion/<int:pk>/',login_required(activacion), name='activar_donante'),
-    path('enviar_mail/<int:pk>',login_required(hilo),name='enviarmail_donante')
+    path('enviar_mail/<int:pk>/',login_required(hilo),name='enviarmail_donante')
 ]

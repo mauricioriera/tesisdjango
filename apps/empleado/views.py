@@ -1,12 +1,11 @@
-from django.contrib.auth.decorators import permission_required
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.utils.decorators import method_decorator
 from apps.empleado.forms import EmpleadoForm, RegistroForm,ModificarForm
 from django.views.generic import CreateView,ListView,DeleteView,UpdateView
 from apps.empleado.models import Empleado
 from django.contrib.auth.models import User, Group
+from django.contrib.auth.mixins import AccessMixin
 
 
 
@@ -21,8 +20,7 @@ def perfil (request,pk):
     e = Empleado.objects.get(pk=pk)
     return render(request, 'empleado/empleado_profile.html', {'empleado': e})
 
-
-class EmpleadoCrear(CreateView):
+class EmpleadoCrear(AccessMixin,CreateView):
     model = Empleado
     form_class = EmpleadoForm
     second_form_class = RegistroForm
@@ -51,19 +49,18 @@ class EmpleadoCrear(CreateView):
         else:
             return self.render_to_response(self.get_context_data(form=form, form2=form2))
 
-    @method_decorator(permission_required('donador.add_empleado', reverse_lazy('preperfil_donante')))
-    def dispatch(self, *args, **kwargs):
-        return super(EmpleadoCrear, self).dispatch(*args, **kwargs)
-
-    @method_decorator(permission_required('empleado.view_empleado', reverse_lazy('lista_donante')))
-    def dispatch(self, *args, **kwargs):
-        return super(EmpleadoCrear, self).dispatch(*args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return self.handle_no_permission()
+        if not self.request.user.groups.filter(name="Jefe de Área").exists():
+            empleado=self.request.user.groups.filter(name='Empleado').exists()
+            donante=self.request.user.groups.filter(name='Donantes').exists()
+            return render(request,'registration/login.html',{'donante': donante,'empleado': empleado})
+        return super().dispatch(request, *args, **kwargs)
 
 class EmpleadoLista(ListView):
     model = Empleado
     template_name = 'empleado/empleado_list.html'
-
-
 
     def get_queryset(self):
         queryset = super(EmpleadoLista, self).get_queryset()
@@ -72,13 +69,15 @@ class EmpleadoLista(ListView):
             queryset = queryset.filter(user__last_name__icontains=apellido)
         return queryset
 
-    @method_decorator(permission_required('donador.view_empleado', reverse_lazy('preperfil_donante')))
+
+
+    '''@method_decorator(permission_required('donador.view_empleado', reverse_lazy('preperfil_donante')))
     def dispatch(self, *args, **kwargs):
         return super(EmpleadoLista, self).dispatch(*args, **kwargs)
 
     @method_decorator(permission_required('empleado.view_empleado', reverse_lazy('lista_donante')))
     def dispatch(self, *args, **kwargs):
-        return super(EmpleadoLista, self).dispatch(*args, **kwargs)
+        return super(EmpleadoLista, self).dispatch(*args, **kwargs)'''
 
 
 

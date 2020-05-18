@@ -15,23 +15,14 @@ matplotlib.use('Agg')
 import numpy as np
 from datetime import datetime as date
 from matplotlib.backends.backend_pdf import PdfPages
-from reportlab.lib.pagesizes import A4
 
 
-from django.http import HttpResponse
-from io import BytesIO
-from reportlab.platypus import SimpleDocTemplate, Paragraph, TableStyle
-from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.lib import colors
 
-from reportlab.platypus import Table
-
-
-def reporte(request,):
+def reporte(request):
 
     cant_donantes=Donador.objects.all().count()
     nombre=(date.now().strftime('reporte %d-%m-%y %H.%M.%S.pdf'))
-    with PdfPages(nombre) as pdf:
+    with PdfPages(f"C:/Users/Mauricio/Desktop/archivo/{nombre}") as pdf:
         genero=[Donador.objects.filter(genero='M').count(), Donador.objects.filter(genero='F').count()]
         cuenta=[(genero[0]*100)/cant_donantes,(genero[1]*100)/cant_donantes]
         labels=["Hombres","Mujeres"]
@@ -90,9 +81,9 @@ def reporte(request,):
         plt.close()
         plt.title('Cantidad de donantes \n segun grupo y factor')
         grupo=[Donador.objects.filter(grupo_sanguineo='A',factor_sanguineo='+').count(),Donador.objects.filter(grupo_sanguineo='A',factor_sanguineo='-').count(),
-               Donador.objects.filter(grupo_sanguineo='B', factor_sanguineo='+').count(),Donador.objects.filter(grupo_sanguineo='B',factor_sanguineo='-').count(),
-               Donador.objects.filter(grupo_sanguineo='0', factor_sanguineo='+').count(),Donador.objects.filter(grupo_sanguineo='0',factor_sanguineo='-').count(),
-               Donador.objects.filter(grupo_sanguineo='AB', factor_sanguineo='+').count(),Donador.objects.filter(grupo_sanguineo='AB',factor_sanguineo='-').count()]
+                Donador.objects.filter(grupo_sanguineo='B', factor_sanguineo='+').count(),Donador.objects.filter(grupo_sanguineo='B',factor_sanguineo='-').count(),
+                   Donador.objects.filter(grupo_sanguineo='0', factor_sanguineo='+').count(),Donador.objects.filter(grupo_sanguineo='0',factor_sanguineo='-').count(),
+                   Donador.objects.filter(grupo_sanguineo='AB', factor_sanguineo='+').count(),Donador.objects.filter(grupo_sanguineo='AB',factor_sanguineo='-').count()]
         labels=[" A+ "," A- "," B+ "," B- "," 0+ "," 0- "," AB+ "," AB- "]
         plt.bar(range(8),grupo, edgecolor='black')
         plt.xticks(range(8),labels)
@@ -113,7 +104,7 @@ def reporte(request,):
         plt.axis('equal')
         pdf.savefig()
         plt.close()
-        return redirect('inicio')
+    return redirect('inicio')
 
 class preperfil(ListView):
     model: JefedeArea
@@ -199,7 +190,7 @@ class JefedeAreaModificar(UpdateView):
     form_class = JefedeAreaForm
     second_form_class = ModificarForm
     template_name = 'jefedearea/jefedearea_update.html'
-    success_url = reverse_lazy('jefedearea_listar')
+    success_url = reverse_lazy('empleado_listar')
 
     def get_context_data(self, **kwargs):
         context = super(JefedeAreaModificar, self).get_context_data(**kwargs)
