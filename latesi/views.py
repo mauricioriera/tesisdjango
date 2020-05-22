@@ -1,8 +1,5 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, render_to_response
 from django.contrib.auth import logout as do_logout
-
-
-
 
 
 def inicio(request):
@@ -22,3 +19,6 @@ def validacion(request):
 def logout(request):
     do_logout(request)
     return redirect('inicio')
+
+def errorpage(request):
+    return render_to_response('error.html')

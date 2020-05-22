@@ -1,10 +1,9 @@
-from django.shortcuts import render
-from django.http import HttpResponse
 
-# Create your views here.
+from django.shortcuts import redirect
+
 
 def index_hospital(request):
-    return HttpResponse("soy la pagina hospital index")
+    return redirect('pagina_error')
 
 
-# Create your views here.
+

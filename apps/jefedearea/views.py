@@ -1,9 +1,7 @@
-
-from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.mixins import AccessMixin
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect
-from django.utils.decorators import method_decorator
 from apps.jefedearea.forms import RegistroForm, JefedeAreaForm,ModificarForm
 from django.views.generic import CreateView, ListView, DeleteView, UpdateView
 from django.contrib.auth.models import User, Group
@@ -106,6 +104,7 @@ def reporte(request):
         plt.close()
     return redirect('inicio')
 
+
 class preperfil(ListView):
     model: JefedeArea
     template_name = 'jefedearea/jefedearea_preprofile.html'
@@ -119,7 +118,7 @@ def perfil(request, pk):
     return render(request, 'jefedearea/jefedearea_profile.html', {'jefedearea': j})
 
 
-class JefedeAreaCrear(CreateView):
+class JefedeAreaCrear(AccessMixin,CreateView):
     model = JefedeArea
     form_class = JefedeAreaForm
     second_form_class = RegistroForm
@@ -148,43 +147,40 @@ class JefedeAreaCrear(CreateView):
         else:
             return self.render_to_response(self.get_context_data(form=form, form2=form2))
 
-    @method_decorator(permission_required('donador.add_jefedearea', reverse_lazy('preperfil_donante')))
-    def dispatch(self, *args, **kwargs):
-        return super(JefedeAreaCrear, self).dispatch(*args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return self.handle_no_permission()
+        if self.request.user.groups.filter(name__in=['Donantes','Empleado','Jefe de Área']).exists():
+            return redirect('pagina_error')
+        return super().dispatch(request, *args, **kwargs)
 
-    @method_decorator(permission_required('empleado.add_jefedearea', reverse_lazy('lista_donante')))
-    def dispatch(self, *args, **kwargs):
-        return super(JefedeAreaCrear, self).dispatch(*args, **kwargs)
 
-
-class JefedeAreaLista(ListView):
+class JefedeAreaLista(AccessMixin,ListView):
     model = JefedeArea
     template_name = 'jefedearea/jefedearea_list.html'
 
-    '''@method_decorator(permission_required('donador.view_jefedearea', reverse_lazy('preperfil_donante')))
-    def dispatch(self, *args, **kwargs):
-        return super(JefedeAreaLista, self).dispatch(*args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return self.handle_no_permission()
+        if self.request.user.groups.filter(name__in=['Donantes','Empleado','Jefe de Área']).exists():
+            return redirect('pagina_error')
+        return super().dispatch(request, *args, **kwargs)
 
-    @method_decorator(permission_required('empleado.view_jefedearea', reverse_lazy('lista_donante')))
-    def dispatch(self, *args, **kwargs):
-        return super(JefedeAreaLista, self).dispatch(*args, **kwargs)'''
 
-
-class JefedeAreaBorrar(DeleteView):
+class JefedeAreaBorrar(AccessMixin,DeleteView):
     model = User
     template_name = 'jefedearea/jefedearea_delete.html'
     success_url = reverse_lazy('jefedearea_listar')
 
-    @method_decorator(permission_required('donador.delete_jefedearea', reverse_lazy('preperfil_donante')))
-    def dispatch(self, *args, **kwargs):
-        return super(JefedeAreaBorrar, self).dispatch(*args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return self.handle_no_permission()
+        if self.request.user.groups.filter(name__in=['Donantes','Empleado','Jefe de Área']).exists():
+            return redirect('pagina_error')
+        return super().dispatch(request, *args, **kwargs)
 
-    @method_decorator(permission_required('empleado.delete_jefedearea', reverse_lazy('lista_donante')))
-    def dispatch(self, *args, **kwargs):
-        return super(JefedeAreaBorrar, self).dispatch(*args, **kwargs)
 
-
-class JefedeAreaModificar(UpdateView):
+class JefedeAreaModificar(AccessMixin,UpdateView):
     model = JefedeArea
     second_model = User
     form_class = JefedeAreaForm
@@ -220,10 +216,9 @@ class JefedeAreaModificar(UpdateView):
         else:
             return HttpResponseRedirect(self.get_success_url())
 
-    '''@method_decorator(permission_required('donador.update_jefedearea', reverse_lazy('preperfil_donante')))
-    def dispatch(self, *args, **kwargs):
-        return super(JefedeAreaModificar, self).dispatch(*args, **kwargs)
-
-    @method_decorator(permission_required('empleado.update_jefedearea', reverse_lazy('lista_donante')))
-    def dispatch(self, *args, **kwargs):
-        return super(JefedeAreaModificar, self).dispatch(*args, **kwargs)'''
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return self.handle_no_permission()
+        if self.request.user.groups.filter(name__in=['Donantes','Empleado']).exists():
+            return redirect('pagina_error')
+        return super().dispatch(request, *args, **kwargs)

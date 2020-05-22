@@ -2,10 +2,18 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   <form name='envia' method='POST' >
-       {% csrf_token %}
-        <meta http-equiv="refresh" content="0;{% url 'lista_donante' %}">
-</form>
+
+       {% if donante %} ver como hcaer que funcione
+            <form name='envia' method='POST' >
+            {% csrf_token %}
+            <meta http-equiv="refresh" content="0;{% url 'inicio' %}">
+            </form>
+       {% else %}
+            <form name='envia' method='POST' >
+                {% csrf_token %}
+            <meta http-equiv="refresh" content="0;{% url 'lista_donante' %}">
+            </form>
+       {% endif %}
 <script language="JavaScript">
 document.envia.submit()
 </script>";

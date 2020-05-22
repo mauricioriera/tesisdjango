@@ -2,14 +2,13 @@ from django.contrib.auth.mixins import AccessMixin
 from django.core.mail import send_mail
 from django.conf import settings
 from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import get_object_or_404, redirect, render, render_to_response
 from django.urls import reverse_lazy
 from apps.donador.forms import DonadorForm, RegistroForm, ModificarForm
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from apps.donador.models import Donador
 from django.contrib.auth.models import Group, User
 from threading import Thread
-
 
 
 def enviarmail(request, pk):
@@ -63,10 +62,6 @@ class DonadorCrear(CreateView):
     template_name = 'donante/donante_add.html'
     success_url = reverse_lazy('inicio')
 
-
-
-
-
     def get_context_data(self, **kwargs):
         context = super(DonadorCrear, self).get_context_data(**kwargs)
         if 'form' not in context:
@@ -90,8 +85,6 @@ class DonadorCrear(CreateView):
             return self.render_to_response(self.get_context_data(form=form, form2=form2))
 
 
-
-
 class DonadorLista(AccessMixin,ListView):
     template_name = 'donante/donante_list.html'
     queryset = Donador.objects.order_by('-activo')
@@ -111,10 +104,8 @@ class DonadorLista(AccessMixin,ListView):
         if not request.user.is_authenticated:
             return self.handle_no_permission()
         if self.request.user.groups.filter(name='Donantes').exists():
-            user=self.request.user
-            return render(request, 'registration/login.html', {'donante': user})
+            return redirect('pagina_error')
         return super().dispatch(request, *args, **kwargs)
-
 
 
 class DonadorModificar(UpdateView):

@@ -8,7 +8,6 @@ from django.contrib.auth.models import User, Group
 from django.contrib.auth.mixins import AccessMixin
 
 
-
 class preperfil(ListView):
     model: Empleado
     template_name = 'empleado/empleado_preprofile.html'
@@ -16,9 +15,11 @@ class preperfil(ListView):
     def get_queryset(self, *args, **kwargs):
         return Empleado.objects.filter(user=self.request.user)
 
+
 def perfil (request,pk):
     e = Empleado.objects.get(pk=pk)
     return render(request, 'empleado/empleado_profile.html', {'empleado': e})
+
 
 class EmpleadoCrear(AccessMixin,CreateView):
     model = Empleado
@@ -53,12 +54,11 @@ class EmpleadoCrear(AccessMixin,CreateView):
         if not request.user.is_authenticated:
             return self.handle_no_permission()
         if not self.request.user.groups.filter(name="Jefe de Área").exists():
-            empleado=self.request.user.groups.filter(name='Empleado').exists()
-            donante=self.request.user.groups.filter(name='Donantes').exists()
-            return render(request,'registration/login.html',{'donante': donante,'empleado': empleado})
+           return redirect('pagina_error')
         return super().dispatch(request, *args, **kwargs)
 
-class EmpleadoLista(ListView):
+
+class EmpleadoLista(AccessMixin,ListView):
     model = Empleado
     template_name = 'empleado/empleado_list.html'
 
@@ -69,34 +69,28 @@ class EmpleadoLista(ListView):
             queryset = queryset.filter(user__last_name__icontains=apellido)
         return queryset
 
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return self.handle_no_permission()
+        if not self.request.user.groups.filter(name="Jefe de Área").exists():
+           return redirect('pagina_error')
+        return super().dispatch(request, *args, **kwargs)
 
 
-    '''@method_decorator(permission_required('donador.view_empleado', reverse_lazy('preperfil_donante')))
-    def dispatch(self, *args, **kwargs):
-        return super(EmpleadoLista, self).dispatch(*args, **kwargs)
-
-    @method_decorator(permission_required('empleado.view_empleado', reverse_lazy('lista_donante')))
-    def dispatch(self, *args, **kwargs):
-        return super(EmpleadoLista, self).dispatch(*args, **kwargs)'''
-
-
-
-class EmpleadoBorrar(DeleteView):
+class EmpleadoBorrar(AccessMixin,DeleteView):
     model = User
     template_name = 'empleado/empleado_delete.html'
     success_url = reverse_lazy('empleado_listar')
 
-    '''ver este permiso por que no toma el modelo empleado
-    @method_decorator(permission_required('empleado.delete_empleado', reverse_lazy('lista_donante')))
-    def dispatch(self, *args, **kwargs):
-        return super(EmpleadoBorrar, self).dispatch(*args, **kwargs)
-
-    @method_decorator(permission_required('donador.delete_empleado', reverse_lazy('preperfil_donante')))
-    def dispatch(self, *args, **kwargs):
-        return super(EmpleadoBorrar, self).dispatch(*args, **kwargs)'''
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return self.handle_no_permission()
+        if not self.request.user.groups.filter(name="Jefe de Área").exists():
+           return redirect('pagina_error')
+        return super().dispatch(request, *args, **kwargs)
 
 
-class EmpleadoModificar(UpdateView):
+class EmpleadoModificar(AccessMixin,UpdateView):
     model = Empleado
     second_model = User
     form_class = EmpleadoForm
@@ -134,4 +128,9 @@ class EmpleadoModificar(UpdateView):
         else:
             return HttpResponseRedirect(self.get_success_url())
 
-        #pemitir modelo empleado y no donador no toma el decorator no me permite empleadolo haga#
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return self.handle_no_permission()
+        if self.request.user.groups.filter(name="Donantes").exists():
+           return redirect('pagina_error')
+        return super().dispatch(request, *args, **kwargs)

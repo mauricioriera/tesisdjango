@@ -12,40 +12,6 @@
     </div>
 </section>
 <body>
-{% if donante %}
-<div class="container">
-    <div class="row">
-        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 offset-4">
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>HOLA {{user.username.upper}}</strong> No puedes ingresar a dicha url,
-                <br>
-                no tiene los permisos requeridos.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-{% elif empleado %}
-<div class="container">
-    <div class="row">
-        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 offset-4">
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>HOLA {{user.username.upper}}</strong> No puedes ingresar a dicha url,
-                <br>
-                no tiene los permisos requeridos.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
- <a class="btn btn-primary" href="#" onclick="window.history.go(-1); return false;"> Volver</a>
-{% endif %}
-
-
 <section class="login">
     <form method="post">
         {% csrf_token %}

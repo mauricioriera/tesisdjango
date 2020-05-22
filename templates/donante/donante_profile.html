@@ -58,9 +58,31 @@
           <a class="btn btn-default" href="{% url 'inicio' %}">Volver</a>
         </div>
         <div class="col-lg-6 text-right" >
-          <a class="btn btn-success" href="{% url 'modificar_donante' pk=donador.pk %}">Modificar</a>
+            <a class="btn btn-warning"  href="#" data-target="#modal{{donador.pk}}" data-toggle="modal">Eliminar Perfil</a>
+            <a class="btn btn-success" href="{% url 'modificar_donante' pk=donador.pk %}">Modificar</a>
         </div>
       </div>
+          <div class="modal fade" id="modal{{donador.pk}}">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <!-- header de modal -->
+                                            <h4 class="modal-title">Eliminar Perfil</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        </div>
+                                        <!-- cuerpo del modal -->
+                                        <div class="modal-body">
+                                            <p> Confirma que desea eliminar su perfil</p>
+                                        </div>
+                                        <!--footer del modal -->
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                                            <a class="btn btn-danger" href="{% url 'eliminar_donante' pk=donador.user_id %}" >Eliminar</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </tr>
     {% else %}
           <div class="row">
             <div class="col-lg-6 text-left" >
@@ -70,6 +92,7 @@
                 <a class="btn btn-success" href="{% url 'modificar_donante' pk=donador.pk %}">Modificar</a>
             </div>
           </div>
+
 
     {% endif %}
     </div>
