@@ -1,6 +1,7 @@
 {% extends "base/base.html" %}
 {% block title %}Listado de Donadores{% endblock %}
 {% block content %}
+<head>
 <section class="page-header">
     <div class="container">
         <div class="row">
@@ -10,6 +11,22 @@
         </div>
     </div>
 </section>
+</head>
+    <div class="row">
+        <div class="col-md-4 offset-4">
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}succes{% else %}{{ message.tags }}{% endif %}{% endif %}" role="alert" id="alert"><strong>{{ message }}</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+        </div>
+    </div>
+<script>
+setTimeout(function() { $(".alert").alert('close'); }, 2000);
+</script>
 <section style="margin-top: 20px; margin-bottom: 20px;">
     <div class="container">
       <div class="card">
@@ -18,23 +35,22 @@
             </div>
             <div class="card-body">
               <h5 class="card-title">B&uacute;squeda</h5>
-              
               <form method="get">
                 <div class="form-row">
                     <div class="form-group col-md-4">
                         <select name="grupo" class="form-control">
-                                        <option>Seleccione un grupo</option>
-                                        <option>A</option>
-                                        <option>B</option>
-                                        <option>AB</option>
-                                        <option>0</option>
+                            <option>Seleccione un grupo</option>
+                            <option {% if request.session.grupo == 'A' %}selected{% endif %}>A</option>
+                            <option {% if request.session.grupo == 'B' %}selected{% endif %}>B</option>
+                            <option {% if request.session.grupo == 'AB' %}selected{% endif %}>AB</option>
+                            <option {% if request.session.grupo == '0' %}selected{% endif %}>0</option>
                         </select>
                     </div>
                     <div class="form-group col-md-4">
                         <select name="factor" class="form-control">
                             <option>Seleccione un factor</option>
-                            <option>+</option>
-                            <option>-</option>
+                            <option {% if request.session.factor == '+' %}selected{% endif %}>+</option>
+                            <option {% if request.session.factor == '-' %}selected{% endif %}>-</option>
                         </select>
                     </div>
                     <div class="form-group col-md-4 ">
@@ -51,6 +67,8 @@
             </div>
           </div>
 </section>
+<body>
+
     <section>
       <div class="container">
         <div class="row">
@@ -88,7 +106,7 @@
 
                             <td class="text-center"><a class="btn btn-danger" href="#" data-target="#modal{{donador.pk}}" data-toggle="modal" title="Eliminar"><i class="far fa-trash-alt"></i></a></td>
 
-                            <td class="text-center"><a class="btn btn-primary" href="{% url 'enviarmail_donante' pk=donador.pk %}"  title="Enviar mail"><i class="far fa-envelope"></i></a></td>
+                            <td class="text-center"><a class="btn btn-primary" href="{% url 'enviarmail_donante' pk=donador.pk %}" title="Enviar mail"><i class="far fa-envelope"></i></a></td>
 
                             <div class="modal fade" id="modal{{donador.pk}}">
                                 <div class="modal-dialog">
@@ -100,7 +118,7 @@
                                         </div>
                                         <!-- cuerpo del modal -->
                                         <div class="modal-body">
-                                            <p> Confirma que quiere eliminar el donante {{donante.user.username}}</p>
+                                            <p> Confirma que quiere eliminar el donante </p>
                                         </div>
                                         <!--footer del modal -->
                                         <div class="modal-footer">
@@ -123,4 +141,6 @@
         </div>
       </div>
     </section>
+</body>
 {% endblock %}
+

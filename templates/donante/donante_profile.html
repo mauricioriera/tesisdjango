@@ -1,6 +1,7 @@
 {% extends "base/base.html" %}
 {% block title %}Datos del Donante{% endblock %}
 {% block content %}
+<head>
 <section class="page-header">
   <div class="container">
       <div class="row">
@@ -10,7 +11,25 @@
       </div>
   </div>
 </section>
+</head>
+<body>
+        <div class="row">
+        <div class="col-md-4 offset-4">
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}succes{% else %}{{ message.tags }}{% endif %}{% endif %}" role="alert" id="alert"><strong>{{ message }}</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+        </div>
+    </div>
+<script>
+setTimeout(function() { $(".alert").alert('close'); }, 2000);
+</script>
 <section style="margin-top: 20px; margin-bottom: 20px;">
+
   <div class="container">
 
 
@@ -58,7 +77,7 @@
           <a class="btn btn-default" href="{% url 'inicio' %}">Volver</a>
         </div>
         <div class="col-lg-6 text-right" >
-            <a class="btn btn-warning"  href="#" data-target="#modal{{donador.pk}}" data-toggle="modal">Eliminar Perfil</a>
+            <a class="btn btn-warning"  href="#" data-target="#modal{{donador.pk}}" data-toggle="modal">Eliminar</a>
             <a class="btn btn-success" href="{% url 'modificar_donante' pk=donador.pk %}">Modificar</a>
         </div>
       </div>
@@ -67,12 +86,12 @@
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <!-- header de modal -->
-                                            <h4 class="modal-title">Eliminar Perfil</h4>
+                                            <h4 class="modal-title">Eliminar</h4>
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                         </div>
                                         <!-- cuerpo del modal -->
                                         <div class="modal-body">
-                                            <p> Confirma que desea eliminar su perfil</p>
+                                            <p> Confirma que desea eliminar su registro</p>
                                         </div>
                                         <!--footer del modal -->
                                         <div class="modal-footer">
@@ -99,4 +118,5 @@
   </div>
     </div>
 </section>
+</body>
 {% endblock %}

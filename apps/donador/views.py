@@ -2,13 +2,15 @@ from django.contrib.auth.mixins import AccessMixin
 from django.core.mail import send_mail
 from django.conf import settings
 from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404, redirect, render, render_to_response
-from django.urls import reverse_lazy
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse_lazy,reverse
 from apps.donador.forms import DonadorForm, RegistroForm, ModificarForm
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from apps.donador.models import Donador
 from django.contrib.auth.models import Group, User
 from threading import Thread
+from urllib import parse
+from django.contrib import messages
 
 
 def enviarmail(request, pk):
@@ -18,16 +20,17 @@ def enviarmail(request, pk):
     email_from=settings.EMAIL_HOST_USER
     recipient_list=[d.user.email]
     send_mail(subject,message,email_from,[recipient_list,])
-    return redirect('lista_donante')
 
 
 def hilo(request, pk):
     t = Thread(target=enviarmail,args=(request,pk))
     t.start()
-    return redirect("lista_donante")
+    d = Donador.objects.get(pk=pk)
+    messages.add_message(request, messages.SUCCESS, f'Se envio email a {d.user.username}')
+    return redirect('{}?grupo={}&factor={}'.format(reverse('lista_donante'), request.session['grupo'],parse.quote(request.session['factor'])))
 
 
-def perfil(request, pk):
+def perfil(request, pk,):
     d = Donador.objects.get(pk=pk)
     donante= request.user.groups.filter(name='Donantes').exists()
     return render(request, 'donante/donante_profile.html', {'donador': d ,'donante': donante})
@@ -80,9 +83,16 @@ class DonadorCrear(CreateView):
             donador.save()
             g = Group.objects.get(name='Donantes')
             g.user_set.add(donador.user)
+            messages.add_message(request, messages.SUCCESS,'Su perfil se creo correctamente')
             return HttpResponseRedirect(self.get_success_url())
         else:
-            return self.render_to_response(self.get_context_data(form=form, form2=form2))
+            messages.add_message(request, messages.ERROR, 'Su perfil no se pudo crear')
+            return render(request,self.template_name, {'form':form,'form2':form2})
+
+    def dispatch(self, request, *args, **kwargs):
+        if self.request.user.is_authenticated and self.request.user.groups.filter(name='Donantes').exists():
+            return redirect('pagina_error')
+        return super().dispatch(request, *args, **kwargs)
 
 
 class DonadorLista(AccessMixin,ListView):
@@ -90,14 +100,21 @@ class DonadorLista(AccessMixin,ListView):
     queryset = Donador.objects.order_by('-activo')
     success_url = reverse_lazy('lista_donante')
 
+
     def get_queryset(self):
         queryset = super(DonadorLista, self).get_queryset()
         filter1 = self.request.GET.get("grupo")
         filter2 = self.request.GET.get("factor")
         if filter1 == 'A' or filter1 == 'B' or filter1 == 'AB' or filter1 == '0':
+            self.request.session['grupo']=filter1
             queryset = queryset.filter(grupo_sanguineo=str(filter1))
+        else:
+            self.request.session['grupo']=''
         if filter2 == '+' or filter2 == '-':
+            self.request.session['factor']=filter2
             queryset = queryset.filter(factor_sanguineo=str(filter2))
+        else:
+            self.request.session['factor']=''
         return queryset
 
     def dispatch(self, request, *args, **kwargs):
@@ -140,10 +157,13 @@ class DonadorModificar(UpdateView):
             form.save()
             g = Group.objects.get(name='Donantes')
             g.user_set.add(donador.user)
-            if self.request.user.groups.filter(name='Empleado').exists() or self.request.user.groups.filter(name='Jefe de Área').exists():
+            if self.request.user.groups.filter(name='Empleado').exists() | self.request.user.groups.filter(name='Jefe de Área').exists():
+                messages.add_message(request, messages.SUCCESS, 'El perfil del donante se atualizo correctamente')
                 return HttpResponseRedirect(reverse_lazy('lista_donante'))
+            messages.add_message(request, messages.SUCCESS, 'Su perfil se actualizo correctamente')
             return HttpResponseRedirect(self.get_success_url())
         else:
+            messages.add_message(request, messages.ERROR, 'Su perfil no se pudo actualizar')
             return HttpResponseRedirect(self.get_success_url())
 
 

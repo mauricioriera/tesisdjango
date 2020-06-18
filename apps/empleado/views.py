@@ -48,7 +48,7 @@ class EmpleadoCrear(AccessMixin,CreateView):
             g.user_set.add(empleado.user)
             return HttpResponseRedirect(self.get_success_url())
         else:
-            return self.render_to_response(self.get_context_data(form=form, form2=form2))
+            return render(request,self.template_name, {'form':form,'form2':form2})
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
@@ -64,9 +64,9 @@ class EmpleadoLista(AccessMixin,ListView):
 
     def get_queryset(self):
         queryset = super(EmpleadoLista, self).get_queryset()
-        apellido = self.request.GET.get("apellido")
-        if apellido:
-            queryset = queryset.filter(user__last_name__icontains=apellido)
+        filtro = self.request.GET.get("filtro")
+        if filtro:
+            queryset =queryset.filter(user__last_name__icontains=filtro) | queryset.filter(user__first_name__icontains=filtro) | queryset.filter(numero_legajo__icontains=filtro)
         return queryset
 
     def dispatch(self, request, *args, **kwargs):

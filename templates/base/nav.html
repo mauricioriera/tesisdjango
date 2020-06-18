@@ -17,9 +17,17 @@
              <a class="dropdown-item" href="{% url 'lista_donante' %}">Donantes</a>
               <a class="dropdown-item" href="{% url 'empleado_listar' %}">Empleados</a>
             </div>
-              <li class="nav-item">
-              <a class="nav-link" href="{% url 'generar_reporte' %}">Estad&iacute;sticas</a>
-            </li>
+          </li>
+          <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdown02" data-toggle="dropdown" aria-haspopup="true"
+                 aria-expanded="false">Estad&iacute;sticas</a>
+                <div class="dropdown-menu" aria-labelledby="dropdown02">
+                    <a class="dropdown-item" href="{% url 'generar_reporte' parm=1 %}">Donantes Acticos</a>
+                    <a class="dropdown-item" href="{% url 'generar_reporte' parm=2 %}">Donates Sexo</a>
+                    <a class="dropdown-item" href="{% url 'generar_reporte' parm=3 %}">Donantes Grupo/Factor</a>
+                    <a class="dropdown-item" href="{% url 'generar_reporte' parm=4 %}">Donates Edad/Sexo</a>
+                </div>
+          </li>
           {% elif 'Empleado' ==  request.user.groups.all.0.name %}
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true"
