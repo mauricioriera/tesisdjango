@@ -7,6 +7,8 @@ from django.urls import reverse_lazy,reverse
 from apps.donador.forms import DonadorForm, RegistroForm, ModificarForm
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from apps.donador.models import Donador
+from apps.jefedearea.models import JefedeArea
+from apps.empleado.models import Empleado
 from django.contrib.auth.models import Group, User
 from threading import Thread
 from urllib import parse
@@ -39,7 +41,7 @@ def perfil(request, pk,):
 def activacion(request, pk):
     donador = get_object_or_404(Donador, pk=pk)
     if request.user.groups.filter(name='Donantes').exists():
-        return redirect('lista_donante')
+        return redirect('pagina_error')
     else:
         if donador.activo == False:
             donador.activo = True
@@ -100,9 +102,12 @@ class DonadorLista(AccessMixin,ListView):
     queryset = Donador.objects.order_by('-activo')
     success_url = reverse_lazy('lista_donante')
 
-
     def get_queryset(self):
         queryset = super(DonadorLista, self).get_queryset()
+        query=JefedeArea.objects.filter(user=self.request.user).distinct() or Empleado.objects.filter(user=self.request.user).distinct()
+        for e in query:
+            self.request.session['hospital']=e.hospital.nombre
+
         filter1 = self.request.GET.get("grupo")
         filter2 = self.request.GET.get("factor")
         if filter1 == 'A' or filter1 == 'B' or filter1 == 'AB' or filter1 == '0':
@@ -169,5 +174,12 @@ class DonadorModificar(UpdateView):
 
 class DonadorEliminar(DeleteView):
     model = User
-    template_name = 'donante/donante_delete.html'
-    success_url = reverse_lazy('lista_donante')
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
+
+    def get_success_url(self):
+        if self.request.user.groups.filter(name='Empleado').exists() | self.request.user.groups.filter(name='Jefe de Área').exists():
+            return reverse('lista_donante')
+        else:
+            return reverse ('inicio')

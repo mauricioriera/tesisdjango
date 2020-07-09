@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'apps.donador',
     'apps.hospital',
     'apps.jefedearea',
+    'apps.donacion',
 
 ]
 

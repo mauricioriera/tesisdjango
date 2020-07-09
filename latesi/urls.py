@@ -31,6 +31,7 @@ urlpatterns = [
     path('donador/', include('apps.donador.urls'), name='donador'),
     path('hospital/', include('apps.hospital.urls'),name='hospital'),
     path('jefedearea/',include('apps.jefedearea.urls'),name='jefedearea'),
+    path('donacion/',include('apps.donacion.urls'),name='donacion'),
     path('error/',login_required(errorpage),name='pagina_error'),
     path('reset/password_reset', PasswordResetView.as_view(template_name='registration/password_reset_form.html',
                                                            html_email_template_name='registration/password_reset_email.html',email_template_name='registration/password_reset_email.html'), name='password_reset'),

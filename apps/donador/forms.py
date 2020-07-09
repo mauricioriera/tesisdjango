@@ -8,6 +8,8 @@ class DateImput(forms.DateInput):
     imput_formats='%Y-%m-%d'
     input_type = 'date'
 
+
+
 class DonadorForm(forms.ModelForm):
     class Meta:
         model = Donador
@@ -41,6 +43,8 @@ class DonadorForm(forms.ModelForm):
         }
 
 
+
+
 class RegistroForm(UserCreationForm):
     class Meta:
         model = User
@@ -57,6 +61,8 @@ class RegistroForm(UserCreationForm):
             'last_name': 'Apellido:',
             'email': 'Correo:',
         }
+
+
 class ModificarForm(UserChangeForm):
     class Meta:
         model = User

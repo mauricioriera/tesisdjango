@@ -12,10 +12,8 @@ class PieChart(Drawing):
 
         self.pie.x = 110
         self.pie.y = -50
-
         self.pie.width = self.width - 20
         self.pie.height = self.height - 40
-
         self.pie.slices.label_pointer_piePad = 20  # Distance between the wafer and the label
         self.pie.slices.label_pointer_edgePad = 20  # The distance between the label and the outer
         self.pie.simpleLabels = 0  # 0 label on the right side of the label line; 1 on the line
@@ -25,7 +23,6 @@ class PieChart(Drawing):
         self.legend.y = -100
         self.legend.alignment = 'right'
         self.legend.fontSize = 15
-
 
 
     def data(self, data):

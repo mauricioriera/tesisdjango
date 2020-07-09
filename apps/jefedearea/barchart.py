@@ -2,9 +2,6 @@ from reportlab.graphics.charts.legends import Legend
 from reportlab.graphics.shapes import Drawing
 from reportlab.graphics.charts.barcharts import VerticalBarChart
 from reportlab.graphics.charts.textlabels import Label
-from reportlab.lib.colors import red,blue
-
-
 
 
 class BarChart (Drawing):
@@ -13,7 +10,6 @@ class BarChart (Drawing):
         self.add(VerticalBarChart(), name='chart')
         self.add(Label(), name='ylabel')
         self.add(Label(), name='xlabel')
-        self.add(Legend(), name='legend')
 
 
 
@@ -33,14 +29,8 @@ class BarChart (Drawing):
         self.xlabel.fontName = 'Helvetica'
         self.xlabel.x = (self.chart.x + self.chart.width * 1.2)
         self.xlabel.y = -80
-        self.legend.x = (self.chart.x + self.chart.width * 1.2)
-        self.legend.y = 50
-        self.legend.deltay = 8
-        self.legend.fontName = 'Helvetica'
-        self.legend.fontSize = 13
-        self.legend.strokeWidth = 0.5
-        self.legend.autoXPadding = 0
-        self.legend.dy = 5
+
+
 
 
     def data(self, data):
@@ -60,4 +50,13 @@ class BarChart (Drawing):
         self.xlabel._text=namex
 
     def legendcolorname(self, colorname):
+        self.add(Legend(), name='legend')
+        self.legend.x = (self.chart.x + self.chart.width * 1.2)
+        self.legend.y = 50
+        self.legend.deltay = 8
+        self.legend.fontName = 'Helvetica'
+        self.legend.fontSize = 13
+        self.legend.strokeWidth = 0.5
+        self.legend.autoXPadding = 0
+        self.legend.dy = 5
         self.legend.colorNamePairs = colorname

@@ -96,17 +96,53 @@ setTimeout(function() { $(".alert").alert('close'); }, 2000);
                             <td class="text-center">{{donador.grupo_sanguineo}}</td>
                             <td class="text-center">{{donador.factor_sanguineo}}</td>
                             <td class="text-center">
-                                {% if donador.activo == 0 %}
-                                <a class="btn btn-success" onclick="toggleOnByInput()" href="{% url 'activar_donante' pk=donador.pk %}" title="Activar"><i class="far fa-check-square"></i></a>
-                                {% else %}
-                                <a class="btn btn-warning" onclick="toggleOffByInput()" href="{% url 'activar_donante' pk=donador.pk %}" title="Desactivar"><i class="far fa-square"></i></a>
-                                {% endif %}
+                                <form method="get">
+                                    {% if donador.activo == 0 %}
+                                        <a class="btn btn-warning" onclick="toggleOnByInput()" href="{% url 'activar_donante' pk=donador.pk %}" title="Activar"><i class="far fa-square"></i></a>
+                                    {% else %}
+                                        <a class="btn btn-success" onclick="toggleOffByInput()" href="#" data-target="#modal1{{donador.pk}}" data-toggle="modal" title="Desactivar"><i class="far fa-check-square"></i></a>
+                                            <div class="modal fade" id="modal1{{donador.pk}}">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <!-- header de modal -->
+                                                            <h4 class="modal-title">Desactivar donante</h4>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                        </div>
+                                                        <!-- cuerpo del modal -->
+                                                        <div class="modal-body">
+                                                            <div class="form-group">
+                                                                <select class="form-control" name="razon" required>
+                                                                    <option value="">Razon de desactivacion</option>
+                                                                    <option value="embarazo">Embarazo</option>
+                                                                    <option value="infeccion">Portador de infeccion</option>
+                                                                    <option value="enfermedad">Enfermedad cronica</option>
+                                                                    <option value="donacion">Dono sangre</option>
+                                                                </select>
+                                                            </div>
+                                                         </div>
+                                                        <!--footer del modal -->
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                                                        <a class="btn btn-danger" href="{% url 'activar_donante' pk=donador.user_id %}" >Desactivar</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    {% endif %}
+                                </form>
                             </td>
                             <td class="text-center"><a class="btn btn-info" href="{% url 'perfil_donante' pk=donador.pk %}" title="Ver perfil"><i class="fas fa-address-card"></i></a></td>
 
-                            <td class="text-center"><a class="btn btn-danger" href="#" data-target="#modal{{donador.pk}}" data-toggle="modal" title="Eliminar"><i class="far fa-trash-alt"></i></a></td>
+                            <td class="text-center">
+                                {% if donador.hospital.nombre == request.session.hospital %}
+                                <a class="btn btn-danger" href="#" data-target="#modal{{donador.pk}}" data-toggle="modal" title="Eliminar"><i class="far fa-trash-alt"></i></a>
+                                {% else %}
+                                <span class="btn btn-dark"><i class="far fa-trash-alt"></i></span>
+                                {% endif %}
+                            </td>
 
-                            <td class="text-center"><a class="btn btn-primary" href="{% url 'enviarmail_donante' pk=donador.pk %}" title="Enviar mail"><i class="far fa-envelope"></i></a></td>
+                            <td class="text-center"><a class="btn btn-primary" href="{% url 'activar_donante' pk=donador.pk %}" title="Enviar mail"><i class="far fa-envelope"></i></a></td>
 
                             <div class="modal fade" id="modal{{donador.pk}}">
                                 <div class="modal-dialog">

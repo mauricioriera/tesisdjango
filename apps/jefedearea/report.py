@@ -1,16 +1,17 @@
 from io import BytesIO
-from typing import Tuple
-
 from django.views.generic.base import View
 from reportlab.platypus import SimpleDocTemplate, Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.pagesizes import A4
 from django.http import HttpResponse
+from reportlab.platypus import Spacer,Table
 from apps.jefedearea.piechart import PieChart
 from apps.jefedearea.barchart import BarChart
 from datetime import datetime as date
 from apps.donador.models import Donador
-from reportlab.lib.colors import green, red, yellow,blue
+from apps.donacion.models import Donacion
+from reportlab.lib import colors
+from operator import itemgetter
 
 
 class Reporte(View):
@@ -48,10 +49,35 @@ class Reporte(View):
             title = Paragraph("Cantidad de donantes segun Edad/Sexo", title_style)
             contenido.append(title)
             contenido.append(self.__donantesedadsexo())
+        if(parm==5):
+            title = Paragraph("Registro de Donaciones", title_style)
+            contenido.append(title)
+            contenido.append(self.tabla())
         doc.build(contenido)
         response.write(buff.getvalue())
         buff.close()
         return response
+    def tabla(self):
+        donaciones= Donacion.objects.prefetch_related('donador', 'user', 'hospital').values_list('donador__user__last_name',
+                                                                                            'donador__user__first_name',
+                                                                                            'fecha_donacion',
+                                                                                            'donador__grupo_sanguineo',
+                                                                                            'donador__factor_sanguineo',
+                                                                                            'hospital__nombre').order_by('-fecha_donacion')
+
+        datos = (
+                    ('Apellido', 'Nombre', 'Fecha Donacion', 'Grupo Sanguineo', 'Factor Sanguineo',
+                     'Hospital receptor'),) + tuple(donaciones)
+
+
+        tabla = Table(data=datos,
+                      style=[
+                          ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
+                          ('BOX', (0, 0), (-1, -1), 2, colors.black),
+                          ('BACKGROUND', (0, 0), (-1, 0), colors.pink),
+                      ]
+                      )
+        return tabla
 
     def __donantesactivos(self):
         p = PieChart(300, 300)
@@ -60,9 +86,9 @@ class Reporte(View):
         porcentajes = [str(round((activos[0] * 100 / cantidad_total), 2)),
                        str(round((activos[1] * 100 / cantidad_total), 2))]
         p.data(activos)
-        p.legendcolorname([(green, (f"{porcentajes[0]}% activos = {activos[0]} donantes")),
-                           (red, (f"{porcentajes[1]}% inactivos = {activos[1]} donantes"))])
-        p.slicefillcolor([green, red])
+        p.legendcolorname([(colors.green, (f"{porcentajes[0]}% activos = {activos[0]} donantes")),
+                           (colors.red, (f"{porcentajes[1]}% inactivos = {activos[1]} donantes"))])
+        p.slicefillcolor([colors.green, colors.red])
         return p
 
     def __donantessexo(self):
@@ -72,9 +98,9 @@ class Reporte(View):
         porcentajes = [str(round((sexo[0] * 100 / cantidad_total), 2))
                     ,str(round((sexo[1] * 100 / cantidad_total), 2))]
         p.data(sexo)
-        p.legendcolorname([(yellow, (f"{porcentajes[0]}% hombres = {sexo[0]} donantes")),
-                        (red, (f"{porcentajes[1]}% mujeres = {sexo[1]} donantes"))])
-        p.slicefillcolor([yellow,red])
+        p.legendcolorname([(colors.yellow, (f"{porcentajes[0]}% hombres = {sexo[0]} donantes")),
+                        (colors.red, (f"{porcentajes[1]}% mujeres = {sexo[1]} donantes"))])
+        p.slicefillcolor([colors.yellow,colors.red])
         return p
     def __donantesgrupofactor(self):
         b= BarChart()
@@ -87,7 +113,7 @@ class Reporte(View):
                   Donador.objects.filter(grupo_sanguineo='AB', factor_sanguineo='+').count(),
                   Donador.objects.filter(grupo_sanguineo='AB', factor_sanguineo='-').count())]
         b.data(grupo)
-        b.colors([blue])
+        b.colors([colors.blue])
         b.labels(['A+', 'A-', 'B+', 'B-', '0+', '0-', 'AB+', 'AB-'])
         b.yaxisname('Cantidad de Donantes')
         b.xaxisname('Grupo/Factor')
@@ -121,50 +147,8 @@ class Reporte(View):
         b.data([edadesh,edadesm])
         print (b.data)
         b.labels([('18-30'),('31-40'),('41-50'),('51-65')])
-        b.colors([blue, red])
+        b.colors([colors.blue, colors.red])
         b.yaxisname('Cantidad de Donantes')
         b.xaxisname('Rango de Edad')
-        b.legendcolorname([(blue,'Hombres'),(red,'Mujeres')])
+        b.legendcolorname([(colors.blue,'Hombres'),(colors.red,'Mujeres')])
         return b
-
-
-
-
-'''def reporte(request):
-
-     edadh=[(d.calcularEdad) for d in Donador.objects.filter(genero='M')]
-    edadm=[(d.calcularEdad) for d in Donador.objects.filter(genero='F')]
-
-    for i in edadh:
-        if i>=18 and i<=30:
-            lista1.append(i)
-        elif i>30 and i<+40:
-            lista2.append(i)
-        elif i>40 and i<=50:
-            lista3.append(i)
-        else:
-            lista4.append(i)
-    for i in edadm:
-        if i>=18 and i<=30:
-            lista5.append(i)
-        elif i>30 and i<+40:
-            lista6.append(i)
-        elif i>40 and i<=50:
-            lista7.append(i)
-        else:
-            lista8.append(i)
-    edadesh=[len(lista1),len(lista2),len(lista3),len(lista4)]
-    edadesm=[len(lista5),len(lista6),len(lista7),len(lista8)]
-    labels=[('18-30'),('31-40'),('41-50'),('51-65')]
-    ind=np.arange(4)
-    width=0.35
-    p1 = plt.bar(ind, edadesh, width, color="blue")
-    p2 = plt.bar(ind, edadesm, width,color="red",bottom=edadesh)
-    plt.ylabel('cantidad de personas')
-    plt.xticks(ind,labels)
-    plt.yticks(np.arange(0, 10, 1))
-    plt.legend((p1[0], p2[0]), ('Hombres', 'Mujeres'))
-    pdf.savefig()
-    plt.close()
-   
-    return redirect('inicio')'''
