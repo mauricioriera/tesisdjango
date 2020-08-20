@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'apps.hospital',
     'apps.jefedearea',
     'apps.donacion',
+    'django_apscheduler',
 
 ]
 
@@ -61,7 +62,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'latesi.urls'
 
-
+APSCHEDULER_DATETIME_FORMAT = 'N j, Y, f:s a'
 
 TEMPLATES = [
     {

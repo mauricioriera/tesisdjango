@@ -22,7 +22,7 @@ class JefedeAreaForm(forms.ModelForm):
             'numero_legajo',
         ]
         labels = {
-            'hospital': 'Hospital',
+            'hospital': 'Centro Asistencial',
             'fecha_nacimiento': 'Fecha de Nacimiento',
             'direccion': 'Direccion',
             'telefono': 'Telefono',

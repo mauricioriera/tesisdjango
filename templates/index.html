@@ -17,7 +17,7 @@
             <div class="col-md-4 offset-4">
                 {% if messages %}
                     {% for message in messages %}
-                        <div class="alert {% if message.tags %}alert-{% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}succes{% else %}{{ message.tags }}{% endif %}{% endif %}" role="alert" id="alert"><strong>{{ message }}</strong>
+                        <div class="alert {% if message.tags %}alert-{% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}success{% else %}{{ message.tags }}{% endif %}{% endif %}" role="alert" id="alert"><strong>{{ message }}</strong>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span></button>
                         </div>

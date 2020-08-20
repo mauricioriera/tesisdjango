@@ -17,30 +17,29 @@
              <form method='post' class="appoinment-form">
                  {% csrf_token %}
                  <br class="row">
-                   <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 offset-1">
+                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 offset-1">
                         <div class="form-group">
-                        <label>{{form.donador.label}}</label>{{form.donador}}
+                            <label>{{form.donador.label}}</label>
+                            <input type="hidden" value="{{donador.id}}" name="{{form.donador.html_name}}">
+                            <span class="form-control">{{donador.user.last_name}},{{donador.user.first_name}}</span>
                         </div>
                     </div>
                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 offset-1">
                         <div class="form-group">
-                        <label>{{form.hospital.label}}</label>{{form.hospital}}
+                            <label>{{form.hospital.label}}</label>
+                            <input type="hidden" value="{{hospital.id}}" name="{{form.hospital.html_name}}">
+                            <span class="form-control">{{hospital.nombre}}</span>
                         </div>
                     </div>
                  <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 offset-1">
                      <div class="form-group">
                          <label>{{form.fecha_donacion.label}}</label>
-                         <input type="date" id="fecha_donacion" name="{{ form.fecha_donacion.html_name }}" value="{{ form.fecha_donacion.value | default_if_none:''}}" class="form-control {% if form.errors.fecha_donacion %} is-invalid {% endif %}" required>
-                         {% for error in form.fecha_donacion.errors %}
-                         <div class="invalid-feedback">
-                             {{ error }}
-                         </div>
-                         {% endfor %}
-                          <div class="group-send col-lg-12 col-md-12 col-sm-12 col-xs-12 offset-4">
-                        <div class="from-group">
-                            <button class="btn btn-success" type="submit" role="button">registrar donacion</button>
-                        </div>
-                    </div>
+                         <input type="date" id="fecha_donacion" name="{{form.fecha_donacion.html_name}}" value="{{form.fecha_donacion.value}}">
+                     </div>
+                 </div>
+                 <div class="group-send col-lg-12 col-md-12 col-sm-12 col-xs-12 offset-4 ">
+                     <div class="from-group">
+                         <button class="btn btn-success" type="submit" role="button">Registrar donaci&oacute;n</button>
                      </div>
                  </div>
              </form>

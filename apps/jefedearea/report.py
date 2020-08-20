@@ -34,19 +34,19 @@ class Reporte(View):
         title_style = styles['Heading1']
         title_style.alignment = 1
         if(parm==1):
-            title = Paragraph("Cantidad de donantes Activos", title_style)
+            title = Paragraph("Cantidad de Donantes Activos", title_style)
             contenido.append(title)
             contenido.append(self.__donantesactivos())
         if(parm==2):
-            title = Paragraph("Cantidad de donantes por Sexo", title_style)
+            title = Paragraph("Cantidad de Donantes por Sexo", title_style)
             contenido.append(title)
             contenido.append(self.__donantessexo())
         if(parm==3):
-            title = Paragraph("Cantidad de donantes segun Grupo/Factor", title_style)
+            title = Paragraph("Cantidad de Donantes según Grupo/Factor", title_style)
             contenido.append(title)
             contenido.append(self.__donantesgrupofactor())
         if(parm==4):
-            title = Paragraph("Cantidad de donantes segun Edad/Sexo", title_style)
+            title = Paragraph("Cantidad de Donantes según Edad/Sexo", title_style)
             contenido.append(title)
             contenido.append(self.__donantesedadsexo())
         if(parm==5):
@@ -62,12 +62,12 @@ class Reporte(View):
                                                                                             'donador__user__first_name',
                                                                                             'fecha_donacion',
                                                                                             'donador__grupo_sanguineo',
-                                                                                            'donador__factor_sanguineo',
+                                                                                            'donador__factor_RH',
                                                                                             'hospital__nombre').order_by('-fecha_donacion')
 
         datos = (
-                    ('Apellido', 'Nombre', 'Fecha Donacion', 'Grupo Sanguineo', 'Factor Sanguineo',
-                     'Hospital receptor'),) + tuple(donaciones)
+                    ('Apellido', 'Nombre', 'Fecha Donacion', 'Grupo Sanguíneo', 'Factor RH',
+                     'Centro Asistencial receptor'),) + tuple(donaciones)
 
 
         tabla = Table(data=datos,
@@ -98,20 +98,20 @@ class Reporte(View):
         porcentajes = [str(round((sexo[0] * 100 / cantidad_total), 2))
                     ,str(round((sexo[1] * 100 / cantidad_total), 2))]
         p.data(sexo)
-        p.legendcolorname([(colors.yellow, (f"{porcentajes[0]}% hombres = {sexo[0]} donantes")),
-                        (colors.red, (f"{porcentajes[1]}% mujeres = {sexo[1]} donantes"))])
+        p.legendcolorname([(colors.yellow, (f"{porcentajes[0]}% masculino = {sexo[0]} donantes")),
+                        (colors.red, (f"{porcentajes[1]}% femenino = {sexo[1]} donantes"))])
         p.slicefillcolor([colors.yellow,colors.red])
         return p
     def __donantesgrupofactor(self):
         b= BarChart()
-        grupo = [(Donador.objects.filter(grupo_sanguineo='A', factor_sanguineo='+').count(),
-                  Donador.objects.filter(grupo_sanguineo='A', factor_sanguineo='-').count(),
-                  Donador.objects.filter(grupo_sanguineo='B', factor_sanguineo='+').count(),
-                  Donador.objects.filter(grupo_sanguineo='B', factor_sanguineo='-').count(),
-                  Donador.objects.filter(grupo_sanguineo='0', factor_sanguineo='+').count(),
-                  Donador.objects.filter(grupo_sanguineo='0', factor_sanguineo='-').count(),
-                  Donador.objects.filter(grupo_sanguineo='AB', factor_sanguineo='+').count(),
-                  Donador.objects.filter(grupo_sanguineo='AB', factor_sanguineo='-').count())]
+        grupo = [(Donador.objects.filter(grupo_sanguineo='A', factor_RH='+').count(),
+                  Donador.objects.filter(grupo_sanguineo='A', factor_RH='-').count(),
+                  Donador.objects.filter(grupo_sanguineo='B', factor_RH='+').count(),
+                  Donador.objects.filter(grupo_sanguineo='B', factor_RH='-').count(),
+                  Donador.objects.filter(grupo_sanguineo='0', factor_RH='+').count(),
+                  Donador.objects.filter(grupo_sanguineo='0', factor_RH='-').count(),
+                  Donador.objects.filter(grupo_sanguineo='AB', factor_RH='+').count(),
+                  Donador.objects.filter(grupo_sanguineo='AB', factor_RH='-').count())]
         b.data(grupo)
         b.colors([colors.blue])
         b.labels(['A+', 'A-', 'B+', 'B-', '0+', '0-', 'AB+', 'AB-'])
@@ -150,5 +150,5 @@ class Reporte(View):
         b.colors([colors.blue, colors.red])
         b.yaxisname('Cantidad de Donantes')
         b.xaxisname('Rango de Edad')
-        b.legendcolorname([(colors.blue,'Hombres'),(colors.red,'Mujeres')])
+        b.legendcolorname([(colors.blue,'Masculino'),(colors.red,'Femenino')])
         return b

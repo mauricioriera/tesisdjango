@@ -1,5 +1,5 @@
 from django import forms
-from apps.donador.models import Donador
+from apps.donador.models import Donador,Desactivar
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
@@ -21,16 +21,16 @@ class DonadorForm(forms.ModelForm):
             'telefono',
             'genero',
             'grupo_sanguineo',
-            'factor_sanguineo',
+            'factor_RH',
         ]
         labels = {
-            'hospital': 'Hospital más Cercano:',
+            'hospital': 'Cenyro Asistencial más Cercano:',
             'fecha_nacimiento': 'Fecha de Nacimiento:',
             'direccion': 'Dirección:',
             'telefono': 'Teléfono:',
             'genero': 'Género:',
-            'grupo_sanguineo': 'Grupo Sanguineo:',
-            'factor_sanguineo': 'Factor Sanguineo:',
+            'grupo_sanguineo': 'Grupo Sanguíneo:',
+            'factor_RH': 'Factor RH:',
         }
         widgets = {
             'hospital': forms.Select(attrs={'class': 'form-control'}),
@@ -39,10 +39,30 @@ class DonadorForm(forms.ModelForm):
             'telefono': forms.TextInput(attrs={'class': 'form-control'}),
             'genero': forms.Select(attrs={'class': 'form-control'}),
             'grupo_sanguineo': forms.Select(attrs={'class': 'form-control'}),
-            'factor_sanguineo': forms.Select(attrs={'class': 'form-control'}),
+            'factor_RH': forms.Select(attrs={'class': 'form-control'}),
         }
 
 
+class DesactivarForm(forms.ModelForm):
+    class Meta:
+        model = Desactivar
+
+        fields = [
+            'donador',
+            'motivo',
+            'fecha_desactivar'
+        ]
+        labels = {
+            'donador':'Donador:',
+            'motivo':'Motivo:',
+            'fecha_desactivar':'Fecha:'
+        }
+        eleccion=[('1','Dono sangre'),('2','Embarazo'),('3','Portador de infeccion'),('4','Enfermedad cronica')]
+        widgets = {
+            'donador':forms.TextInput(attrs={'class': 'form-control'}),
+            'motivo':forms.RadioSelect(choices=eleccion),
+            'fecha_desactivar': DateImput(attrs={'class': 'form-control'})
+        }
 
 
 class RegistroForm(UserCreationForm):

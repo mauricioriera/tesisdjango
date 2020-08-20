@@ -1,0 +1,59 @@
+{% extends "base/base.html" %}
+{% block title %}Desactivaci&oacute;n{% endblock %}
+{% block content %}
+<head>
+    <section class="page-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <h3>DESACTIVACI&Oacute;N</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+</head>
+<body>
+<section style="margin-top: 20px; margin-bottom: 20px;">>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                DESACTIVAR DONANTE
+            </div>
+            <form method="post">
+                {% csrf_token %}
+                <br class="row">
+                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 offset-1">
+                    <div class="form-group">
+                        <label style="font-weight:bold">{{form.donador.label}}</label>
+                        <input type="hidden" value="{{donador.id}}" name="{{form.donador.html_name}}">
+                        <span class="form-control">{{donador.user.last_name}},{{donador.user.first_name}}</span>
+                    </div>
+                </div>
+                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 offset-1">
+                    <label style="font-weight:bold">{{form.motivo.label}}</label>
+                    <br>
+                    {% for radio in form.motivo %}
+                    <label>
+                        {{ radio.tag }}
+                        <span>{{ radio.choice_label }}</span>
+                    </label>
+                    <br>
+                    {% endfor %}
+                    <br>
+                </div>
+                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 offset-1">
+                    <div class="form-group">
+                        <label style="font-weight:bold">{{form.fecha_desactivar.label}}</label>
+                        <input type="date" id="fecha_desactivar" name="{{form.fecha_desactivar.html_name}}"
+                               value="{{form.fecha_desactivar.value}}">
+                    </div>
+                </div>
+                <div class="col-sm-12 text-center">
+                    <button class="btn btn-warning btn-lg boton2" role="button" type="submit">Desactivar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+</body>
+{% endblock %}

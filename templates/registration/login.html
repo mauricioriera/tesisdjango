@@ -24,12 +24,18 @@
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 offset-4">
             <div class="form-group">
-                <label for="username"><i class="fas fa-lock"></i> Contraseña:</label>
+                <label for="password"><i class="fas fa-lock"></i> Contrase&ntilde;a:</label>
                 <input class="form-control" type="password" id="password" name="password">
             </div>
         </div>
            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 offset-4">
             <div class="form-group text-center">
+                {% if form.errors %}
+                    <span class="text-danger">
+                        Usuario y/o contrase&ntilde;a incorrecta!
+                        <br>
+                    </span>
+            {% endif %}
             <button class="btn btn-success btn-lg boton2" role="button" type="submit"> Ingresar</button>
             </div>
         </div>

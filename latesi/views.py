@@ -20,5 +20,6 @@ def logout(request):
     do_logout(request)
     return redirect('inicio')
 
+
 def errorpage(request):
     return render_to_response('error.html')

@@ -36,7 +36,7 @@ class Donador(models.Model):
     direccion = models.CharField(max_length=50,null=False,blank=False)
     genero = models.CharField( max_length=1 , choices = GENERO, default='M')
     grupo_sanguineo = models.CharField(max_length=10,choices=GRUPO_SANGRE, default='A')
-    factor_sanguineo = models.CharField(max_length=2, choices=FACTOR_SANGRE, default='+')
+    factor_RH = models.CharField(max_length=2, choices=FACTOR_SANGRE, default='+')
     telefono = models.CharField(max_length=12)
     activo = models.BooleanField(default=0)
     groups = models.ForeignKey(Group, null=True, blank=True, on_delete=models.CASCADE)
@@ -48,3 +48,8 @@ class Donador(models.Model):
         return age
     def __str__(self):
         return '{}'.format(self.user.username)
+
+class Desactivar(models.Model):
+    donador = models.ForeignKey(Donador,on_delete=models.CASCADE)
+    motivo= models.IntegerField()
+    fecha_desactivar=models.DateField()

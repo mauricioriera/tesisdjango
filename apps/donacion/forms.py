@@ -13,15 +13,14 @@ class DonacionForm(forms.ModelForm):
             'donador',
             'hospital',
             'fecha_donacion',
-
         ]
         labels = {
-            'donador': 'donante',
-            'hospital': 'Hospital receptor',
-            'fecha_donacion': 'Fechs de Donacion',
+            'donador': 'Donante:',
+            'hospital': 'Entidad receptora:',
+            'fecha_donacion': 'Fecha de Donacion',
         }
         widgets = {
-            'donador': forms.Select(attrs={'class': 'form-control'}),
-            'hospital': forms.Select(attrs={'class': 'form-control'}),
+            'donador': forms.TextInput(attrs={'class': 'form-control'}),
+            'hospital': forms.TextInput(attrs={'class': 'form-control'}),
             'fecha_donacion': DateImput(attrs={'class': 'form-control'}),
         }

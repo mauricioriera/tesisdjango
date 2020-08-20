@@ -22,11 +22,11 @@ class EmpleadoForm(forms.ModelForm):
             'numero_legajo',
         ]
         labels = {
-            'hospital': 'Hospital',
+            'hospital': 'Centro Asistencial',
             'fecha_nacimiento': 'Fecha de Nacimiento',
-            'direccion': 'Direccion',
-            'telefono': 'Telefono',
-            'numero_legajo': 'Numero de Legajo',
+            'direccion': 'Dirección',
+            'telefono': 'Teléfono',
+            'numero_legajo': 'Número de Legajo',
         }
         widgets = {
 
