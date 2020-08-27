@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import CreateView
 from apps.donacion.models import Donacion
 from apps.donacion.forms import DonacionForm
-from apps.donador.models import Donador
+from apps.donador.models import Donador,Desactivar
 from apps.jefedearea.models import JefedeArea
 from apps.empleado.models import Empleado
 from django.contrib import messages
@@ -32,6 +32,14 @@ class DonacionCrear (AccessMixin,CreateView):
         if form.is_valid():
             donacion = form.save(commit=False)
             donacion.save()
+            donador=donacion.donador
+            donador.activo = False
+            donador.save()
+            desactivar=Desactivar()
+            desactivar.donador=donador
+            desactivar.motivo= 5
+            desactivar.fecha_desactivar=donacion.fecha_donacion
+            desactivar.save()
             messages.add_message(request, messages.SUCCESS, 'donacion registrada')
             return HttpResponseRedirect(self.get_success_url())
         else:

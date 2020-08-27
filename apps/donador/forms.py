@@ -24,7 +24,7 @@ class DonadorForm(forms.ModelForm):
             'factor_RH',
         ]
         labels = {
-            'hospital': 'Cenyro Asistencial más Cercano:',
+            'hospital': 'Centro Asistencial más Cercano:',
             'fecha_nacimiento': 'Fecha de Nacimiento:',
             'direccion': 'Dirección:',
             'telefono': 'Teléfono:',
@@ -57,7 +57,7 @@ class DesactivarForm(forms.ModelForm):
             'motivo':'Motivo:',
             'fecha_desactivar':'Fecha:'
         }
-        eleccion=[('1','Dono sangre'),('2','Embarazo'),('3','Portador de infeccion'),('4','Enfermedad cronica')]
+        eleccion=[('1','Dono sangre (fuera del sistema)'),('2','Embarazo'),('3','Portador de infeccion'),('4','Enfermedad cronica')]
         widgets = {
             'donador':forms.TextInput(attrs={'class': 'form-control'}),
             'motivo':forms.RadioSelect(choices=eleccion),

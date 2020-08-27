@@ -117,11 +117,10 @@ class Desactivar(CreateView):
                 donador = desactivar.donador
                 donador.activo = False
                 donador.save()
-                messages.add_message(request, messages.SUCCESS, 'usuario desactivado')
             return HttpResponseRedirect(self.get_success_url())
         else:
-            messages.add_message(request, messages.ERROR, '')
             return render(request, self.template_name, {'form': form})
+
 
 
 class preperfil(ListView):

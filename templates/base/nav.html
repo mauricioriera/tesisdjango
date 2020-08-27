@@ -26,7 +26,8 @@
                     <a class="dropdown-item" href="{% url 'generar_reporte' parm=2 %}">Donantes Sexo</a>
                     <a class="dropdown-item" href="{% url 'generar_reporte' parm=3 %}">Donantes Grupo/Factor</a>
                     <a class="dropdown-item" href="{% url 'generar_reporte' parm=4 %}">Donantes Edad/Sexo</a>
-                    <a class="dropdown-item" href="{% url 'generar_reporte' parm=5 %}">Rgistro Donaciones</a>
+                    <a class="dropdown-item" href="{% url 'generar_reporte' parm=5 %}">Registro Donaciones</a>
+                    <a class="dropdown-item" href="{% url 'generar_reporte' parm=6 %}">Donates Desactivos/Motivo</a>
                 </div>
           </li>
           {% elif 'Empleado' ==  request.user.groups.all.0.name %}

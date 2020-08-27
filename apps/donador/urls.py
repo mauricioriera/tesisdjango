@@ -1,7 +1,6 @@
 from django.urls import path
 from django.contrib.auth.decorators import login_required
 from apps.donador.views import DonadorCrear, DonadorLista, activacion, DonadorModificar, DonadorEliminar,preperfil,perfil,hilo,Desactivar
-
 urlpatterns = [
     path('crear/',DonadorCrear.as_view(), name='crear_donante'),
     path('preperfil/',login_required(preperfil.as_view()), name='preperfil_donante'),

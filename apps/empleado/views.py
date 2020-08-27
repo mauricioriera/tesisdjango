@@ -61,6 +61,8 @@ class EmpleadoCrear(AccessMixin,CreateView):
 class EmpleadoLista(AccessMixin,ListView):
     model = Empleado
     template_name = 'empleado/empleado_list.html'
+    paginate_by = 3
+
 
     def get_queryset(self):
         queryset = super(EmpleadoLista, self).get_queryset()

@@ -4,14 +4,14 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.pagesizes import A4
 from django.http import HttpResponse
-from reportlab.platypus import Spacer,Table
+from reportlab.platypus import Table
 from apps.jefedearea.piechart import PieChart
 from apps.jefedearea.barchart import BarChart
 from datetime import datetime as date
-from apps.donador.models import Donador
+from apps.donador.models import Donador,Desactivar
 from apps.donacion.models import Donacion
 from reportlab.lib import colors
-from operator import itemgetter
+
 
 
 class Reporte(View):
@@ -53,6 +53,10 @@ class Reporte(View):
             title = Paragraph("Registro de Donaciones", title_style)
             contenido.append(title)
             contenido.append(self.tabla())
+        if (parm==6):
+            title = Paragraph("Donantes desactivados por motivo",title_style)
+            contenido.append(title)
+            contenido.append(self.__donatedesactivadomotivo())
         doc.build(contenido)
         response.write(buff.getvalue())
         buff.close()
@@ -86,8 +90,8 @@ class Reporte(View):
         porcentajes = [str(round((activos[0] * 100 / cantidad_total), 2)),
                        str(round((activos[1] * 100 / cantidad_total), 2))]
         p.data(activos)
-        p.legendcolorname([(colors.green, (f"{porcentajes[0]}% activos = {activos[0]} donantes")),
-                           (colors.red, (f"{porcentajes[1]}% inactivos = {activos[1]} donantes"))])
+        p.legendcolorname([(colors.green, (f"{porcentajes[0]}% activos = {activos[0]} donante/s")),
+                           (colors.red, (f"{porcentajes[1]}% inactivos = {activos[1]} donante/s"))])
         p.slicefillcolor([colors.green, colors.red])
         return p
 
@@ -98,8 +102,8 @@ class Reporte(View):
         porcentajes = [str(round((sexo[0] * 100 / cantidad_total), 2))
                     ,str(round((sexo[1] * 100 / cantidad_total), 2))]
         p.data(sexo)
-        p.legendcolorname([(colors.yellow, (f"{porcentajes[0]}% masculino = {sexo[0]} donantes")),
-                        (colors.red, (f"{porcentajes[1]}% femenino = {sexo[1]} donantes"))])
+        p.legendcolorname([(colors.yellow, (f"{porcentajes[0]}% masculino = {sexo[0]} donante/s")),
+                        (colors.red, (f"{porcentajes[1]}% femenino = {sexo[1]} donante/s"))])
         p.slicefillcolor([colors.yellow,colors.red])
         return p
     def __donantesgrupofactor(self):
@@ -152,3 +156,18 @@ class Reporte(View):
         b.xaxisname('Rango de Edad')
         b.legendcolorname([(colors.blue,'Masculino'),(colors.red,'Femenino')])
         return b
+    def __donatedesactivadomotivo(self):
+        p=PieChart(300,300)
+        cantidad_total=Desactivar.objects.all().count()
+        motivo= [ Desactivar.objects.filter(motivo=1).count(),Desactivar.objects.filter(motivo=2).count()
+                ,Desactivar.objects.filter(motivo=5).count()]
+        porcentajes=[str(round((motivo[0] * 100 / cantidad_total),2)),str(round((motivo[1] * 100 / cantidad_total),2)),
+                     str(round((motivo[2] * 100 / cantidad_total),2))]
+        p.data(motivo)
+        p.legend.x = 250
+        p.legend.y = -100
+        p.legendcolorname([(colors.lightgreen,(f"{porcentajes[0]}% dono fuera del sistema = {motivo[0]} donante/s")),
+                           (colors.pink,(f"{porcentajes[1]}% embarazadas = {motivo[1]} donante/s")),
+                           (colors.lightblue,(f"{porcentajes[2]}% dono sangre = {motivo[2]} donante/s"))])
+        p.slicefillcolor([colors.lightgreen,colors.pink,colors.lightblue])
+        return p

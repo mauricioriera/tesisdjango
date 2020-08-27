@@ -18,8 +18,9 @@
             {% for message in messages %}
             <div class="alert {% if message.tags %}alert-{% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}succes{% else %}{{ message.tags }}{% endif %}{% endif %}" role="alert" id="alert"><strong>{{ message }}</strong>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                </div>
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
             {% endfor %}
         {% endif %}
         </div>
@@ -54,7 +55,7 @@ setTimeout(function() { $(".alert").alert('close'); }, 2000);
                         <button type="submit" class="btn btn-success">Buscar</button>
                     </div>
                 </div>
-                  <div class="form-row">
+                    <div class="form-row">
                     <div class="form-group col-md-12">
                       <a class="btn btn-info" href="{% url 'crear_donante' %}">Crear Donante</a>
                     </div>
@@ -64,7 +65,6 @@ setTimeout(function() { $(".alert").alert('close'); }, 2000);
       </div>
     </div>
 </section>
-<body>
     <section>
       <div class="container">
         <div class="row">
@@ -98,37 +98,52 @@ setTimeout(function() { $(".alert").alert('close'); }, 2000);
                                         <a class="btn btn-success" onclick="toggleOffByInput()" href="{% url 'desactivar_donante' pk=donador.pk %}" title="Desactivar"><i class="far fa-check-square"></i></a>
                                     {% endif %}
                             </td>
-                            <td class="text-center"><a class="btn btn-secondary" href="{% url 'donacion' pk=donador.pk %}" title="Registrar Donacion"><i class="far fa-clipboard"></i></a></td>
-                            <td class="text-center"><a class="btn btn-info" href="{% url 'perfil_donante' pk=donador.pk %}" title="Ver perfil"><i class="fas fa-address-card"></i></a></td>
                             <td class="text-center">
-                                {% if donador.hospital.nombre == request.session.hospital %}
-                                <a class="btn btn-danger" href="#" data-target="#modal{{donador.pk}}" data-toggle="modal" title="Eliminar"><i class="far fa-trash-alt"></i></a>
+                                {% if donador.activo == 1 %}
+                                <a class="btn btn-danger" href="{% url 'donacion' pk=donador.pk %}" title="Registrar Donacion"><i class="fas fa-syringe"></i></a>
                                 {% else %}
-                                <span class="btn btn-dark"><i class="far fa-trash-alt"></i></span>
+                                <span class="btn btn-dark"><i class="fas fa-syringe"></i></span>
                                 {% endif %}
-                            <div class="modal fade" id="modal{{donador.pk}}">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <!-- header de modal -->
-                                            <h4 class="modal-title">Eliminar Donante</h4>
-                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                        </div>
-                                        <!-- cuerpo del modal -->
-                                        <div class="modal-body">
-                                            <p> Confirma que quiere eliminar el donante </p>
-                                        </div>
-                                        <!--footer del modal -->
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
-                                            <a class="btn btn-danger" href="{% url 'eliminar_donante' pk=donador.user_id %}" >Eliminar</a>
+                            </td>
+                            <td class="text-center"><a class="btn btn-primary" href="{% url 'enviarmail_donante' pk=donador.pk%}" title="Enviar mail"><i class="far fa-envelope"></i></a></td>
+                            <td class="text-center">
+                                <div class="dropdown">
+                                    <a class="btn btn-secondary dropdown-toggle" style="background-color:#F58C2F" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Más acciones</a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                        <div class="text-center">
+                                            <a class="dorpdown-item btn btn-info" href="{% url 'perfil_donante' pk=donador.pk %}" title="Ver perfil"><i class="fas fa-address-card"></i></a>
+                                            {% if donador.hospital.nombre == request.session.hospital %}
+                                            <a class="btn btn-danger" href="#" data-target="#modal{{donador.pk}}" data-toggle="modal" title="Eliminar"><i class="far fa-trash-alt"></i></a>
+                                            {% else %}
+                                            <span class="btn btn-dark text-center"><i class="far fa-trash-alt"></i></span>
+                                            {% endif %}
+                                            <a class="btn btn-secondary" href="{% url 'certificado_donante' %}" title="Crear constancia de donacion"><i class="fas fa-clipboard"></i></a>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
                             </td>
-                            <td class="text-center"><a class="btn btn-primary" href="{% url 'enviarmail_donante' pk=donador.pk%}" title="Enviar mail"><i class="far fa-envelope"></i></a></td>
                         </tr>
+                        <div class="modal fade" id="modal{{donador.pk}}">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <!-- header de modal -->
+                                        <h4 class="modal-title">Eliminar Donante</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    </div>
+                                    <!-- cuerpo del modal -->
+                                    <div class="modal-body">
+                                        <p> Confirma que quiere eliminar el donante </p>
+                                    </div>
+                                    <!--footer del modal -->
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                                        <a class="btn btn-danger" href="{% url 'eliminar_donante' pk=donador.user_id %}" >Eliminar</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         {% endfor %}
                         {% else %}
                         <h1><center>NO HAY DONANTES REGISTRADOS</center></h1>
@@ -137,10 +152,39 @@ setTimeout(function() { $(".alert").alert('close'); }, 2000);
                 </table>
             </div>
         </div>
-         
+         <div class="row">
+                {% if is_paginated%}
+                     <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 offset-4">
+                         <ul class="pagination">
+
+                             {% if page_obj.has_previous %}
+                                <li class="page-item">
+                                    <a href="?page={{ page_obj.previous_page_number }}" style="color:#2326C1;" class="page-link">Anterior</a>
+                                </li>
+                             {% else %}
+                                <li class="page-item disabled">
+                                    <a href="#" class="page-link">Anterior</a>
+                                </li>
+                             {% endif %}
+                             {% for i in paginator.page_range %}
+                                <li class="page-item {% if page_obj.number == i %} active {% endif %}">
+                                    <a href="?page={{ i }}" style="color:#2326C1;" class="page-link">{{ i }}</a>
+                                </li>
+                             {% endfor %}
+                              {% if page_obj.has_next %}
+                                <li class="page-item">
+                                    <a href="?page={{ page_obj.next_page_number }}" style="color:#2326C1;" class="page-link">Siguiente</a>
+                                </li>
+                             {% else %}
+                                <li class="page-item disabled">
+                                    <a href="#" class="page-link">Siguiente</a>
+                                </li>
+                             {% endif %}
+                         </ul>
+                     </div>
+                {% endif %}
+         </div>
       </div>
         <br>
     </section>
-</body>
 {% endblock %}
-
