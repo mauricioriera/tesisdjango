@@ -2,120 +2,129 @@
 {% block title %}Datos del Donante{% endblock %}
 {% block content %}
 <head>
-<section class="page-header">
-  <div class="container">
-      <div class="row">
-          <div class="col-sm-12 text-center">
-            <h3>DATOS DEL DONANTE</h3>
-          </div>
-      </div>
-  </div>
-</section>
+    <section class="page-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <h3>DATOS DEL DONANTE</h3>
+                </div>
+            </div>
+        </div>
+    </section>
 </head>
 <body>
-        <div class="row">
-        <div class="col-md-4 offset-4">
+<div class="row">
+    <div class="col-md-4 offset-4">
         {% if messages %}
-            {% for message in messages %}
-            <div class="alert {% if message.tags %}alert-{% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}succes{% else %}{{ message.tags }}{% endif %}{% endif %}" role="alert" id="alert"><strong>{{ message }}</strong>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                </div>
-            {% endfor %}
-        {% endif %}
+        {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}succes{% else %}{{ message.tags }}{% endif %}{% endif %}"
+             role="alert" id="alert"><strong>{{ message }}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
         </div>
+        {% endfor %}
+        {% endif %}
     </div>
+</div>
 <script>
 setTimeout(function() { $(".alert").alert('close'); }, 2000);
+
+
+
+
 </script>
 <section style="margin-top: 20px; margin-bottom: 20px;">
 
-  <div class="container">
+    <div class="container">
 
 
-    <div class="card">
-      <div class="card-header">
-        Datos
-      </div>
-      <div class="card-body">
-        <h5 class="card-title"><i class="fas fa-user"></i> {{donador.user.username}}</h5>
-        <div class="row">
-          <div class="col-lg-6">
-            <p class="h5"><strong>Nombre:</strong> {{donador.user.first_name}}</p>
-          </div>
-          <div class="col-lg-6">
-            <p class="h5"><strong>Apellido:</strong> {{donador.user.last_name}}</p>
-          </div>
-          <div class="col-lg-6">
-            <p class="h5"><strong>Domicilio:</strong> {{donador.direccion}}</p>
-          </div>
-          <div class="col-lg-6">
-            <p class="h5"><strong>Tel&eacute;fono:</strong> {{donador.telefono}}</p>
-          </div>
-          <div class="col-lg-6">
-            <p class="h5"><strong>Email:</strong> {{donador.user.email}}</p>
-          </div>
-          <div class="col-lg-6">
-            <p class="h5"><strong>Centro Asistencial m&aacute;s cercano:</strong> {{donador.hospital}}</p>
-          </div>
-          <div class="col-lg-6">
-            <p class="h5"><strong>Fecha de Nacimiento:</strong> {{donador.fecha_nacimiento}}</p>
-       </div>
-       <div class="col-lg-6">
-        <p class="h5"><strong>G&eacute;nero:</strong> {{donador.genero}}</p>
-    </div>
-    <div class="col-lg-6">
-      <p class="h5"><strong>Grupo Sangu&iacute;neo:</strong> {{donador.grupo_sanguineo}}</p>
- </div>
- <div class="col-lg-6">
-  <p class="h5"><strong>Factor RH:</strong> {{donador.factor_RH}}</p>
-</div>
-      </div>
-    {% if donante %}
-      <div class="row">
-        <div class="col-lg-6 text-left" >
-          <a class="btn btn-default" href="{% url 'inicio' %}">Volver</a>
-        </div>
-        <div class="col-lg-6 text-right" >
-            <a class="btn btn-warning"  href="#" data-target="#modal{{donador.pk}}" data-toggle="modal">Eliminar</a>
-            <a class="btn btn-success" href="{% url 'modificar_donante' pk=donador.pk %}">Modificar</a>
-        </div>
-      </div>
-          <div class="modal fade" id="modal{{donador.pk}}">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <!-- header de modal -->
-                                            <h4 class="modal-title">Eliminar</h4>
-                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                        </div>
-                                        <!-- cuerpo del modal -->
-                                        <div class="modal-body">
-                                            <p> Confirma que desea eliminar su registro</p>
-                                        </div>
-                                        <!--footer del modal -->
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
-                                            <a class="btn btn-danger" href="{% url 'eliminar_donante' pk=donador.user_id %}" >Eliminar</a>
-                                        </div>
-                                    </div>
-                                </div>
+        <div class="card">
+            <div class="card-header">
+                Datos
+            </div>
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-user"></i> {{donador.user.username}}</h5>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <p class="h5"><strong>Nombre:</strong> {{donador.user.first_name}}</p>
+                    </div>
+                    <div class="col-lg-6">
+                        <p class="h5"><strong>Apellido:</strong> {{donador.user.last_name}}</p>
+                    </div>
+                    <div class="col-lg-6">
+                        <p class="h5"><strong>Domicilio:</strong> {{donador.direccion}}</p>
+                    </div>
+                    <div class="col-lg-6">
+                        <p class="h5"><strong>Tel&eacute;fono:</strong> {{donador.telefono}}</p>
+                    </div>
+                    <div class="col-lg-6">
+                        <p class="h5"><strong>Email:</strong> {{donador.user.email}}</p>
+                    </div>
+                    <div class="col-lg-6">
+                        <p class="h5"><strong>Centro Asistencial m&aacute;s cercano:</strong> {{donador.hospital}}</p>
+                    </div>
+                    <div class="col-lg-6">
+                        <p class="h5"><strong>Fecha de Nacimiento:</strong> {{donador.fecha_nacimiento}}</p>
+                    </div>
+                    <div class="col-lg-6">
+                        <p class="h5"><strong>DNI:</strong> {{donador.dni}}</p>
+                    </div>
+                    <div class="col-lg-6">
+                        <p class="h5"><strong>G&eacute;nero:</strong> {{donador.genero}}</p>
+                    </div>
+                    <div class="col-lg-6">
+                        <p class="h5"><strong>Grupo Sangu&iacute;neo:</strong> {{donador.grupo_sanguineo}}</p>
+                    </div>
+                    <div class="col-lg-6">
+                        <p class="h5"><strong>Factor RH:</strong> {{donador.factor_RH}}</p>
+                    </div>
+                </div>
+                {% if donante %}
+                <div class="row">
+                    <div class="col-lg-6 text-left">
+                        <a class="btn btn-default" href="{% url 'inicio' %}">Volver</a>
+                    </div>
+                    <div class="col-lg-6 text-right">
+                        <a class="btn btn-warning" href="#" data-target="#modal{{donador.pk}}" data-toggle="modal">Eliminar</a>
+                        <a class="btn btn-success" href="{% url 'modificar_donante' pk=donador.pk %}">Modificar</a>
+                    </div>
+                </div>
+                <div class="modal fade" id="modal{{donador.pk}}">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <!-- header de modal -->
+                                <h4 class="modal-title">Eliminar</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
+                                </button>
                             </div>
-                        </tr>
-    {% else %}
-          <div class="row">
-            <div class="col-lg-6 text-left" >
-                <a class="btn btn-default" href="{% url 'lista_donante' %}">Volver</a>
-            </div>
-            <div class="col-lg-6 text-right" >
-                <a class="btn btn-success" href="{% url 'modificar_donante' pk=donador.pk %}">Modificar</a>
-            </div>
-          </div>
+                            <!-- cuerpo del modal -->
+                            <div class="modal-body">
+                                <p> Confirma que desea eliminar su registro</p>
+                            </div>
+                            <!--footer del modal -->
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                                <a class="btn btn-danger" href="{% url 'eliminar_donante' pk=donador.user_id %}">Eliminar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </tr>
+                {% else %}
+                <div class="row">
+                    <div class="col-lg-6 text-left">
+                        <a class="btn btn-default" href="{% url 'lista_donante' %}">Volver</a>
+                    </div>
+                    <div class="col-lg-6 text-right">
+                        <a class="btn btn-success" href="{% url 'modificar_donante' pk=donador.pk %}">Modificar</a>
+                    </div>
+                </div>
 
 
-    {% endif %}
-    </div>
-  </div>
+                {% endif %}
+            </div>
+        </div>
     </div>
 </section>
 </body>

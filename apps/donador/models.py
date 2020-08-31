@@ -38,6 +38,7 @@ class Donador(models.Model):
     grupo_sanguineo = models.CharField(max_length=10,choices=GRUPO_SANGRE, default='A')
     factor_RH = models.CharField(max_length=2, choices=FACTOR_SANGRE, default='+')
     telefono = models.CharField(max_length=12)
+    dni = models.IntegerField()
     activo = models.BooleanField(default=0)
     groups = models.ForeignKey(Group, null=True, blank=True, on_delete=models.CASCADE)
 

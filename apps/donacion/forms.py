@@ -2,6 +2,9 @@ from django import forms
 from apps.donacion.models import Donacion
 
 class DateImput(forms.DateInput):
+    '''
+    @:param :
+    '''
     imput_formats='%Y-%m-%d'
     input_type = 'date'
 

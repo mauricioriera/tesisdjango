@@ -13,6 +13,7 @@ from django.contrib import messages
 
 
 class DonacionCrear (AccessMixin,CreateView):
+
     model = Donacion
     form_class = DonacionForm
     template_name = 'donacion/registrodonacion.html'
@@ -27,6 +28,7 @@ class DonacionCrear (AccessMixin,CreateView):
         return render(request, 'donacion/registrodonacion.html', {'donador': d,'hospital': hospital, 'form':self.form_class})
 
     def post(self, request, *args, **kwargs):
+
         self.object = self.get_object
         form = self.form_class(request.POST)
         if form.is_valid():

@@ -170,4 +170,5 @@ class Reporte(View):
                            (colors.pink,(f"{porcentajes[1]}% embarazadas = {motivo[1]} donante/s")),
                            (colors.lightblue,(f"{porcentajes[2]}% dono sangre = {motivo[2]} donante/s"))])
         p.slicefillcolor([colors.lightgreen,colors.pink,colors.lightblue])
+
         return p
