@@ -3,12 +3,16 @@ from apps.donacion.models import Donacion
 
 class DateImput(forms.DateInput):
     '''
-    @:param :
+    Crea la estructura que tendra el campo date (fecha_donacion)
     '''
     imput_formats='%Y-%m-%d'
     input_type = 'date'
 
 class DonacionForm(forms.ModelForm):
+    '''
+    Crea la estructura para los campos del modelo dado,labels(etiquetas) como se van a mostrar en el formulario
+    y sus widgets correspondientes.
+    '''
     class Meta:
         model = Donacion
 

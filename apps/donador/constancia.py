@@ -26,14 +26,7 @@ class Constancia(View):
 
 
         c.setLineWidth(.3)
-        if hospital.id == 1:
-            c.drawImage('static/logos/logohospitalespanol.jpg', 40, 710)
-        elif hospital.id == 2:
-            c.drawImage('static/logos/logoschestakow.jpg', 40, 710)
-        elif hospital.id == 3:
-            c.drawImage('static/logos/logopoliclinica.jpg', 40, 710)
-        elif hospital.id == 4:
-            c.drawImage('static/logos/logoclinicaciudad.jpg', 40, 650)
+        c.drawImage(f'{hospital.logo}', 40, 710)
         c.setFont('Helvetica',15)
         c.drawString(365,750,f'{hospital.nombre}')
         c.setFont('Helvetica',12)

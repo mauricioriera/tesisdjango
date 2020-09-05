@@ -17,6 +17,9 @@ from reportlab.lib import colors
 class Reporte(View):
 
     def get(self, request, *args, **kwargs):
+        '''
+        :return response:que un archivo pdf dependiendo el parametro pasado(parm)
+        '''
         parm=self.kwargs.get('parm',0)
         response = HttpResponse(content_type='application/pdf')
         archivo = (date.now().strftime('reporte %d-%m-%y %H.%M.%S.pdf'))
@@ -33,35 +36,30 @@ class Reporte(View):
         styles = getSampleStyleSheet()
         title_style = styles['Heading1']
         title_style.alignment = 1
-        if(parm==1):
-            title = Paragraph("Cantidad de Donantes Activos", title_style)
-            contenido.append(title)
-            contenido.append(self.__donantesactivos())
-        if(parm==2):
-            title = Paragraph("Cantidad de Donantes por Sexo", title_style)
-            contenido.append(title)
-            contenido.append(self.__donantessexo())
-        if(parm==3):
-            title = Paragraph("Cantidad de Donantes según Grupo/Factor", title_style)
-            contenido.append(title)
-            contenido.append(self.__donantesgrupofactor())
-        if(parm==4):
-            title = Paragraph("Cantidad de Donantes según Edad/Sexo", title_style)
-            contenido.append(title)
-            contenido.append(self.__donantesedadsexo())
-        if(parm==5):
-            title = Paragraph("Registro de Donaciones", title_style)
-            contenido.append(title)
-            contenido.append(self.tabla())
-        if (parm==6):
-            title = Paragraph("Donantes desactivados por motivo",title_style)
-            contenido.append(title)
-            contenido.append(self.__donatedesactivadomotivo())
+        titulos={1:"Cantidad de Donantes Activos",
+                 2:"Cantidad de Donantes por Sexo",
+                 3:"Cantidad de Donantes según Grupo/Factor",
+                 4:"Cantidad de Donantes según Edad/Sexo",
+                 5:"Registro de Donaciones",
+                 6:"Donantes desactivados por motivo"}
+        title=Paragraph(titulos[parm],title_style)
+        contenido.append(title)
+        contenidodict={1:self.__donantesactivos(),
+                       2:self.__donantessexo(),
+                       3:self.__donantesgrupofactor(),
+                       4:self.__donantesedadsexo(),
+                       5:self.tabla(),
+                       6:self.__donatedesactivadomotivo()}
+        contenido.append(contenidodict[parm])
         doc.build(contenido)
         response.write(buff.getvalue())
         buff.close()
         return response
     def tabla(self):
+        '''
+        genra un tabla
+        :return: tabla para insertarla en el pdf
+        '''
         donaciones= Donacion.objects.prefetch_related('donador', 'user', 'hospital').values_list('donador__user__last_name',
                                                                                             'donador__user__first_name',
                                                                                             'fecha_donacion',
@@ -84,6 +82,10 @@ class Reporte(View):
         return tabla
 
     def __donantesactivos(self):
+        '''
+        genera un grafico de torta
+        :return: grafico de torta par insertar en pdf
+        '''
         p = PieChart(300, 300)
         cantidad_total = Donador.objects.all().count()
         activos = [Donador.objects.filter(activo=True).count(), Donador.objects.filter(activo=False).count()]
@@ -96,6 +98,10 @@ class Reporte(View):
         return p
 
     def __donantessexo(self):
+        '''
+        genera un grafico de torta
+        :return: grafico de torta par insertar en pdf
+        '''
         p = PieChart(300, 300)
         cantidad_total = Donador.objects.all().count()
         sexo = [Donador.objects.filter(genero='M').count(), Donador.objects.filter(genero='F').count()]
@@ -107,6 +113,10 @@ class Reporte(View):
         p.slicefillcolor([colors.yellow,colors.red])
         return p
     def __donantesgrupofactor(self):
+        '''
+        genera un grafico de barras
+        :return: grafico de barras para insertar en un pdf
+        '''
         b= BarChart()
         grupo = [(Donador.objects.filter(grupo_sanguineo='A', factor_RH='+').count(),
                   Donador.objects.filter(grupo_sanguineo='A', factor_RH='-').count(),
@@ -123,6 +133,10 @@ class Reporte(View):
         b.xaxisname('Grupo/Factor')
         return b
     def __donantesedadsexo(self):
+        '''
+        genera un grafico de barras
+        :return: grafico de barras para insertar en un pdf
+        '''
         b=BarChart()
         edadh = [(d.calcularEdad) for d in Donador.objects.filter(genero='M')]
         edadm = [(d.calcularEdad) for d in Donador.objects.filter(genero='F')]
@@ -145,7 +159,6 @@ class Reporte(View):
                 l7.append(i)
             else:
                 l8.append(i)
-
         edadesh = [len(l1), len(l2), len(l3), len(l4)]
         edadesm = [len(l5), len(l6), len(l7), len(l8)]
         b.data([edadesh,edadesm])
@@ -156,7 +169,12 @@ class Reporte(View):
         b.xaxisname('Rango de Edad')
         b.legendcolorname([(colors.blue,'Masculino'),(colors.red,'Femenino')])
         return b
+
     def __donatedesactivadomotivo(self):
+        '''
+        genera un grafico de torta
+        :return: grafico de torta para insertar en un pdf
+        '''
         p=PieChart(300,300)
         cantidad_total=Desactivar.objects.all().count()
         motivo= [ Desactivar.objects.filter(motivo=1).count(),Desactivar.objects.filter(motivo=2).count()

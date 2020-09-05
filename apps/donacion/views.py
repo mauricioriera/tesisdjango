@@ -13,13 +13,20 @@ from django.contrib import messages
 
 
 class DonacionCrear (AccessMixin,CreateView):
-
+    '''
+    premite crear un objeto del modelo Donacion y denegar o conceder al acceso segun el rol del usuario
+    '''
     model = Donacion
     form_class = DonacionForm
     template_name = 'donacion/registrodonacion.html'
     success_url = reverse_lazy('lista_donante')
 
     def get(self, request, pk):
+        '''
+        :param request: para hacer solicitud HTTP(GET), para que traiga la pagina web solicitada
+        :param pk: llave primaria del objeto Donacion
+        :return: retorna un template que se usa para cargar la donacion
+        '''
         d = Donador.objects.get(pk=pk)
         query = JefedeArea.objects.filter(user=self.request.user).distinct() or Empleado.objects.filter(
             user=self.request.user).distinct()
@@ -28,6 +35,11 @@ class DonacionCrear (AccessMixin,CreateView):
         return render(request, 'donacion/registrodonacion.html', {'donador': d,'hospital': hospital, 'form':self.form_class})
 
     def post(self, request, *args, **kwargs):
+        '''
+        :param request:para hacer solicitud HTTP(POST), para enviar datos.
+        :return: si el onbjeto fue cargado correctamente no envia a la pagina lista de donantes si no nos muestra el error
+        para cargar de nuevo correctamente el objeto.
+        '''
 
         self.object = self.get_object
         form = self.form_class(request.POST)
@@ -49,6 +61,10 @@ class DonacionCrear (AccessMixin,CreateView):
             return render(request, self.template_name, {'form': form})
 
     def dispatch(self, request, *args, **kwargs):
+        '''
+        :param request: solicitud HTTP(GET) que pregunta si el usuario esta autenticado y que rol tiene
+        :return:template de error si es un rol de Donantes si no muestra la pagina de Donaciones
+        '''
         if not request.user.is_authenticated:
             return self.handle_no_permission()
         if self.request.user.groups.filter(name="Donantes").exists():

@@ -5,6 +5,7 @@ from reportlab.graphics.charts.textlabels import Label
 
 
 class BarChart (Drawing):
+
     def __init__(self, width=400, height=200, *args, **kw):
         Drawing.__init__(self, width, height, *args, **kw)
         self.add(VerticalBarChart(), name='chart')
@@ -34,22 +35,46 @@ class BarChart (Drawing):
 
 
     def data(self, data):
-            self.chart.data = data
+        '''
+        :param data:datos para generar el grafico
+        :return:
+        '''
+        self.chart.data = data
 
     def colors(self,color):
+        '''
+        :param color: colores a usar en el grafico
+        :return:
+        '''
         for i in range(len(color)):
             self.chart.bars[i].fillColor= color[i]
 
     def labels(self,labels):
+        '''
+        :param labels: nombre de los datos
+        :return:
+        '''
         self.chart.categoryAxis.categoryNames=labels
 
     def yaxisname(self,namey):
+        '''
+        :param namey:nombre eje y del grafico
+        :return:
+        '''
         self.ylabel._text=namey
 
     def xaxisname(self,namex):
+        '''
+        :param namex:nombre del eje x del grafico
+        :return:
+        '''
         self.xlabel._text=namex
 
     def legendcolorname(self, colorname):
+        '''
+        :param colorname:colores que aprecera en las leyendas
+        :return:
+        '''
         self.add(Legend(), name='legend')
         self.legend.x = (self.chart.x + self.chart.width * 1.2)
         self.legend.y = 50

@@ -26,14 +26,30 @@ class PieChart(Drawing):
 
 
     def data(self, data):
+        '''
+        :param data:datos para generar el grafico
+        :return:
+        '''
         self.pie.data = data
 
     def labels(self, labels):
+        '''
+        :param labels:nombre de los datos
+        :return:
+        '''
         self.pie.labels = labels
 
     def legendcolorname(self,colorname):
+        '''
+        :param colorname:color de las leyendas
+        :return:
+        '''
         self.legend.colorNamePairs = colorname
 
     def slicefillcolor(self,colors):
+        '''
+        :param colors:color de las porciones del grafico
+        :return:
+        '''
         for i in range(len(colors)):
             self.pie.slices[i].fillColor=colors[i]
