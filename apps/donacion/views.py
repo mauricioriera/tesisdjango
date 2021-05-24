@@ -37,7 +37,7 @@ class DonacionCrear (AccessMixin,CreateView):
     def post(self, request, *args, **kwargs):
         '''
         :param request:para hacer solicitud HTTP(POST), para enviar datos.
-        :return: si el onbjeto fue cargado correctamente no envia a la pagina lista de donantes si no nos muestra el error
+        :return: si el onbjeto fue cargado correctamente nos envia a la pagina lista de donantes si no nos muestra el error
         para cargar de nuevo correctamente el objeto.
         '''
 

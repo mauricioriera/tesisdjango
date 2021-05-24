@@ -77,13 +77,6 @@ def hilo(request, pk):
     return redirect('{}?grupo={}&factor={}'.format(reverse('lista_donante'), request.session['grupo'],
                                                    parse.quote(request.session['factor'])))
 
-
-def perfil(request, pk, ):
-    d = Donador.objects.get(pk=pk)
-    donante = request.user.groups.filter(name='Donantes').exists()
-    return render(request, 'donante/donante_profile.html', {'donador': d, 'donante': donante})
-
-
 def activacion(request, pk):
     donador = Donador.objects.get(pk=pk)
     if request.user.groups.filter(name='Donantes').exists():
@@ -111,7 +104,7 @@ class Desactivar(CreateView):
             if desactivar.motivo == 3 or desactivar.motivo == 4:
                 desactivar.donador.user.delete()
                 messages.add_message(request, messages.WARNING,
-                                     'usuario a sido eliminado por poseer enfermedad infeciosa o ser enfermo cronico')
+                         'usuario a sido eliminado por poseer enfermedad infeciosa o ser enfermo cronico')
             else:
                 desactivar.save()
                 donador = desactivar.donador
@@ -121,6 +114,11 @@ class Desactivar(CreateView):
         else:
             return render(request, self.template_name, {'form': form})
 
+
+def perfil(request, pk):
+    d = Donador.objects.get(pk=pk)
+    donante = request.user.groups.filter(name='Donantes').exists()
+    return render(request, 'donante/donante_profile.html', {'donador': d, 'donante': donante})
 
 
 class preperfil(ListView):
@@ -190,7 +188,7 @@ class DonadorLista(AccessMixin, ListView):
             self.request.session['grupo'] = ''
         if filter2 == '+' or filter2 == '-':
             self.request.session['factor'] = filter2
-            queryset = queryset.filter(factor_sanguineo=str(filter2))
+            queryset = queryset.filter(factor_RH=str(filter2))
         else:
             self.request.session['factor'] = ''
         return queryset
